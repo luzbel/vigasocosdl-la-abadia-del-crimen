@@ -1,0 +1,55 @@
+VIGASOCO (VIdeo GAmes SOurce COde) (v0.01)
+
+Copyright (c) 2003 by MAB
+
+Acerca de:
+==========
+
+VIGASOCO es un framework diseñado para entender como funcionaban algunos juegos clásicos.
+Su propósito principal es ser un instrumento de aprendizaje para comprender el funcionamiento
+interno de los juegos. Los juegos soportados por VIGASOCO son conversiones "funcionalmente
+equivalentes" de los juegos, escritas en C/C++ y obtenidas mediante reingeniería inversa del 
+código original del juego.
+
+Como efecto secundario, el código fuente de VIGASOCO puede usarse de punto de partida para
+realizar remakes de juegos clásicos, como un framework para crear tus propios juegos 2D, para
+encontrar trucos en los juegos soportados, para poder jugar a los juegos convertidos, etc.
+
+
+Licencia y distribución:
+========================
+
+El propósito de VIGASOCO no es infringir ningún copyright de los juegos originales. Por lo 
+tanto, no se incluye ninguna parte de las ROMs originales del juego. La logica del juego
+ha sido obtenida desde cero mediante reingeniería inversa para poder crear una conversión
+funcionalmente equivalente en un lenguaje de alto nivel.
+
+VIGASOCO es un proyecto gratuito. El código fuente es público. No está permitida la venta de 
+VIGASOCO ni su distribución con ROMS. El código fuente y la versión compilada de VIGASOCO deben 
+distribuirse sin alterar los archivos originales (no está permitido añadir o eliminar archivos).
+
+El núcleo VIGASOCO está escrito en C++ y es totalmente independiente de la plataforma en la que
+se vaya a implementar. Ninguna porción del código fuente puede usarse en un producto comercial
+sin autorización escrita del autor.
+El uso de cualquier porción del código fuente para productos no comerciales está permitido, 
+siempre y cuando también se publique el código fuente de dicho producto, y se indique en alguna
+parte que se ha usado parte del código fuente de VIGASOCO.
+
+Uso:
+====
+Consultar la información de la versión correspondiente:
+Versión de windows: windows_es.txt
+
+
+Contacto:
+========
+En el código fuente se incluye información de contacto.
+
+
+Agradecimientos:
+================
+MAME Project (http://www.mame.net)
+PTS (http://www.emulatronia.com)
+
+
+EOF - 4568M-5694

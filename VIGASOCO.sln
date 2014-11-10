@@ -1,0 +1,60 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcproj", "{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectInputKeyboardPlugin", "DirectInputKeyboardPlugin\DirectInputKeyboardPlugin.vcproj", "{6F0D052D-C1B7-4355-A0D7-1A4A5ED1E99F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE} = {348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE} = {E69B5063-BE40-4F05-8263-5E624D70B6DE}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectDrawPlugins", "DirectDrawPlugins\DirectDrawPlugins.vcproj", "{67AE8FC8-D0FD-4A48-8379-D31A33453D53}"
+	ProjectSection(ProjectDependencies) = postProject
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE} = {348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE} = {E69B5063-BE40-4F05-8263-5E624D70B6DE}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZipLoader", "ZipLoader\ZipLoader.vcproj", "{55F9D652-0A0B-46E2-8BE2-CB4C495D0055}"
+	ProjectSection(ProjectDependencies) = postProject
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE} = {348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE} = {E69B5063-BE40-4F05-8263-5E624D70B6DE}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VigasocoWin32", "VigasocoWin32\VigasocoWin32.vcproj", "{E69B5063-BE40-4F05-8263-5E624D70B6DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE} = {348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}.Debug.ActiveCfg = Debug|Win32
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}.Debug.Build.0 = Debug|Win32
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}.Release.ActiveCfg = Release|Win32
+		{348F4D61-2017-4E74-A7DA-E31EF3AF1ACE}.Release.Build.0 = Release|Win32
+		{6F0D052D-C1B7-4355-A0D7-1A4A5ED1E99F}.Debug.ActiveCfg = Debug|Win32
+		{6F0D052D-C1B7-4355-A0D7-1A4A5ED1E99F}.Debug.Build.0 = Debug|Win32
+		{6F0D052D-C1B7-4355-A0D7-1A4A5ED1E99F}.Release.ActiveCfg = Release|Win32
+		{6F0D052D-C1B7-4355-A0D7-1A4A5ED1E99F}.Release.Build.0 = Release|Win32
+		{67AE8FC8-D0FD-4A48-8379-D31A33453D53}.Debug.ActiveCfg = Debug|Win32
+		{67AE8FC8-D0FD-4A48-8379-D31A33453D53}.Debug.Build.0 = Debug|Win32
+		{67AE8FC8-D0FD-4A48-8379-D31A33453D53}.Release.ActiveCfg = Release|Win32
+		{67AE8FC8-D0FD-4A48-8379-D31A33453D53}.Release.Build.0 = Release|Win32
+		{55F9D652-0A0B-46E2-8BE2-CB4C495D0055}.Debug.ActiveCfg = Debug|Win32
+		{55F9D652-0A0B-46E2-8BE2-CB4C495D0055}.Debug.Build.0 = Debug|Win32
+		{55F9D652-0A0B-46E2-8BE2-CB4C495D0055}.Release.ActiveCfg = Release|Win32
+		{55F9D652-0A0B-46E2-8BE2-CB4C495D0055}.Release.Build.0 = Release|Win32
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE}.Debug.ActiveCfg = Debug|Win32
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE}.Debug.Build.0 = Debug|Win32
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE}.Release.ActiveCfg = Release|Win32
+		{E69B5063-BE40-4F05-8263-5E624D70B6DE}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

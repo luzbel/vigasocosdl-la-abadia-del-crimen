@@ -1,0 +1,95 @@
+VIGASOCO (VIdeo GAmes SOurce COde) Windows port (v0.01)
+
+Copyright (c) 2003 by MAB
+
+About:
+======
+
+VIGASOCOWin32 is a port of the VIGASOCO project.
+
+
+License and distribution:
+=========================
+
+The same as VIGASOCO (see readme.txt for details).
+
+Usage:
+======
+The win32 port of VIGASOCO was designed around the concept of plugin:
+	* Video plugins should be placed in a folder called VIDEO.
+	* Input plugins should be placed in a folder called INPUT.
+	* Loader plugins should be placed in a folder called LOADERS.
+	
+The official distribution comes with the following plugins:
+	* VIDEO\MDDraw.dll
+		- win16: windowed mode, 16 bpp using DirectDraw
+		- win32: windowed mode, 32 bpp using DirectDraw
+		- full16: fullscreen mode, 16 bpp using DirectDraw
+		- full32: fullscreen mode, 32 bpp using DirectDraw
+		- fullTB16: fullscreen mode, 16 bpp (tripple buffering) using DirectDraw
+		- fullTB32: fullscreen mode, 32 bpp (tripple buffering) using DirectDraw
+	* INPUT\DIKeyb.dll
+		- DIKeyb: keyboard using DirectInput
+	* LOADERS\ZipLoader.dll
+		- ZipLoader: load zip files (using ZipArchive library (c) 2000-2003 Tadeusz Dracz)
+		
+You can develop your own plugins if you want (more information in the source code).
+
+The executable accept parameters in the format:
+VigasocoWin32.exe <game> <-video:pluginDLL,plugin> <-input:{pluginDLL,plugin;}* pluginDLL,plugin> <-path:{path;}* path>
+
+If you don't specify any parameters, the default ones are:
+	pacman -video:MDDraw.dll,full16 -input:DIKeyb.dll,DIKeyb
+	
+Note: plugin names (not dll names) are case sensitive.
+
+Multiple input plugins can run simultaneously. The program will try to load all DLLs placed 
+in the LOADERS folder and get a CustomLoader plugin, so you can have multiple format support adding
+more loader plugins. 
+
+VIGASOCO looks for the game ROMs in the ROMS folder, but you can specify multiple paths with 
+the -path option. It can load uncompressed files without any plugin, but you have to place
+them in ROMS/romgamename/. The ZipLoader plugin will search for ROMS/romgamename.zip
+
+Example:
+	VigasocoWin32 pacman -video:MDDraw.dll,win16 -path:../arcade/roms
+
+The ROM names are compatible with MAME ones.
+
+Inputs:
+=======
+
+DIKeyb.dll has the following default keys:
+
+	UP ARROW -> 1P UP
+	DOWN ARROW -> 1P DOWN
+	LEFT ARROW -> 1P LEFT
+	RIGHT ARROW -> 1P RIGHT
+	CONTROL -> 1P BUTTON 1
+	1 -> 1P START
+	5 -> COIN 1P
+	
+	F5 -> show inner game information
+	F8, F9 -> frame skipping
+	F10 -> toggle speed throttling
+
+
+Supported Games:
+================
+
+           GAME NAME           ROM NAME         INNER GAME INFORMATION
+------------------------------------------------------------------------------------------------------------------------------
+PACMAN:	   pacman              puckman          logical grid + ghosts' wanted destination positions
+------------------------------------------------------------------------------------------------------------------------------
+
+Contact:
+========
+Contact information is available in the source code.
+
+
+Acknowledgments:
+================
+MAME Project (http://www.mame.net)
+
+
+EOF - 4568M-5694

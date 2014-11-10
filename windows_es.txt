@@ -1,0 +1,97 @@
+VIGASOCO (VIdeo GAmes SOurce COde) Windows port (v0.01)
+
+Copyright (c) 2003 by MAB
+
+Acerca de:
+==========
+
+VIGASOCOWin32 es la versión para Windows del proyecto VIGASOCO.
+
+
+Licencia y distribución:
+========================
+
+La misma que el proyecto VIGASOCO (consultar leeme.txt para los detalles).
+
+Uso:
+===
+La versión para windows de VIGASOCO se diseño entorno al concepto de plugin:
+	* Los plugins gráficos deben grabarse en un directorio llamado VIDEO.
+	* Los plugins de entrada deben grabarse en un directorio llamado INPUT.
+	* Los plugins de carga deben grabarse en un directorio llamado LOADERS.
+	
+La distribución oficial viene con los siguientes plugins:
+	* VIDEO\MDDraw.dll
+		- win16: modo ventana, 16 bpp usando DirectDraw
+		- win32: modo ventana, 32 bpp usando DirectDraw
+		- full16: modo pantalla completa, 16 bpp usando DirectDraw
+		- full32: modo pantalla completa, 32 bpp usando DirectDraw
+		- fullTB16: modo pantalla completa, 16 bpp (triple buffer) usando DirectDraw
+		- fullTB32: modo pantalla completa, 32 bpp (triple buffer) usando DirectDraw
+	* INPUT\DIKeyb.dll
+		- DIKeyb: teclado usando DirectInput
+	* LOADERS\ZipLoader.dll
+		- ZipLoader: carga de archivos ZIP (usando la librería ZipArchive (c) 2000-2003 Tadeusz Dracz)
+
+Si lo deseas, puedes desarrollar tus propios plugins (más información en el código fuente).
+
+El ejecutable acepta parámetros en el formato siguiente:
+VigasocoWin32.exe <juego> <-video:pluginDLL,plugin> <-input:{pluginDLL,plugin;}* pluginDLL,plugin> <-path:{path;}* path>
+
+Si no especificas ningún parámetro, los parámetros por defecto son:
+	pacman -video:MDDraw.dll,full16 -input:DIKeyb.dll,DIKeyb
+	
+Nota: en los nombres de los plugins (no el nombre de las dll ) hay distinción entre mayúsculas y minúsculas.
+
+Pueden funcionar a la vez múltiples plugins de entrada. El programa trata de cargar todas las DLL
+que encuentra en el directorio LOADERS, y obtener de ellas un plugin llamado CustomLoader, 
+por lo que se pueden cargar archivos en mas formatos añadiendo más plugins de carga.
+
+Por defecto, VIGASOCO busca las ROMs de los juegos en el directorio ROMS, pero se pueden especificar
+más directorios en los que buscar con la opción -path. Si no hay ningún plugin en el directorio LOADERS
+tratará de cargar los archivos descomprimidos en la ruta ROMS/nombredeljuego. El plugin ZipLoader
+buscará el archivo ROMS/nombredeljuego.zip
+
+Ejemplo:
+	VigasocoWin32 pacman -video:MDDraw.dll,win16 -path:../arcade/roms
+
+Los nombres de las ROMs son compatibles con los del MAME.
+
+Controles:
+==========
+
+Las teclas por defecto del plugin DIKeyb (DIKeyb.dll) son:
+
+	flecha arriba -> Jugador 1 arriba
+	flecha abajo -> Jugador 1 abajo
+	flecha izquierda -> Jugador 1 izquierda
+	flecha derecha -> Jugador 1 derecha
+	CONTROL -> Jugador 1 disparo
+	1 -> Jugador 1 Empezar
+	5 -> Jugador 1 Insertar moneda 
+	
+	F5 -> mostrar información interna sobre el funcionamiento del juego
+	F8, F9 -> control de avance de frames
+	F10 -> control de velocidad
+
+
+Juegos soportados:
+==================
+
+           Nombre del juego    Nombre ROM       Información interna sobre el funcionamiento del juego
+------------------------------------------------------------------------------------------------------------------------------
+PACMAN:	   pacman              puckman          división lógica en celdas + posición de destino deseada por los fantasmas
+------------------------------------------------------------------------------------------------------------------------------
+
+Contacto:
+=========
+En el código fuente se incluye información de contacto.
+
+
+Agradecimientos:
+================
+MAME Project (http://www.mame.net)
+PTS (http://www.emulatronia.com)
+
+
+EOF - 4568M-5694
