@@ -1,5 +1,5 @@
-// VER SI SE PUEDE IMPLEMENTAR MEJOR CON SDK_GetTicks , SDL_Delay , ...
-
+// VER SI SE PUEDE IMPLEMENTAR MEJOR CON SDL_GetTicks , SDL_Delay , 
+// SDL_HasRDTSC, ...
 
 
 // RDTSCTimer.cpp
@@ -8,6 +8,9 @@
 
 #include "RDTSCTimer.h"
 #include "SDL.h"
+
+// Para SDL_HasRDTSC()
+#include "SDL_cpuinfo.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
@@ -28,7 +31,7 @@ bool RDTSCTimer::init()
 		return false;
 	}
 
-	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
+//	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
 
 	_ticksPerSecond = calcTicksPerSecond();
 	_ticksPerMilliSecond = _ticksPerSecond/1000;
@@ -61,7 +64,7 @@ INT64 RDTSCTimer::getTicksPerSecond()
 // windows Sleep function isn't precise enough, so here it's a better sleep method
 void RDTSCTimer::sleep(UINT32 milliseconds)
 {
-
+	/*
 	INT64 time1, time2; 
 	bool finished = false;
 
@@ -74,7 +77,9 @@ void RDTSCTimer::sleep(UINT32 milliseconds)
 		if (!finished){
 			SDL_Delay(0);
 		}
-	}
+	} */
+
+	SDL_Delay(milliseconds);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -101,12 +106,15 @@ INT64 RDTSCTimer::calcTicksPerSecond()
 
 bool RDTSCTimer::supportsRDTSC()
 {
+	/*
 	int cpuFeatures=0;
 
         __asm__ __volatile__(
                 "mov $1, %%eax\n"
                 "cpuid\n"
-                "mov %%edx,%0" : "=r"(cpuFeatures)::"eax","edx" );
+                "mov %%edx,%0" : "=r"(cpuFeatures)::"eax","ebx","ecx","edx" );
 
         return ((cpuFeatures & 0x10) == 0x10);
+	*/
+	return SDL_HasRDTSC();
 }

@@ -13,7 +13,6 @@
 #include "TimingHandler.h"
 #include "Vigasoco.h"
 #include "AbadiaDriver.h"
-#include "PacmanDriver.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
@@ -23,7 +22,7 @@ Vigasoco::Vigasoco()
 {
 	_speedThrottle = true;
 
-	_game = "pacman";
+	_game = "abadia";
 	_errorMsg = "";
 
 	_driver = 0;
@@ -307,9 +306,7 @@ void Vigasoco::mainLoop()
 GameDriver * Vigasoco::createGameDriver(std::string game)
 {
 	// TODO: move this to a factory
-	if (game == "pacman"){
-		return new PacmanDriver();
-	} else if (game == "abadia"){
+	if (game == "abadia"){
 		return new AbadiaDriver();
 	} else {
 		return 0;

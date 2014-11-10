@@ -1,3 +1,7 @@
+v0.03
+=====
+Port para Linux usando SDL.
+Eliminado el soporte para el pacman.
 v0.02
 =====
 Nuevos juegos soportados:

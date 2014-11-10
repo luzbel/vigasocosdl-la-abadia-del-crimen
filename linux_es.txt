@@ -1,0 +1,22 @@
+VIGASOCO (VIdeo GAmes SOurce COde) Linux port (v0.03)
+
+Acerca de:
+==========
+
+VIGASOCOLinuxSDL es la versión para Linux del proyecto VIGASOCO.
+Se trata de una Beta sin optimizar ni probar a fondo.
+
+
+Licencia y distribución:
+========================
+
+La misma que el proyecto VIGASOCO (consultar leeme.txt para los detalles).
+
+Uso:
+===
+
+Similar a la versión Windows ( ver window_es.txt).
+Las principales diferencias son:
+	- Solo existe un plugin de video usando 32bpp en modo ventana con SDL.
+	- No existe soporte para el pacman.
+	- No hay loader para zip, la ROM tiene que estar descomprimida.

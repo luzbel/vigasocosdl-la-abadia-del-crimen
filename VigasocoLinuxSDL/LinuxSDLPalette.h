@@ -11,9 +11,11 @@
 #include "IPalette.h"
 #include "Types.h"
 
-
+// Esto solo vale para la version de Vigasoco para Windows
+#ifndef __GNUC__
 #pragma pack(push, paletteAlignment)
 #pragma pack(1)
+#endif
 
 struct PaletteEntry {
 	UINT8 B;
@@ -26,7 +28,10 @@ struct PaletteEntry {
 	PaletteEntry(int r, int g, int b, int a) { R = r; G = g; B = b; alpha = a; }
 }; // Falta alinear esta estructura en gcc
 
+// Esto solo vale para la version de Vigasoco para Windows
+#ifndef __GNUC__
 #pragma pack(pop, paletteAlignment)
+#endif
 
 
 // the palette is a Singleton and a Notification Provider

@@ -38,6 +38,7 @@ Usage:
 ======
 See specific port information:
 windows port: windows.txt
+linux port: linux.txt
 
 
 Contact:

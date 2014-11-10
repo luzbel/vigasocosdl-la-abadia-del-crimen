@@ -42,6 +42,7 @@ Uso:
 ====
 Consultar la información de la versión correspondiente:
 Versión de windows: windows_es.txt
+Versión de linux: linux_es.txt
 
 
 Contacto:
