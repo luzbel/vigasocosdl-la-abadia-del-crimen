@@ -17,8 +17,8 @@ typedef unsigned short UINT16;
 typedef signed short INT16;
 typedef unsigned int UINT32;
 typedef signed int INT32;
-typedef signed __int64 INT64;
-typedef unsigned __int64 UINT64;
+typedef signed long long INT64;
+typedef unsigned long long UINT64;
 
 
 struct Rect {

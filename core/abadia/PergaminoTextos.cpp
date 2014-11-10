@@ -85,7 +85,8 @@ char * Pergamino::pergaminoInicio =
 	"graficos y caratula: \x0d"
 	"    Juan Delcan\x0d\x0d"
 	"reingenieria inversa: \x0d"
-	"    Manuel Abadia\x0d\x1a";
+	"    Manuel Abadia\x0d\x0d"
+	"version Linux: Luzbel\x1a";
 
 /////////////////////////////////////////////////////////////////////////////
 // pergamino del final del juego

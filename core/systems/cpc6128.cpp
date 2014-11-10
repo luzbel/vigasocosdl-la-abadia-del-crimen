@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-#include "cpc6128.h"
+#include "CPC6128.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
