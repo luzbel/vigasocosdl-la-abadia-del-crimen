@@ -1,0 +1,58 @@
+abadia.bas -> cargador de la versión pirata
+
+abadia.bin -> 
+		0x0000-0x01ff cargador 2 de la versión pirata
+
+abadia0.bin -> 
+		0x0000-0x3fff presentacion
+		
+abadia1.bin ->  (empieza en 0x100)
+		0x0100-0x3fff codigo
+		
+abadia2.bin -> 
+		0x0000-0x32ff codigo
+		0x3300-0x3fff texto del pergamino de presentación
+
+abadia3.bin -> 
+		0x0000-0x02ff datos de la música del pergamino
+		0x0300-0x22ff trozos de abadia (X = 4)
+		0x2300-0x33ff guillermo, adso y los monjes (X = 4 y X = 5) + puertas (X = 6)
+			0x2300-0x2665 guillermo con X = 5
+			0x2666-0x26e9 gillermo con X = 4
+			0x26ea-0x28c7 adso con X = 5
+			0x28c9-0x2a48 adso con X = 4
+			0x2a49-0x2b58 puerta con X = 6
+			0x2b59-0x3102 monjes con X = 5
+			0x3103-0x33be caras de los monjes con X = 5
+			0x33bf-0x33ff traje monje con X = 4
+		0x3400-0x357f tabla con los datos gráficos de los caracteres que se usan durante el juego
+		0x3580-0x3aff tabla de palabras del juego
+		0x3b00-0x3eff tabla de cadenas del juego
+		0x3f00-0x3fff algunos valores importantes como por ejemplo
+			0x3f49 valor para regular la velocidad del juego
+			0x3f4e momento del día inicial
+			0x3f4f número de día inicial
+			0x3f50-0x3f51 posición inicial de guillermo
+			0x3f52 altura inicial de guillermo
+
+abadia5.bin -> depurador z80
+		
+abadia6.bin ->
+		0x0000-0x2fff espacio usado para guardar las pulsaciones de la demo
+		0x3000-0x3fff rutinas del manuscrito y demás (igual que abadia2 0x259d-0x359c)
+
+abadia7.bin ->
+		0x0000-0x09ff graficos repetidos de un pelin de partes de la abadia (???)
+		0x0a00-0x17ff datos de altura de las plantas
+			0x0a00-0x0eff datos de altura de la planta 0
+			0x0f00-0x107f datos de altura de la planta 1
+			0x1080-0x1414 datos de altura de la planta 2
+		0x1800-0x3fff datos de los bancos 9 al 0 de 0x2d7f y de 0x3c85 (en memoria)
+		
+abadia8.bin -> datos de las pantallas
+		0x0000-0x2237 datos sobre los bloques que forman las pantallas
+		0x2328-0x2b27 gráficos del marcador
+		0x2b28-0x2dff música del pergamino del final
+		0x2e00-0x37ff texto del pergamino del final
+		0x3800-0x39ff vacío
+		0x3a00-0x3fff datos gráficos del borde del pergamino

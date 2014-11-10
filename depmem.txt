@@ -1,0 +1,56 @@
+0x62c0 posición x del cursor
+0x62c1 posición y del cursor
+0x62c2 modo de funcionamiento de la rutina de 0x62c5
+		si es 0, imprime un carácter
+			caracteres especiales: 
+				0x1f -> cambia de estado y espera a que se le pase la posición del cursor
+				0x0d -> retorno de carro
+				0x0a -> avance de línea
+				0x08 -> retrocede la posición x del cursor
+				0x18 -> invertir el color del texto
+				0x12 -> borrar hasta el final de la línea
+
+		si es 1, fija la posición x del cursor y pasa al estado 2
+		si es 2, fija la posición y del cursor y pasa al estado 0
+0x62c3-0x62c4 aquí se guarda una copia de la pila antes de saltar a procesar la rutina asociada a una tecla
+		
+0x6522-0x6523 dirección de memoria inicial que se muestra o se desensambla
+
+0x6524-0x6525 puntero a las cadenas de los mnemónicos
+0x6526-0x6527 cadena 1
+0x6528-0x6529 cadena 2
+0x652a-0x652b puntero a la cadena del mnemónico
+
+0x652c indica si la instrucción puede ser una del tipo ix+ o iy+
+0x652d número de bytes leidos después de procesar el primer byte de la instrucción
+
+0x652e contiene el registro seleccionado actualmente
+
+0x652f-0x6530 valor de la condición
+0x6531-0x6532 máscara de la condición
+
+0x6533 estado de los break points
+	= 0 si no hay break point
+	= 1 si está puesto el break point 1
+	= 2 si está puesto el break point 2
+
+0x6534 modo de pantalla en el que se estaba antes de llamar al depurador
+
+0x6535 si es 0 indica que hay que mostrar el desensamblado y sino se muestra el valor de la memoria
+
+0x6536-0x6537 dirección del break point activo
+
+0x6554-0x6555 guarda el PC (se guarda hl al iniciar)
+0x6556-0x6557 guarda SP
+0x6558-0x6559 guarda IY
+0x655a-0x655b guarda IX
+0x655c-0x655d guarda HL (se guarda en 0x0079)
+0x655e-0x655f guarda HL'
+0x6560-0x6561 guarda DE (iniciado a 0x00fc al arrancar el depurador)
+0x6562-0x6563 guarda DE'
+0x6564-0x6565 guarda BC (iniciado a 0x0000 al empezar)
+0x6566-0x6567 guarda BC'
+0x6568-0x6569 guarda AF (se guarda en  0x0075)
+0x656a-0x656b guarda AF'
+
+0x6949-0x6984 buffer para almacenar los caracteres que se lean
