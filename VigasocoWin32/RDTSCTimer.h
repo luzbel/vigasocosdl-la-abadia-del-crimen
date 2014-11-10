@@ -8,13 +8,14 @@
 #define _RDTSC_TIMER_H_
 
 
-#include "Timer.h"
+#include "ITimer.h"
 
-class RDTSCTimer : public Timer
+class RDTSCTimer : public ITimer
 {
 // fields
 protected:
 	INT64 _ticksPerSecond;
+	INT64 _ticksPerMilliSecond;
 
 // methods
 public:

@@ -29,7 +29,7 @@ void ZipLoader::open(std::string path, std::string name)
 
 	// try to open the zip file
 	try {
-		_zip.Open(_path.c_str());
+		_zip.Open(_path.c_str(), CZipArchive::zipOpenReadOnly);
 	} catch(...){
 		_exception = true;
 	}

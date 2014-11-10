@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="ZipLoader"
 	ProjectGUID="{55F9D652-0A0B-46E2-8BE2-CB4C495D0055}"
+	RootNamespace="ZipLoader"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -23,7 +24,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;ZIPLOADER_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -32,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZipArchive_STL.lib"
+				AdditionalDependencies="ZipArchive_stl_mtd_debug.lib"
 				OutputFile="$(OutDir)/ZipLoader.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="debug"
@@ -78,7 +79,7 @@
 				OptimizeForProcessor="1"
 				AdditionalIncludeDirectories="../core;../vigasocowin32;../ziparchive"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;ZIPLOADER_EXPORTS"
-				RuntimeLibrary="4"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -88,10 +89,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ZipArchive_STL.lib"
+				AdditionalDependencies="ZipArchive_stl_mt_release.lib"
 				OutputFile="$(OutDir)/ZipLoader.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="release"
+				IgnoreAllDefaultLibraries="FALSE"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"

@@ -1,4 +1,4 @@
-// Timer.h
+// ITimer.h
 //
 //	Abstract class that defines the interface for a high resolution timer
 //
@@ -9,13 +9,13 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _TIMER_H_
-#define _TIMER_H_
+#ifndef _ITIMER_H_
+#define _ITIMER_H_
 
 
 #include "Types.h"
 
-class Timer
+class ITimer
 {
 // abstract methods
 public:
@@ -27,8 +27,8 @@ public:
 	virtual void sleep(UINT32 milliseconds) = 0;
 
 	// initialization and cleanup
-	Timer(){}
-	virtual ~Timer(){}
+	ITimer(){}
+	virtual ~ITimer(){}
 };
 
-#endif	// _TIMER_H_
+#endif	// _ITIMER_H_

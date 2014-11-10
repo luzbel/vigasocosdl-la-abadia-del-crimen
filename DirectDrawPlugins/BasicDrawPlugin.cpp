@@ -13,7 +13,7 @@
 BasicDrawPlugin::BasicDrawPlugin()
 {
 	_gameWidth = _gameHeight = 0;
-	_gameColors = 0;
+	_numColors = 0;
 	_visAreaOffsX = _visAreaOffsY = 0;
 	_visAreaWidth = _visAreaHeight = 0;
 
@@ -66,17 +66,45 @@ void BasicDrawPlugin::setActiveBitmap(int bitmap)
 	_actualBitmap = _bitmaps[bitmap];
 }
 
-// compose actual bitmap with selected one
+// composes actual bitmap with selected one
 void BasicDrawPlugin::compose(int bitmap, int mode, int attr)
 {
 	_actualBitmap->copySimilar(_bitmaps[bitmap]);
+}
+
+// gets bipmap's dimensions
+void BasicDrawPlugin::getDimensions(int &width, int &height) const
+{
+	width = _actualBitmap->getWidth();
+	height = _actualBitmap->getHeight();
+}
+/////////////////////////////////////////////////////////////////////////////
+// clipping methods
+/////////////////////////////////////////////////////////////////////////////
+
+// gets the clipping area for the active bitmap
+const Rect *BasicDrawPlugin::getClipArea() const
+{
+	return _actualBitmap->getClipArea();
+}
+
+// sets the clipping area for the active bitmap
+void BasicDrawPlugin::setClipArea(int x, int y, int width, int height)
+{
+	_actualBitmap->setClipArea(x, y, width, height);
+}
+
+// sets the clipping area to the whole bitmap (in the active bitmap)
+void BasicDrawPlugin::setNoClip()
+{
+	_actualBitmap->setNoClip();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // drawing primitives
 /////////////////////////////////////////////////////////////////////////////
 
-// draw a line using the midpoint algorithm
+// draws a line using the midpoint algorithm
 void BasicDrawPlugin::drawLine(int x0, int y0, int x1, int y1, int color)
 {
 	// line->F(x,y) = ax + by + c = 0, y = mx + b, where m = dy/dx -> a = dy, b = -dx
@@ -129,7 +157,7 @@ void BasicDrawPlugin::drawLine(int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-// draw a rectangle
+// draws a rectangle
 void BasicDrawPlugin::drawRect(int x, int y, int width, int height, int color)
 {
 	width--; height--;
@@ -140,7 +168,7 @@ void BasicDrawPlugin::drawRect(int x, int y, int width, int height, int color)
 	drawLine(x, y + height, x, y, color);
 }
 
-// draw a rectangle
+// draws a rectangle
 void BasicDrawPlugin::drawRect(Rect *rect, int color)
 {
 	drawLine(rect->left, rect->bottom, rect->right, rect->bottom, color);
@@ -149,13 +177,13 @@ void BasicDrawPlugin::drawRect(Rect *rect, int color)
 	drawLine(rect->left, rect->top, rect->left, rect->bottom, color);
 }
 
-// draw a circle using the midpoint algorithm
+// draws a circle using the midpoint algorithm
 void BasicDrawPlugin::drawCircle(int xOri, int yOri, int radius, int color)
 {
 	circle<false>(xOri, yOri, radius, color);
 }
 
-// draw an ellipse using the midpoint algorithm
+// draws an ellipse using the midpoint algorithm
 void BasicDrawPlugin::drawEllipse(int xOri, int yOri, int a, int b, int color)
 {
 	ellipse<false>(xOri, yOri, a, b, color);
@@ -165,7 +193,7 @@ void BasicDrawPlugin::drawEllipse(int xOri, int yOri, int a, int b, int color)
 // filled primitives
 /////////////////////////////////////////////////////////////////////////////
 
-// fill a rectangle
+// fills a rectangle
 void BasicDrawPlugin::fillRect(int x, int y, int width, int height, int color)
 {
 	int xLimit = width + x - 1;
@@ -175,7 +203,7 @@ void BasicDrawPlugin::fillRect(int x, int y, int width, int height, int color)
 	}
 }
 
-// fill a rectangle
+// fills a rectangle
 void BasicDrawPlugin::fillRect(Rect *rect, int color)
 {
 	for (int y = rect->top; y <= rect->bottom; y++){
@@ -183,13 +211,13 @@ void BasicDrawPlugin::fillRect(Rect *rect, int color)
 	}
 }
 
-// fill a circle using the midpoint algorithm
+// fills a circle using the midpoint algorithm
 void BasicDrawPlugin::fillCircle(int xOri, int yOri, int radius, int color)
 {
 	circle<true>(xOri, yOri, radius, color);
 }
 
-// fill an ellipse using the midpoint algorithm
+// fills an ellipse using the midpoint algorithm
 void BasicDrawPlugin::fillEllipse(int xOri, int yOri, int a, int b, int color)
 {
 	ellipse<true>(xOri, yOri, a, b, color);
@@ -232,6 +260,18 @@ int BasicDrawPlugin::getProperty(std::string prop, int index) const
 // helper methods
 /////////////////////////////////////////////////////////////////////////////
 
+// fills a horizontal line with a color
+void BasicDrawPlugin::fillScanLine(int x0, int x1, int y, int color)
+{
+	if (x1 < x0) {
+		std::swap<int>(x0, x1);
+	}
+
+	for (int x = x0; x <= x1; x++){
+		setPixel(x, y, color);
+	}
+}
+
 // draw 4 symmetrical points using as center (centX, centY)
 void BasicDrawPlugin::drawSymmetrical4Points(int x, int y, int centX, int centY, int color)
 {
@@ -252,18 +292,6 @@ void BasicDrawPlugin::drawSymmetrical8Points(int x, int y, int centX, int centY,
 	setPixel(centX - y, centY - x, color);
 	setPixel(centX - y, centY + x, color);
 	setPixel(centX - x, centY + y, color);
-}
-
-// fills a horizontal line with a color
-void BasicDrawPlugin::fillScanLine(int x0, int x1, int y, int color)
-{
-	if (x1 < x0) {
-		std::swap<int>(x0, x1);
-	}
-
-	for (int x = x0; x <= x1; x++){
-		setPixel(x, y, color);
-	}
 }
 
 // fill 2 lines, using the 4 symmetrical points arount center (centX, centY)

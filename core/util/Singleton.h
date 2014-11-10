@@ -30,10 +30,8 @@ public:
 	{
 		assert(!g_singleton);
 
-		// trick to get the correct pointer in case of multiple inheritance
-		// cast an unexistant object at address 1 to both types and get the offset
-		int offset = (int)(T*)1 - (int)(Singleton <T>*)(T*)1;
-		g_singleton = (T*)((int)this + offset);
+		// get the correct pointer in case of multiple inheritance
+		g_singleton = static_cast<T*>(this);
 	}
 
 	// destructor

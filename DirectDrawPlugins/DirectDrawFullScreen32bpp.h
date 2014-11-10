@@ -30,9 +30,9 @@ public:
 	virtual void setPixel(int x, int y, int color);
 
 	virtual void drawGfx(GfxElement *gfx, int code, int color, int x, int y, int attr);
-	virtual void drawGfxClip(GfxElement *gfx,	int code, int color, int x, int y, int attr, Rect *clip);
+	virtual void drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr);
 	virtual void drawGfxTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData);
-	virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, Rect *clip, int transData);
+	virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData);
 };
 
 

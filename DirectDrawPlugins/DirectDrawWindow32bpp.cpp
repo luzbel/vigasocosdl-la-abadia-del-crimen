@@ -140,7 +140,7 @@ void DirectDrawWindow32bpp::render(bool throttle)
 
 void DirectDrawWindow32bpp::setPixel(int x, int y, int color)
 {
-	assert((color >= 0) && (color < _gameColors));
+	assert((color >= 0) && (color < _numColors));
 
 	_actualBitmap->setPixel<UINT32, 32>(x, y, _palette[color]);
 }
@@ -150,9 +150,9 @@ void DirectDrawWindow32bpp::drawGfx(GfxElement *gfx, int code, int color, int x,
 	_actualBitmap->drawGfx<UINT32, 32>(gfx, _palette, code, color, x, y, attr);
 }
 
-void DirectDrawWindow32bpp::drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr, Rect *clip)
+void DirectDrawWindow32bpp::drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr)
 {
-	_actualBitmap->drawGfxClip<UINT32, 32>(gfx, _palette, code, color, x, y, attr, clip);
+	_actualBitmap->drawGfxClip<UINT32, 32>(gfx, _palette, code, color, x, y, attr);
 }
 
 void DirectDrawWindow32bpp::drawGfxTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData)
@@ -160,7 +160,7 @@ void DirectDrawWindow32bpp::drawGfxTrans(GfxElement *gfx, int code, int color, i
 	_actualBitmap->drawGfxTrans<UINT32, 32>(gfx, _palette, code, color, x, y, attr, transData);
 }
 
-void DirectDrawWindow32bpp::drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, Rect *clip, int transData)
+void DirectDrawWindow32bpp::drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData)
 {
-	_actualBitmap->drawGfxClipTrans<UINT32, 32>(gfx, _palette, code, color, x, y, attr, clip, transData);
+	_actualBitmap->drawGfxClipTrans<UINT32, 32>(gfx, _palette, code, color, x, y, attr, transData);
 }

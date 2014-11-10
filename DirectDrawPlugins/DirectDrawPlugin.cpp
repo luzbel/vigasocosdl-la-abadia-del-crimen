@@ -3,6 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "DirectDrawPlugin.h"
+#include "IPalette.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
@@ -63,7 +64,7 @@ bool DirectDrawPlugin::init(const VideoInfo *vi, IPalette *pal)
 	// saves game parameters
 	_gameWidth = vi->width;
 	_gameHeight = vi->height;
-	_gameColors = vi->colors;
+	_numColors = pal->getTotalColors();
 	_visAreaOffsX = vi->visibleArea.left;
 	_visAreaOffsY = vi->visibleArea.top;
 	_visAreaWidth = vi->visibleArea.right - vi->visibleArea.left + 1;

@@ -2,15 +2,17 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include <cmath>
 #include "IDrawPlugin.h"
 #include "Win32Palette.h"
 #include "FileLoader.h"
+#include "FontManager.h"
 #include "IInputPlugin.h"
 #include "InputHandler.h"
 #include "TimingHandler.h"
 #include "VigasocoWin32.h"
 #include "RDTSCTimer.h"
+#include "Win32CriticalSection.h"
+#include "Win32Thread.h"
 #include "Win32Settings.h"
 
 // current plugin versions
@@ -31,7 +33,6 @@ VigasocoWin32::VigasocoWin32(HINSTANCE hInstance, std::string game, std::string 
 					std::string drawPlugin, Strings inputPluginsDLLs, Strings inputPlugins, Strings paths)
 {
 	_settings = new Win32Settings(hInstance, (LONG) this, VigasocoWin32::wndProc);
-	_numFrames = 0;
 	_pluginHandler = 0;
 	_game = game;
 
@@ -48,6 +49,15 @@ VigasocoWin32::~VigasocoWin32()
 }
 
 /////////////////////////////////////////////////////////////////////////////
+// platform services
+/////////////////////////////////////////////////////////////////////////////
+
+ICriticalSection * VigasocoWin32::createCriticalSection()
+{
+	return new Win32CriticalSection();
+}
+
+/////////////////////////////////////////////////////////////////////////////
 // construction template methods overrides
 /////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +71,7 @@ bool VigasocoWin32::platformSpecificInit()
 
 void VigasocoWin32::createPalette()
 {
-	_palette = new Win32Palette;
+	_palette = new Win32Palette();
 }
 
 void VigasocoWin32::addCustomLoaders(FileLoader *fl)
@@ -144,9 +154,25 @@ void VigasocoWin32::createTimer()
 	_timer = new RDTSCTimer();
 }
 
+void VigasocoWin32::createAsyncThread()
+{
+	_asyncThread = new Win32Thread();
+}
+
+void VigasocoWin32::initCompleted()
+{
+	SetWindowText(_settings->getHWnd(), ("VIGASOCO v0.02: " + _driver->getFullName()).c_str());
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // destruction template methods overrides
 /////////////////////////////////////////////////////////////////////////////
+
+void VigasocoWin32::destroyAsyncThread()
+{
+	delete _asyncThread;
+	_asyncThread = 0;
+}
 
 void VigasocoWin32::destroyTimer()
 {
@@ -213,27 +239,6 @@ bool VigasocoWin32::processEvents()
 	}
 
 	return true;
-}
-
-void VigasocoWin32::initFrame()
-{
-	if (!_drawPlugin->isFullScreen()){
-		static char buf[256];
-		int currentFPS = (int)floor(_timingHandler->getCurrenFPS() + 0.5);
-		int gameFPS = _driver->getVideoInfo()->refreshRate;
-
-		int frameSkip = _timingHandler->getVideoFrameSkip();
-		// check if we have to update current FPS
-		if ((_numFrames % ((frameSkip + 1)*TimingHandler::FRAMES_PER_FPS_UPDATE)) == 0){
-			sprintf(buf, "VIGASOCO: (%s) [%d/%d (frameskip %d)]", 
-				_game.c_str(), currentFPS, gameFPS, frameSkip);
-
-			// this function is VERY SLOW
-			SetWindowText(_settings->getHWnd(), buf);
-		}
-
-		_numFrames++;
-	}
 }
 
 /////////////////////////////////////////////////////////////////////////////

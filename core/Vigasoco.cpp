@@ -2,14 +2,18 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#include <cmath>
 #include "IDrawPlugin.h"
 #include "FileLoader.h"
+#include "FontManager.h"
 #include "InputHandler.h"
 #include "IPalette.h"
-#include "Timer.h"
+#include "IThread.h"
+#include "ITimer.h"
 #include "TimingHandler.h"
 #include "Vigasoco.h"
-#include "Pacmandriver.h"
+#include "AbadiaDriver.h"
+#include "PacmanDriver.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
@@ -18,7 +22,6 @@
 Vigasoco::Vigasoco()
 {
 	_speedThrottle = true;
-	_videoFrameSkip = _actualVideoFrameSkip = 0;
 
 	_game = "pacman";
 	_errorMsg = "";
@@ -29,6 +32,10 @@ Vigasoco::Vigasoco()
 	_inputHandler = 0;
 	_timingHandler = 0;
 	_timer = 0;
+	_asyncThread = 0;
+	_fontManager = 0;
+
+	_numFrames = 0;
 }
 
 Vigasoco::~Vigasoco()
@@ -63,8 +70,17 @@ bool Vigasoco::init(std::string name)
 		return false;
 	}
 
-	// inits the palette
-	_palette->init(_driver->getVideoInfo()->colors);
+	// inits the palette (the last 2 colors are used by the core to display information)
+	int numColors = _driver->getVideoInfo()->colors;
+	_palette->init(numColors + 2);
+
+	// init the colors used by the core to display information
+	_palette->setColor(numColors + 0, 0x00, 0x00, 0x00);
+	_palette->setColor(numColors + 1, 0xff, 0xff, 0xff);
+
+	// inits the fonts used by the core
+	_fontManager = new FontManager(_palette, numColors/2);
+	_fontManager->init();
 
 	// creates the FileLoader
 	FileLoader *fl = new FileLoader();
@@ -105,7 +121,7 @@ bool Vigasoco::init(std::string name)
 	}
 
 	// notify the driver that the drawPlugin has been initialized
-	_driver->videoInitEnd(_drawPlugin);
+	_driver->videoInitialized(_drawPlugin);
 
 	// creates the input handler
 	_inputHandler = new InputHandler();
@@ -125,14 +141,22 @@ bool Vigasoco::init(std::string name)
 	// creates the timing handler
 	_timingHandler = new TimingHandler();
 
-	// stores the minium frame skipping values for this game
-	_actualVideoFrameSkip = _minVideoFrameSkip = _driver->getVideoFramesToSkip();
-
 	// inits the timing handler
-	if (!_timingHandler->init(_timer, _driver->getVideoInfo()->refreshRate, _driver->getLogicFramesToSkip(), _minVideoFrameSkip)){
+	if (!_timingHandler->init(_timer, _driver->getNumInterruptsPerSecond(), _driver->getNumInterruptsPerVideoUpdate(), _driver->getnumInterruptsPerLogicUpdate())){
 		_errorMsg = "timerHandler->init() failed";
 		return false;
 	}
+
+	// creates the async thread
+	createAsyncThread();
+
+	if (!_asyncThread){
+		_errorMsg = "createAsyncThread() failed";
+		return false;
+	}
+
+	// calls template method to perform specific actions after initialization has been completed
+	initCompleted();
 
 	return true;
 }
@@ -143,6 +167,11 @@ bool Vigasoco::init(std::string name)
 
 void Vigasoco::end()
 {
+	// stops and deallocates the async thread
+	if (_asyncThread){
+		destroyAsyncThread();
+	}
+
 	// stops and deallocates the timing handler
 	if (_timingHandler){
 		_timingHandler->end();
@@ -167,7 +196,7 @@ void Vigasoco::end()
 	// notify the driver that the drawPlugin is going to be disposed
 	if (_driver && _drawPlugin){
 		if (_drawPlugin->isInitialized()){
-			_driver->videoEndStart(_drawPlugin);
+			_driver->videoFinalizing(_drawPlugin);
 		}
 	}
 
@@ -196,14 +225,26 @@ void Vigasoco::end()
 
 	// calls template method to perform platform specific finalization
 	platformSpecificEnd();
+
+	// disposes the fonts used by the core
+	delete _fontManager;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // main loop
 /////////////////////////////////////////////////////////////////////////////
 
+void Vigasoco::initFrame()
+{
+	_numFrames++;
+}
+
 void Vigasoco::mainLoop()
 {
+	// start async game logic
+	_asyncThread->start();
+
+	// main sync loop
 	while (true){
 		// call template method to process any platform specific events
 		if (!processEvents()){
@@ -212,38 +253,50 @@ void Vigasoco::mainLoop()
 			return;
 		}
 
-		// calls template method to notify of the start of a frame
-		initFrame();
+		// waits if necessary before processing this interrupt
+		_timingHandler->waitThisInterrupt();
 
-		bool skipVideo = _timingHandler->skipThisVideoFrame();
-		bool skipLogic = _timingHandler->skipThisLogicFrame();
+		bool processVideo = _timingHandler->processVideoThisInterrupt();
+		bool processLogic = _timingHandler->processLogicThisInterrupt();
 
-		// waits if necessary before processing this frame
-		_timingHandler->waitThisFrame();
-
-		if (!skipLogic){
-			// execute game logic
-			_driver->run();
+		// if we have to process game logic
+		if (processLogic){
+			// execute sync game logic
+			_driver->runSync();
 		}
 
-		if (!skipVideo){
+		// if we have to process video
+		if (processVideo){
+			// calls template method to notify of the start of a frame
+			initFrame();
+
 			// process inputs
 			_inputHandler->process();
 
-			// render game screen
-			_driver->render(_drawPlugin);
-			_driver->showGameLogic(_drawPlugin);
-			_drawPlugin->render(_timingHandler->isThrottling());
-
 			// change core state if necessary
 			processCoreInputs();
+
+			bool skipVideo = _timingHandler->skipVideoThisInterrupt();
+
+			if (!skipVideo){
+				// render game screen
+				_driver->render(_drawPlugin);
+				_driver->showGameLogic(_drawPlugin);
+			}
+
+			//showFPS(skipVideo);
+
+			if (!skipVideo){
+				// render game screen to our screen
+				_drawPlugin->render(_timingHandler->isThrottling());
+			}
+
+			// call template method to notify the end of a frame
+			endFrame();
 		}
 
-		// end of frame processing
-		_timingHandler->endThisFrame();
-
-		// call template method to notify of the end of a frame
-		endFrame();
+		// end this interrupt processing
+		_timingHandler->endThisInterrupt();
 	}
 }
 
@@ -256,6 +309,8 @@ GameDriver * Vigasoco::createGameDriver(std::string game)
 	// TODO: move this to a factory
 	if (game == "pacman"){
 		return new PacmanDriver();
+	} else if (game == "abadia"){
+		return new AbadiaDriver();
 	} else {
 		return 0;
 	}
@@ -263,17 +318,19 @@ GameDriver * Vigasoco::createGameDriver(std::string game)
 
 void Vigasoco::processCoreInputs()
 {
+	int _actualVideoFrameSkip;
+
 	// F8 -> circular frameskip decrement
 	if (_inputHandler->hasBeenPressed(FUNCTION_8)){
-		_actualVideoFrameSkip = _actualVideoFrameSkip - 1;
-		if (_actualVideoFrameSkip < _minVideoFrameSkip) _actualVideoFrameSkip = TimingHandler::FRAMESKIP_LEVELS - 1;
+		_actualVideoFrameSkip = _timingHandler->getVideoFrameSkip() - 1;
+		if (_actualVideoFrameSkip < 0) _actualVideoFrameSkip = TimingHandler::FRAMESKIP_LEVELS - 1;
 		_timingHandler->setVideoFrameSkip(_actualVideoFrameSkip);
 	}
 
 	// F8 -> circular frameskip increment
 	if (_inputHandler->hasBeenPressed(FUNCTION_9)){
-		_actualVideoFrameSkip = _actualVideoFrameSkip + 1;
-		if (_actualVideoFrameSkip > (TimingHandler::FRAMESKIP_LEVELS - 1)) _actualVideoFrameSkip =  _minVideoFrameSkip;
+		_actualVideoFrameSkip = _timingHandler->getVideoFrameSkip() + 1;
+		if (_actualVideoFrameSkip > (TimingHandler::FRAMESKIP_LEVELS - 1)) _actualVideoFrameSkip =  0;
 		_timingHandler->setVideoFrameSkip(_actualVideoFrameSkip);
 	}
 
@@ -281,5 +338,26 @@ void Vigasoco::processCoreInputs()
 	if (_inputHandler->hasBeenPressed(FUNCTION_10)){
 		_speedThrottle = !_speedThrottle;
 		_timingHandler->setSpeedThrottle(_speedThrottle);
+	}
+}
+
+void Vigasoco::showFPS(bool skipThisFrame)
+{
+	static char buf[256];
+
+	int frameSkip = _timingHandler->getVideoFrameSkip();
+
+	// check if we have to update current FPS
+	if ((_numFrames % (TimingHandler::FRAMES_PER_FPS_UPDATE)*(frameSkip + 1)) == 0){
+
+		int currentFPS = (int)floor(_timingHandler->getCurrenFPS() + 0.5);
+		int gameFPS = _driver->getVideoInfo()->refreshRate;
+
+		sprintf(buf, "%d/%d fps[fs %d]", currentFPS, gameFPS, frameSkip);
+	}
+
+	// show FPS
+	if (!skipThisFrame){
+		_fontManager->print(_drawPlugin, buf, 0, 0);
 	}
 }

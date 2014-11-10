@@ -37,6 +37,12 @@ public:
 	// bitmap methods
 	virtual void setActiveBitmap(int bitmap) = 0;
 	virtual void compose(int bitmap, int mode, int attr) = 0;
+	virtual void getDimensions(int &width, int &height) const = 0;
+
+	// clipping methods
+	virtual const Rect *getClipArea() const = 0;
+	virtual void setClipArea(int x, int y, int width, int height) = 0;
+	virtual void setNoClip() = 0;
 
 	// drawing methods
 	virtual void render(bool throttle) = 0;
@@ -55,9 +61,9 @@ public:
 	virtual void fillEllipse(int x, int y, int a, int b, int color) = 0;
 
 	virtual void drawGfx(GfxElement *gfx, int code, int color, int x, int y, int attr) = 0;
-	virtual void drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr, Rect *clip) = 0;
+	virtual void drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr) = 0;
 	virtual void drawGfxTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) = 0;
-	virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, Rect *clip, int transData) = 0;
+	virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) = 0;
 
 	// access to custom plugin properties
 	virtual const std::string *getProperties(int *num) const = 0;

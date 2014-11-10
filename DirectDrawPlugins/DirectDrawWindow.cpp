@@ -14,7 +14,7 @@ DirectDrawWindow::DirectDrawWindow(Win32Settings *settings) : DirectDrawPlugin(s
 {
 	_settings = settings;
 	_auxBuf = 0;
-	_scale = 2;
+	_scale = 1;
 	_fullScreen = false;
 }
 

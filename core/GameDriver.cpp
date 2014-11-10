@@ -14,12 +14,14 @@
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-GameDriver::GameDriver(std::string driverName)
+GameDriver::GameDriver(std::string driverName, std::string fullName, int intsPerSecond)
 {
 	_driverName = driverName;
+	_fullName = fullName;
 
-	_logicFramesToSkip = 0;
-	_videoFramesToSkip = 0;
+	_numInterruptsPerSecond = intsPerSecond;
+	_numInterruptsPerVideoUpdate = 1;
+	_numInterruptsPerLogicUpdate = 1;
 
 	_palette = 0;
 
@@ -66,6 +68,9 @@ bool GameDriver::init(IPalette *pal)
 {
 	_palette = pal;
 
+	// recalculate the refresh rate
+	_videoInfo.refreshRate = _numInterruptsPerSecond/_numInterruptsPerVideoUpdate;
+
 	// try to load all the files
 	if (!loadFiles()){
 		return false;
@@ -97,12 +102,6 @@ bool GameDriver::init(IPalette *pal)
 	finishInit();
 
 	return true;
-}
-
-void GameDriver::end()
-{
-	// call template method to inform that the cleanup process has started
-	startEnd();
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -50,6 +50,11 @@ bool InputHandler::init(GameDriver *gd)
 		}
 	}
 
+	// if there aren't any input ports defined, the game uses the full keyboard
+	if (_inputPorts->size() == 0){
+		enableFullKeyboard();
+	}
+
 	// enable inputs used by the core
 	enableNonGameInputs();
 
@@ -117,7 +122,7 @@ void InputHandler::process()
 
 	// reset the _inputs array and update the _oldInputs array
 	for (int i = 0; i < END_OF_INPUTS; i++){
-		_oldInputs[i] = (_oldInputs[i] << 1) & 0x03;
+		_oldInputs[i] = (_oldInputs[i] << 1) & 0x0f;
 		if (_inputs[i] > 0){
 			_inputs[i] = 0;
 			_oldInputs[i] |= 1;
@@ -160,6 +165,13 @@ void InputHandler::process()
 	}
 }
 
+void InputHandler::copyInputsState(int *dest)
+{
+	for (int i = 0; i < END_OF_INPUTS; i++){
+		dest[i] = _inputs[i];
+	}
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // input test
 /////////////////////////////////////////////////////////////////////////////
@@ -167,18 +179,25 @@ void InputHandler::process()
 bool InputHandler::hasBeenPressed(Inputs input)
 {
 	// detect 0->1 transitions
-	return _oldInputs[input] == 0x01;
+	return _oldInputs[input] == 0x03;
 }
 
 bool InputHandler::hasBeenReleased(Inputs input)
 {
 	// detect 1->0 transitions
-	return _oldInputs[input] == 0x02;
+	return _oldInputs[input] == 0x0c;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // helper methods
 /////////////////////////////////////////////////////////////////////////////
+
+void InputHandler::enableFullKeyboard()
+{
+	for (int i = 0; i < CORE_INPUTS; i++){
+		_inputs[i] = 0;
+	}
+}
 
 void InputHandler::enableNonGameInputs()
 {

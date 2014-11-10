@@ -20,7 +20,7 @@ protected:
 protected:
 	// game data
 	int _gameWidth, _gameHeight;
-	int _gameColors;
+	int _numColors;
 	int _visAreaOffsX, _visAreaOffsY;
 	int _visAreaWidth, _visAreaHeight;
 
@@ -55,6 +55,12 @@ public:
 	// bitmap methods
 	virtual void setActiveBitmap(int bitmap);
 	virtual void compose(int bitmap, int mode, int attr);
+	virtual void getDimensions(int &width, int &height) const;
+
+	// clipping methods
+	virtual const Rect *getClipArea() const;
+	virtual void setClipArea(int x, int y, int width, int height);
+	virtual void setNoClip();
 
 	// drawing functions
 	virtual void render(bool throttle) = 0;
@@ -72,10 +78,10 @@ public:
 	virtual void fillCircle(int x, int y, int radius, int color);
 	virtual void fillEllipse(int x, int y, int a, int b, int color);
 
-	virtual void drawGfx(GfxElement *gfx,	int code, int color, int x, int y, int attr) = 0;
-	virtual void drawGfxClip(GfxElement *gfx,	int code, int color, int x, int y, int attr, Rect *clip) = 0;
+	virtual void drawGfx(GfxElement *gfx, int code, int color, int x, int y, int attr) = 0;
+	virtual void drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr) = 0;
 	virtual void drawGfxTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) = 0;
-	virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, Rect *clip, int transData) = 0;
+	virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) = 0;
 
 	// custom properties
 	virtual const std::string *getProperties(int *num) const;
@@ -86,20 +92,20 @@ public:
 	virtual int getProperty(std::string prop, int index) const;
 
 // helper methods
-protected:
+private:
+	void fillScanLine(int x0, int x1, int y, int color);
+
 	void drawSymmetrical4Points(int x, int y, int centX, int centY, int color);
 	void drawSymmetrical8Points(int x, int y, int centX, int centY, int color);
-
-	void fillScanLine(int x0, int x1, int y, int color);
 	void fillSymmetrical2ScanLines(int x, int y, int centX, int centY, int color);
 	void fillSymmetrical4ScanLines(int x, int y, int centX, int centY, int color);
 
-private:
 	template <bool fill>
 	void circle(int xOri, int yOri, int radius, int color);
 
 	template <bool fill>
 	void ellipse(int xOri, int yOri, int a, int b, int color);
+
 };
 
 #include "BasicDrawPluginTemplates.cpp"

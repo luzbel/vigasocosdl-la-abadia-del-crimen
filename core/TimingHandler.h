@@ -9,17 +9,18 @@
 #define _TIMING_HANDLER_H_
 
 
+#include "ITimer.h"
 #include "Types.h"
 #include "util/Singleton.h"
 
-class Timer;	// defined in Timer.h
 
 class TimingHandler : public Singleton<TimingHandler>
 {
 // constants
 public:
+	static const int INTERRUPTS_PER_BASE_TIME_UPDATE = 12;
 	static const int FRAMESKIP_LEVELS = 12;
-	static const int FRAMES_PER_FPS_UPDATE = 12*5;
+	static const int FRAMES_PER_FPS_UPDATE = 12;
 
 // types
 protected:
@@ -27,51 +28,63 @@ protected:
 		INT64 lastFpsTime;
 		int framesSinceLastFPS;
 		double currentFPS;
-		double gameSpeedPercent;
 	};
 
 // fields
 protected:
 	static const bool g_skipTable[FRAMESKIP_LEVELS][FRAMESKIP_LEVELS];
 
-public:
-	int _fps;				// wanted frames per second
-	Timer *_timer;			// timer used to track ellapsed time
-	bool _throttle;			// speed throttling to _fps frames per second
+protected:
+	ITimer *_timer;						// timer used to track elapsed time
 
-	// throttling and frame skipping
-	int _videoFrameSkip;
-	int _logicFrameSkip;
-	int _frameSkipCnt;
-	INT64 _thisFrameBase;
-	INT64 _lastSkip0Time;
-	double _timePerFrame;
-	double _timePerSleepMiliSec;
+	int _numInterruptsPerSecond;		// numer of interrupts per second
+	int _numInterruptsPerVideoUpdate;	// numer of interrupts per video update
+	int _numInterruptsPerLogicUpdate;	// numer of interrupts per logic update
 
-	// perfomance information
-	Perfomance _perfomance;
-	bool _lastVideoFrameSkipped;
+	int _interruptNum;					// number of interrupts elapsed since the game started
+	
+	bool _throttle;						// throttle speed
+
+	INT64 _thisFrameBase;				// base time for the next interrupts
+	INT64 _lastFrameBase;				// last time base for the last interrupts
+	INT64 _ticksPerMiliSecond;			// number of ticks per millisecond
+	double _timePerInterrupt;			// time elapsed between two consecutive interrupts
+	double _ticksPerSleepMiliSec;		// average of time elapsed for the lasts sleep(1) calls
+	double _ticksPerSleepMiliSec2;		// average of time elapsed for the lasts sleep(1) calls
+
+	Perfomance _perfomance;				// perfomance information to calculate FPS
+
+	int _frameSkipCnt;					// current frameskip count
+	int _videoFrameSkip;				// number of video frames to skip
+	bool _lastVideoFrameSkipped;		// true if we skipped the last video frame
+
+	int _numIntsModLogicInts;
+	int _numIntsModVideoInts;
+	int _numIntsModeBaseTimeUpdateInts;
 
 // methods
 public:
-	bool init(Timer *t, int fps, int logicFrameSkip, int videoFrameSkip);
+	bool init(ITimer *t, int intsPerSecond, int intsPerVideoUpdate, int intsPerLogicUpdate);
 	void end();
 
-	bool skipThisLogicFrame();
-	bool skipThisVideoFrame();
+	bool processLogicThisInterrupt();
+	bool processVideoThisInterrupt();
+	bool skipVideoThisInterrupt();
 
 	// getters & setters
 	double getCurrenFPS() const { return _perfomance.currentFPS; }
-	double getGameSpeedPercent() const { return _perfomance.gameSpeedPercent; }
 	bool isThrottling() const { return _throttle; }
-	int getLogicFrameSkip() const { return _logicFrameSkip; }
 	int getVideoFrameSkip() const { return _videoFrameSkip; }
 	void setSpeedThrottle(bool mode) { _throttle = mode; }
-	void setLogicFrameSkip(int frameSkip) { _logicFrameSkip = frameSkip; }
 	void setVideoFrameSkip(int frameSkip) { _videoFrameSkip = frameSkip; }
 
-	void waitThisFrame();
-	void endThisFrame();
+	void waitThisInterrupt();
+	void endThisInterrupt();
+
+	// timer functions
+	INT64 getTime(){ return _timer->getTime(); }
+	INT64 getTicksPerSecond(){ return _timer->getTicksPerSecond(); }
+	void sleep(UINT32 milliSeconds);
 
 	// initialization and cleanup
 	TimingHandler();

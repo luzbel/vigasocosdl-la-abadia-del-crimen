@@ -4,8 +4,6 @@
 //
 //	See readme.txt for license and usage information.
 //
-//	Contact information: vigasoco@yahoo.es
-//
 /////////////////////////////////////////////////////////////////////////////
 
 #include "VigasocoWin32.h"
@@ -13,7 +11,7 @@
 typedef std::vector<std::string> Strings;
 
 // default options
-std::string g_game("pacman");
+std::string g_game("abadia");
 std::string g_drawPluginsDLL("mddraw.dll");
 std::string g_drawPlugin("full16");
 
@@ -214,5 +212,3 @@ void showUsage(std::string error)
 		"-path:{<path>;}* <path>").c_str(), 
 		"Error!", MB_OK | MB_ICONINFORMATION);
 }
-
-// 4568M-5694

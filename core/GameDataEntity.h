@@ -55,7 +55,8 @@ enum LoadingMode {
 enum DataType {
 	GRAPHICS,
 	SOUND,
-	PALETTE
+	PALETTE,
+	MIXED
 };
 
 class GameDataEntity

@@ -39,7 +39,6 @@ protected:
 // fields
 protected:
 	Win32Settings *_settings;
-	int _numFrames;
 
 	// port options
 	std::string _sDrawPluginsDLL;
@@ -62,6 +61,9 @@ public:
 					Strings inputPlugins, Strings paths);
 	virtual ~VigasocoWin32();
 
+	// platform services
+	virtual ICriticalSection *createCriticalSection();
+
 protected:
 	// template methods overrides
 
@@ -72,8 +74,11 @@ protected:
 	virtual void createDrawPlugin();
 	virtual void addCustomInputPlugins();
 	virtual void createTimer();
+	virtual void createAsyncThread();
+	virtual void initCompleted();
 
 	// destruction
+	virtual void destroyAsyncThread();
 	virtual void destroyTimer();
 	virtual void removeCustomInputPlugins();
 	virtual void destroyDrawPlugin();
@@ -82,7 +87,6 @@ protected:
 	virtual void platformSpecificEnd();
 
 	virtual bool processEvents();
-	virtual void initFrame();
 
 private:
 	static LRESULT CALLBACK wndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);

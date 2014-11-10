@@ -28,31 +28,31 @@ DirectInputKeyboardPlugin::~DirectInputKeyboardPlugin()
 
 bool DirectInputKeyboardPlugin::init()
 {
-	// obtiene la interfaz Direct Input
+	// gest DirectInput interface
 	if (FAILED(DirectInputCreate(_settings->getAppInstance(), DIRECTINPUT_VERSION, &_pIDI, 0))){
 		_errorMsg = "DirectInputKeyboardPlugin ERROR: can't get IDirectInput interface";
 		return false;
 	}
 
-	// obtiene acceso al teclado
+	// get access to the keyboard
 	if (FAILED(_pIDI->CreateDevice(GUID_SysKeyboard, &_lpDIKeyboard, 0))){
 		_errorMsg = "DirectInputKeyboardPlugin ERROR: can't get keyboard device";
 		return false;
 	}
 
-	// fija el nivel cooperativo
+	// sets the cooperative level
 	if (FAILED(_lpDIKeyboard->SetCooperativeLevel(_settings->getHWnd(), DISCL_NONEXCLUSIVE | DISCL_BACKGROUND))){
 		_errorMsg = "DirectInputKeyboardPlugin ERROR: can't set cooperative level";
 		return false;
 	}
 
-	// fija el formato de los datos del teclado
+	// sets keyboard data format
 	if (FAILED(_lpDIKeyboard->SetDataFormat(&c_dfDIKeyboard))){
 		_errorMsg = "DirectInputKeyboardPlugin ERROR: can't set keyboard data format";
 		return false;
 	}
 
-	// adquiere el dispositivo
+	// acquires the keyboard
 	if (FAILED(_lpDIKeyboard->Acquire())){
 		_errorMsg = "DirectInputKeyboardPlugin ERROR: can't acquire keyboard";
 		return false;
@@ -140,6 +140,47 @@ void DirectInputKeyboardPlugin::initRemapTable()
 	g_keyMapping[COIN_2] = DIK_6;
 	g_keyMapping[SERVICE_1] = DIK_9;
 	g_keyMapping[SERVICE_2] = DIK_0;
+
+	// keyboard inputs
+	g_keyMapping[KEYBOARD_A] = DIK_A;
+	g_keyMapping[KEYBOARD_B] = DIK_B;
+	g_keyMapping[KEYBOARD_C] = DIK_C;
+	g_keyMapping[KEYBOARD_D] = DIK_D;
+	g_keyMapping[KEYBOARD_E] = DIK_E;
+	g_keyMapping[KEYBOARD_F] = DIK_F;
+	g_keyMapping[KEYBOARD_G] = DIK_G;
+	g_keyMapping[KEYBOARD_H] = DIK_H;
+	g_keyMapping[KEYBOARD_I] = DIK_I;
+	g_keyMapping[KEYBOARD_J] = DIK_J;
+	g_keyMapping[KEYBOARD_K] = DIK_K;
+	g_keyMapping[KEYBOARD_L] = DIK_L;
+	g_keyMapping[KEYBOARD_M] = DIK_M;
+	g_keyMapping[KEYBOARD_N] = DIK_N;
+	g_keyMapping[KEYBOARD_O] = DIK_O;
+	g_keyMapping[KEYBOARD_P] = DIK_P;
+	g_keyMapping[KEYBOARD_Q] = DIK_Q;
+	g_keyMapping[KEYBOARD_R] = DIK_R;
+	g_keyMapping[KEYBOARD_S] = DIK_S;
+	g_keyMapping[KEYBOARD_T] = DIK_T;
+	g_keyMapping[KEYBOARD_U] = DIK_U;
+	g_keyMapping[KEYBOARD_V] = DIK_V;
+	g_keyMapping[KEYBOARD_W] = DIK_W;
+	g_keyMapping[KEYBOARD_X] = DIK_X;
+	g_keyMapping[KEYBOARD_Y] = DIK_Y;
+	g_keyMapping[KEYBOARD_Z] = DIK_Z;
+	g_keyMapping[KEYBOARD_0] = DIK_0;
+	g_keyMapping[KEYBOARD_1] = DIK_1;
+	g_keyMapping[KEYBOARD_2] = DIK_2;
+	g_keyMapping[KEYBOARD_3] = DIK_3;
+	g_keyMapping[KEYBOARD_4] = DIK_4;
+	g_keyMapping[KEYBOARD_5] = DIK_5;
+	g_keyMapping[KEYBOARD_6] = DIK_6;
+	g_keyMapping[KEYBOARD_7] = DIK_7;
+	g_keyMapping[KEYBOARD_8] = DIK_8;
+	g_keyMapping[KEYBOARD_9] = DIK_9;
+	g_keyMapping[KEYBOARD_SPACE] = DIK_SPACE;
+	g_keyMapping[KEYBOARD_INTRO] = DIK_NUMPADENTER;
+	g_keyMapping[KEYBOARD_SUPR] = DIK_DELETE;
 
 	// core inputs
 	g_keyMapping[FUNCTION_1] = DIK_F1;

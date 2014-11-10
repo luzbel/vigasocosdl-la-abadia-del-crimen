@@ -29,4 +29,3 @@ public:
 };
 
 #endif	// _UNCOMPRESSED_LOADER_H_
-

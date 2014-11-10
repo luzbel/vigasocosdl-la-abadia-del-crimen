@@ -3,7 +3,8 @@
 //	Singleton class that handles all the inputs of the aplication. 
 //
 //	The inputs are stored on the _inputs array. The _oldInputs array stores last 
-//	4 input values. 
+//	4 input values. If a game doesn't use has input ports (for example, a CPC
+//	game), the _inputs array will be empty and the core scans for all inputs.
 //	
 //	The class has a collection of plugins that are called to update the _inputs 
 //	array. All plugins should be added before calling the init method. 
@@ -59,6 +60,8 @@ public:
 	bool init(GameDriver *gd);
 	void end();
 
+	void copyInputsState(int *dest);
+
 	// getters
 	bool isInitialized() const { return _isInitialized; }
 	UINT32 getInput(int number) const { return _inputPorts->at(number)->getValue(); }
@@ -73,6 +76,7 @@ public:
 
 // helper methods
 protected:
+	void enableFullKeyboard();
 	void enableNonGameInputs();
 };
 

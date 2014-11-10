@@ -1,6 +1,6 @@
-VIGASOCO (VIdeo GAmes SOurce COde) Windows port (v0.01)
+VIGASOCO (VIdeo GAmes SOurce COde) Windows port (v0.02)
 
-Copyright (c) 2003 by MAB
+Copyright (c) 2003-2005 "VIGASOCO Project Team"
 
 Acerca de:
 ==========
@@ -41,7 +41,7 @@ VigasocoWin32.exe <juego> <-video:pluginDLL,plugin> <-input:{pluginDLL,plugin;}*
 Si no especificas ningún parámetro, los parámetros por defecto son:
 	pacman -video:MDDraw.dll,full16 -input:DIKeyb.dll,DIKeyb
 	
-Nota: en los nombres de los plugins (no el nombre de las dll ) hay distinción entre mayúsculas y minúsculas.
+Nota: en los nombres de los plugins (no el nombre de las dll) hay distinción entre mayúsculas y minúsculas.
 
 Pueden funcionar a la vez múltiples plugins de entrada. El programa trata de cargar todas las DLL
 que encuentra en el directorio LOADERS, y obtener de ellas un plugin llamado CustomLoader, 
@@ -66,7 +66,8 @@ Las teclas por defecto del plugin DIKeyb (DIKeyb.dll) son:
 	flecha abajo -> Jugador 1 abajo
 	flecha izquierda -> Jugador 1 izquierda
 	flecha derecha -> Jugador 1 derecha
-	CONTROL -> Jugador 1 disparo
+	CONTROL -> disparo 1 Jugador 1 
+	ALT -> disparo 2 Jugador 2
 	1 -> Jugador 1 Empezar
 	5 -> Jugador 1 Insertar moneda 
 	
@@ -78,9 +79,11 @@ Las teclas por defecto del plugin DIKeyb (DIKeyb.dll) son:
 Juegos soportados:
 ==================
 
-           Nombre del juego    Nombre ROM       Información interna sobre el funcionamiento del juego
+                        Nombre del juego        Nombre ROM       Información interna sobre el funcionamiento del juego
 ------------------------------------------------------------------------------------------------------------------------------
-PACMAN:	   pacman              puckman          división lógica en celdas + posición de destino deseada por los fantasmas
+PACMAN:                 pacman                  puckman          división lógica en celdas + posición de destino deseada por los fantasmas
+------------------------------------------------------------------------------------------------------------------------------
+LA ABADIA DEL CRIMEN:   abadia                  abadia           rejilla de pantalla + mapas de las plantas + jugadores + objetos + puertas + lógica
 ------------------------------------------------------------------------------------------------------------------------------
 
 Contacto:
@@ -91,7 +94,5 @@ En el código fuente se incluye información de contacto.
 Agradecimientos:
 ================
 MAME Project (http://www.mame.net)
+MESS Project (http://www.mess.org)
 PTS (http://www.emulatronia.com)
-
-
-EOF - 4568M-5694

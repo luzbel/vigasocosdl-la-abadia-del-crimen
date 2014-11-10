@@ -1,0 +1,13 @@
+v0.02
+=====
+Nuevos juegos soportados:
+	* La Abadia del Crimen [Manuel Abadia]
+
+Cambios en el código fuente:
+	* Arreglados algunos fallos en el núcleo [vMAB]
+	* Creación de una clase para tratar con juegos basados en el Amstrad CPC6128 y otra clase para cargar archvos DSK [Manuel Abadia]
+	* Añadido soporte multihilo (necesario para La Abadia del Crimen) [Manuel Abadia]
+	* Pequeños cambios al funcionamiento del plugin de dibujo [vMAB]
+	* Añadido un gestor de fuentes para poder escribir texto en los bitmaps [Manuel Abadia]
+	* Rescrito el sistema de control de tiempo [Manuel Abadia]
+	* Cambios cosméticos al pacman [vMAB]

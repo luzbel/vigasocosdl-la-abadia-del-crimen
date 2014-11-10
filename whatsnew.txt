@@ -1,0 +1,13 @@
+v0.02
+=====
+New Games supported:
+	* La Abadia del Crimen [Manuel Abadia]
+
+Source code changes:
+	* Some core fixes [vMAB]
+	* Added Amstrad CPC6128 helper class and DSK file loader [Manuel Abadia]
+	* Added multithread support to the core (needed by La Abadia del Crimen) [Manuel Abadia]
+	* Changed a little how the default draw plugin works [vMAB]
+	* Added a font manager to be able to write text in bitmaps [Manuel Abadia]
+	* Rewrote of the timing system [Manuel Abadia]
+	* Cosmetic changes to the pacman driver [vMAB]

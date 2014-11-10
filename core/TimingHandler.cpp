@@ -3,7 +3,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "TimingHandler.h"
-#include "Timer.h"
 
 
 const bool TimingHandler::g_skipTable[FRAMESKIP_LEVELS][FRAMESKIP_LEVELS] = {
@@ -28,9 +27,18 @@ const bool TimingHandler::g_skipTable[FRAMESKIP_LEVELS][FRAMESKIP_LEVELS] = {
 TimingHandler::TimingHandler()
 {
 	_timer = 0;
-	_logicFrameSkip = 0;
-	_videoFrameSkip = 0;
+
+	_numInterruptsPerSecond = 0;
+	_numInterruptsPerVideoUpdate = 0;
+	_numInterruptsPerLogicUpdate = 0;
 	_throttle = true;
+	_interruptNum = 0;
+	_videoFrameSkip = 0;
+
+	_numIntsModLogicInts = 0;
+	_numIntsModVideoInts = 0;
+	_numIntsModeBaseTimeUpdateInts = 0;
+
 }
 
 TimingHandler::~TimingHandler()
@@ -41,7 +49,7 @@ TimingHandler::~TimingHandler()
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-bool TimingHandler::init(Timer *t, int fps, int logicFrameSkip, int videoFrameSkip)
+bool TimingHandler::init(ITimer *t, int intsPerSecond, int intsPerVideoUpdate, int intsPerLogicUpdate)
 {
 	_timer = t;
 
@@ -50,21 +58,32 @@ bool TimingHandler::init(Timer *t, int fps, int logicFrameSkip, int videoFrameSk
 		return false;
 	}
 
-	_fps = fps;
-	_logicFrameSkip = logicFrameSkip;
-	_videoFrameSkip = videoFrameSkip;
-
-	// init perfomance data
-	_perfomance.lastFpsTime = _timer->getTime();
-	_perfomance.framesSinceLastFPS = 0;
-	_perfomance.currentFPS = 0.0;
-	_perfomance.gameSpeedPercent = 0.0;
+	_numInterruptsPerSecond = intsPerSecond;
+	_numInterruptsPerVideoUpdate = intsPerVideoUpdate;
+	_numInterruptsPerLogicUpdate = intsPerLogicUpdate;
 
 	// init throttling and frame skipping data
+	_interruptNum = 0;
 	_frameSkipCnt = 0;
-	_timePerSleepMiliSec = (double)fps/1000.0;
-	_timePerFrame = (double)_timer->getTicksPerSecond()/(double)fps;
-	_lastSkip0Time = _timer->getTime() - (int)(FRAMESKIP_LEVELS*_timePerFrame);
+	_videoFrameSkip = 0;
+
+	// compute sleep time for 1 milisecond
+	INT64 startTime = _timer->getTime();
+	_timer->sleep(1);
+	INT64 endTime = _timer->getTime();
+
+	_ticksPerSleepMiliSec = (double)(endTime - startTime);
+	_ticksPerSleepMiliSec2 = (double)(endTime - startTime);
+
+	_ticksPerMiliSecond = _timer->getTicksPerSecond()/1000;
+	_timePerInterrupt = (double)_timer->getTicksPerSecond()/(double)intsPerSecond;
+
+	// init perfomance data
+	_perfomance.framesSinceLastFPS = 0;
+	_perfomance.currentFPS = 0.0;
+	_perfomance.lastFpsTime = _timer->getTime();
+
+	_lastFrameBase = _timer->getTime() - (int)(INTERRUPTS_PER_BASE_TIME_UPDATE*_numInterruptsPerVideoUpdate*_timePerInterrupt);
 
 	return true;
 }
@@ -78,14 +97,19 @@ void TimingHandler::end()
 // skipping methods
 /////////////////////////////////////////////////////////////////////////////
 
-bool TimingHandler::skipThisLogicFrame()
+bool TimingHandler::processLogicThisInterrupt()
 {
-	return TimingHandler::g_skipTable[_logicFrameSkip][_frameSkipCnt];
+	return _numIntsModLogicInts == 0;
 }
 
-bool TimingHandler::skipThisVideoFrame()
+bool TimingHandler::processVideoThisInterrupt()
 {
-	_lastVideoFrameSkipped = TimingHandler::g_skipTable[_videoFrameSkip][_frameSkipCnt];
+	return _numIntsModVideoInts == 0;
+}
+
+bool TimingHandler::skipVideoThisInterrupt()
+{
+	_lastVideoFrameSkipped = g_skipTable[_videoFrameSkip][_frameSkipCnt];
 	return _lastVideoFrameSkipped;
 }
 
@@ -93,42 +117,49 @@ bool TimingHandler::skipThisVideoFrame()
 // time related methods
 /////////////////////////////////////////////////////////////////////////////
 
-void TimingHandler::waitThisFrame()
+void TimingHandler::waitThisInterrupt()
 {
+	_numIntsModLogicInts = _interruptNum % _numInterruptsPerLogicUpdate;
+	_numIntsModVideoInts = _interruptNum % _numInterruptsPerVideoUpdate;
+
 	// if we're throttling, wait until target time
 	if (_throttle){
+		_numIntsModeBaseTimeUpdateInts = _interruptNum % (INTERRUPTS_PER_BASE_TIME_UPDATE*_numInterruptsPerVideoUpdate);
 		speedThrottle();
 	}
 
-	_frameSkipCnt = (_frameSkipCnt + 1) % FRAMESKIP_LEVELS;
+	// if we have to update video in this interrupt, update frameskip count and check if we have to compute FPS
+	if (_numIntsModVideoInts == 0){
+		computeFPS();
+		_frameSkipCnt = (_frameSkipCnt + 1) % FRAMESKIP_LEVELS;
+	}
 }
 
-void TimingHandler::endThisFrame()
+void TimingHandler::endThisInterrupt()
 {
-	// check if we have to compute FPS
-	computeFPS();
+	_interruptNum++;
 }
 
 void TimingHandler::speedThrottle()
 {
-	// recalculate base values each FRAMESKIP_LEVELS frames
-	if (_frameSkipCnt == 0){
-		_thisFrameBase = _lastSkip0Time + (int)(FRAMESKIP_LEVELS*_timePerFrame);
+	// recalculate base values each INTERRUPTS_PER_BASE_TIME_UPDATE*_numInterruptsPerVideoUpdate frames
+	if (_numIntsModeBaseTimeUpdateInts == 0){
+		_thisFrameBase = _lastFrameBase + (int)(INTERRUPTS_PER_BASE_TIME_UPDATE*_numInterruptsPerVideoUpdate*_timePerInterrupt);
 	}
 
-	INT64 targetTime = 	_thisFrameBase + (int)(_frameSkipCnt*_timePerFrame);
+	INT64 targetTime = 	_thisFrameBase + (int)(_numIntsModeBaseTimeUpdateInts*_timePerInterrupt);
 	INT64 currentTime = _timer->getTime();
 
 	// check if we have to wait a bit
 	if (currentTime - targetTime < 0){
 		// if we need to wait and have time to sleep, do it
 		while (currentTime - targetTime < 0){
-			if ((targetTime - currentTime) > _timePerSleepMiliSec*1.20){
+			if ((targetTime - currentTime) > _ticksPerSleepMiliSec*1.20){
 				_timer->sleep(1);
 				INT64 nextTime = _timer->getTime();
 
 				// evolutive adjust sleep time
-				_timePerSleepMiliSec = _timePerSleepMiliSec*0.80 + ((double)(nextTime - currentTime))*0.20;
+				_ticksPerSleepMiliSec = _ticksPerSleepMiliSec*0.90 + ((double)(nextTime - currentTime))*0.10;
 				currentTime = nextTime;
 			} else {
 				currentTime = _timer->getTime();
@@ -136,12 +167,44 @@ void TimingHandler::speedThrottle()
 		}
 	}
 
-	// recalculate base values each FRAMESKIP_LEVELS frames
-	if (_frameSkipCnt == 0){
-		if ((currentTime - targetTime) > _timePerSleepMiliSec){
-			_lastSkip0Time = currentTime;
+	// recalculate base values each INTERRUPTS_PER_BASE_TIME_UPDATE*_numInterruptsPerVideoUpdate frames
+	if (_numIntsModeBaseTimeUpdateInts == 0){
+		if ((currentTime - targetTime) > _ticksPerSleepMiliSec){
+			_lastFrameBase = currentTime;
 		} else {
-			_lastSkip0Time = targetTime;
+			_lastFrameBase = targetTime;
+		}
+	}
+}
+
+// sleeps for some time taking in account the actual frameskip
+void TimingHandler::sleep(UINT32 milliSeconds)
+{
+	// if we aren't throttling, return immediately
+	if (!_throttle){
+		return;
+	}
+
+	// adjust milliseconds based on the frame skip level
+	milliSeconds = (UINT32)(milliSeconds*(((double)(FRAMESKIP_LEVELS - _videoFrameSkip))/FRAMESKIP_LEVELS));
+
+	INT64 currentTime = _timer->getTime();
+	INT64 targetTime = 	currentTime + _ticksPerMiliSecond*(INT64)milliSeconds;
+
+	// check if we have to wait a bit
+	if (currentTime - targetTime < 0){
+		// if we need to wait and have time to sleep, do it
+		while (currentTime - targetTime < 0){
+			if ((targetTime - currentTime) > _ticksPerSleepMiliSec2*1.10){
+				_timer->sleep(1);
+				INT64 nextTime = _timer->getTime();
+
+				// evolutive adjust sleep time
+				_ticksPerSleepMiliSec2 = _ticksPerSleepMiliSec2*0.85 + ((double)(nextTime - currentTime))*0.15;
+				currentTime = nextTime;
+			} else {
+				currentTime = _timer->getTime();
+			}
 		}
 	}
 }
@@ -161,7 +224,6 @@ void TimingHandler::computeFPS()
 
 		// set perfomance data
 		_perfomance.currentFPS = (double)_perfomance.framesSinceLastFPS/secsElapsed;
-		_perfomance.gameSpeedPercent = 100.0*_perfomance.currentFPS/_fps;
 
 		// reset perfomance helper values
 		_perfomance.lastFpsTime = currentTime;

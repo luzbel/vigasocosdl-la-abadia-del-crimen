@@ -2,11 +2,13 @@
 //
 //	Plugin to load zipped files
 //
-//	Using ZipArchive library (c) 2000-2003 Tadeusz Dracz
+//	Using ZipArchive library (c) 2000-2004 Tadeusz Dracz
 //	(http://www.artpol-software.com)
 //
 //	To compile you need to include ZipArchive directory and add the reference
-//	ZipArchive_STL.lib to the linker
+//	ZipArchive_STL.lib to the linker (be sure that the options used to build
+//	the ZipArchive library (multithreaded run-time library)	match with the 
+//	project settings
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _ZIP_LOADER_H_

@@ -19,14 +19,19 @@
 //			- deallocate the memory used by the game data entities.
 //			- call template method finishInit, where the driver can do last
 //			specific processing before the driver starts running.
+//		* the core calls to the template method videoInitialized after creating the
+//		graphic plugin.
 //		* while the application is running, the core calls to:
-//			- GameDriver::run, that executes the logic for a frame.
+//			- GameDriver::runAsync, only once at the beginning, that starts a new
+//				thread to execute game logic that isn't synchronized with a frame.
+//			- GameDriver::runSync, that executes the logic for a frame.
 //			- GameDriver::render, that draws the game bitmap.
 //			- GameDriver::showGameLogic, that it's used to show some internal 
 //			data in order to better understand how the game works.
-//		* when the application is closing, the core calls to GameDriver::end 
-//		that does any needed cleanup and calls template method startEnd, where
-//		the driver can perform any specific cleanup
+//		* when the application is closing, the core calls to the template method
+//		videoFinalizing to notify that the graphic plugin is going to be disposed.
+//		After that, it calls to the template method end where the driver can 
+//		perform any specific cleanup.
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -58,10 +63,12 @@ public:
 // fields
 protected:
 	std::string _driverName;
+	std::string _fullName;
 	VideoInfo _videoInfo;
 
-	int _logicFramesToSkip;
-	int _videoFramesToSkip;
+	int _numInterruptsPerSecond;
+	int _numInterruptsPerVideoUpdate;
+	int _numInterruptsPerLogicUpdate;
 
 	GameDataEntities _gameFiles;
 	GfxEncodings _gfxEncoding;
@@ -77,36 +84,37 @@ public:
 	// getters
 	const VideoInfo *getVideoInfo() const { return &_videoInfo; }
 	const std::string getDriverName() const { return _driverName; }
+	const std::string getFullName() const { return _fullName; }
 	const GameDataEntities* getGameFiles() const { return &_gameFiles; }
 	const GfxEncodings* getGameGfxEncoding() const { return &_gfxEncoding; }
 	const GfxElements* getGameGfx() const { return &_gfx; }
 	InputPorts *getInputs() { return &_inputs; }
-	int getLogicFramesToSkip() const { return _logicFramesToSkip; }
-	int getVideoFramesToSkip() const { return _videoFramesToSkip; }
+	int getNumInterruptsPerSecond() const { return _numInterruptsPerSecond; }
+	int getNumInterruptsPerVideoUpdate() const { return _numInterruptsPerVideoUpdate; }
+	int getnumInterruptsPerLogicUpdate() const { return _numInterruptsPerLogicUpdate; }
 	const std::string getError() const { return _errorMsg; }
 
 	// game driver initialization and cleanup
 	bool init(IPalette *pal);
-	virtual void end();
+	virtual void end() = 0;
 
-	virtual void run() = 0;
+	virtual void runSync() = 0;
+	virtual void runAsync() = 0;
 	virtual void render(IDrawPlugin *dp) = 0;
 	virtual void showGameLogic(IDrawPlugin *dp){}
 
 	// initialization and cleanup
-	GameDriver(std::string driverName);
+	GameDriver(std::string driverName, std::string fullName, int intsPerSecond);
 	virtual ~GameDriver();
 
-	// template methods
-	virtual void videoInitEnd(IDrawPlugin *dp){}
-	virtual void videoEndStart(IDrawPlugin *dp){}
+	virtual void videoInitialized(IDrawPlugin *dp){}
+	virtual void videoFinalizing(IDrawPlugin *dp){}
 
 protected:
 	// template methods
 	virtual void filesLoaded(){}
 	virtual void graphicsDecoded(){}
 	virtual void finishInit(){}
-	virtual void startEnd(){}
 
 	// helper methods
 	bool loadFiles();

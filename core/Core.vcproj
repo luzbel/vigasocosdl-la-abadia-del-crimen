@@ -22,7 +22,8 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				RuntimeLibrary="1"
+				DisableLanguageExtensions="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -65,8 +66,9 @@
 				OptimizeForProcessor="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				ExceptionHandling="TRUE"
-				RuntimeLibrary="4"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="FALSE"
+				DisableLanguageExtensions="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -105,7 +107,13 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\AbadiaDriver.cpp">
+			</File>
+			<File
 				RelativePath=".\FileLoader.cpp">
+			</File>
+			<File
+				RelativePath=".\FontManager.cpp">
 			</File>
 			<File
 				RelativePath=".\GameDataEntity.cpp">
@@ -117,6 +125,9 @@
 				RelativePath=".\GfxData.cpp">
 			</File>
 			<File
+				RelativePath=".\ICriticalSection.cpp">
+			</File>
+			<File
 				RelativePath=".\InputHandler.cpp">
 			</File>
 			<File
@@ -124,6 +135,9 @@
 			</File>
 			<File
 				RelativePath=".\IPalette.cpp">
+			</File>
+			<File
+				RelativePath=".\IThread.cpp">
 			</File>
 			<File
 				RelativePath=".\NormalLoadHandler.cpp">
@@ -174,13 +188,29 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
+			<Filter
+				Name="systems"
+				Filter="">
+				<File
+					RelativePath=".\systems\cpc6128.cpp">
+				</File>
+				<File
+					RelativePath=".\systems\DskReader.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\AbadiaDriver.h">
+			</File>
+			<File
 				RelativePath=".\FileLoader.h">
+			</File>
+			<File
+				RelativePath=".\FontManager.h">
 			</File>
 			<File
 				RelativePath=".\GameDataEntity.h">
@@ -190,6 +220,9 @@
 			</File>
 			<File
 				RelativePath=".\GfxData.h">
+			</File>
+			<File
+				RelativePath=".\ICriticalSection.h">
 			</File>
 			<File
 				RelativePath=".\IDrawPlugin.h">
@@ -210,6 +243,12 @@
 				RelativePath=".\IPalette.h">
 			</File>
 			<File
+				RelativePath=".\IThread.h">
+			</File>
+			<File
+				RelativePath=".\ITimer.h">
+			</File>
+			<File
 				RelativePath=".\LoadHandler.h">
 			</File>
 			<File
@@ -220,9 +259,6 @@
 			</File>
 			<File
 				RelativePath=".\PacmanDriver.h">
-			</File>
-			<File
-				RelativePath=".\Timer.h">
 			</File>
 			<File
 				RelativePath=".\TimingHandler.h">
@@ -247,6 +283,16 @@
 				</File>
 				<File
 					RelativePath=".\Util\Singleton.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="systems"
+				Filter="">
+				<File
+					RelativePath=".\systems\cpc6128.h">
+				</File>
+				<File
+					RelativePath=".\systems\DskReader.h">
 				</File>
 			</Filter>
 		</Filter>
@@ -474,6 +520,224 @@
 				</File>
 				<File
 					RelativePath=".\pacman\ThirdCutscene.h">
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="abadia"
+			Filter="">
+			<File
+				RelativePath=".\abadia\AccionesDia.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\AccionesDia.h">
+			</File>
+			<File
+				RelativePath=".\abadia\BuscadorRutas.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\BuscadorRutas.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Comando.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Comandos.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Comandos.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Controles.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Controles.h">
+			</File>
+			<File
+				RelativePath=".\abadia\EntidadJuego.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\EntidadJuego.h">
+			</File>
+			<File
+				RelativePath=".\abadia\FijarOrientacion.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\FijarOrientacion.h">
+			</File>
+			<File
+				RelativePath=".\abadia\GeneradorPantallas.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\GeneradorPantallas.h">
+			</File>
+			<File
+				RelativePath=".\abadia\GestorFrases.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\GestorFrases.h">
+			</File>
+			<File
+				RelativePath=".\abadia\InfoJuego.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\InfoJuego.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Juego.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Juego.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Logica.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Logica.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Marcador.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Marcador.h">
+			</File>
+			<File
+				RelativePath=".\abadia\MezcladorSprites.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\MezcladorSprites.h">
+			</File>
+			<File
+				RelativePath=".\abadia\MotorGrafico.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\MotorGrafico.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Objeto.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Objeto.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Paleta.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Paleta.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Pergamino.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Pergamino.h">
+			</File>
+			<File
+				RelativePath=".\abadia\PergaminoTextos.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Puerta.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Puerta.h">
+			</File>
+			<File
+				RelativePath=".\abadia\RejillaPantalla.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\RejillaPantalla.h">
+			</File>
+			<File
+				RelativePath=".\abadia\Sprite.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\Sprite.h">
+			</File>
+			<File
+				RelativePath=".\abadia\SpriteLuz.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\SpriteLuz.h">
+			</File>
+			<File
+				RelativePath=".\abadia\SpriteMonje.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\SpriteMonje.h">
+			</File>
+			<File
+				RelativePath=".\abadia\TransformacionesCamara.cpp">
+			</File>
+			<File
+				RelativePath=".\abadia\TransformacionesCamara.h">
+			</File>
+			<Filter
+				Name="Personajes"
+				Filter="">
+				<File
+					RelativePath=".\abadia\Abad.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Abad.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Adso.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Adso.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Berengario.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Berengario.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Bernardo.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Bernardo.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Guillermo.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Guillermo.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Jorge.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Jorge.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Malaquias.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Malaquias.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Monje.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Monje.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Personaje.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Personaje.h">
+				</File>
+				<File
+					RelativePath=".\abadia\PersonajeConIA.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\PersonajeConIA.h">
+				</File>
+				<File
+					RelativePath=".\abadia\Severino.cpp">
+				</File>
+				<File
+					RelativePath=".\abadia\Severino.h">
 				</File>
 			</Filter>
 		</Filter>

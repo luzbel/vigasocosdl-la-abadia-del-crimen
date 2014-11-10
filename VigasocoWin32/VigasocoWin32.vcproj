@@ -23,7 +23,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -75,7 +75,7 @@
 				OptimizeForProcessor="1"
 				AdditionalIncludeDirectories="../core"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				RuntimeLibrary="4"
+				RuntimeLibrary="0"
 				BufferSecurityCheck="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -133,10 +133,16 @@
 				RelativePath=".\VigasocoWin32.cpp">
 			</File>
 			<File
+				RelativePath=".\Win32CriticalSection.cpp">
+			</File>
+			<File
 				RelativePath=".\Win32Palette.cpp">
 			</File>
 			<File
 				RelativePath=".\Win32Settings.cpp">
+			</File>
+			<File
+				RelativePath=".\Win32Thread.cpp">
 			</File>
 			<File
 				RelativePath=".\WinMain.cpp">
@@ -156,10 +162,16 @@
 				RelativePath=".\VigasocoWin32.h">
 			</File>
 			<File
+				RelativePath=".\Win32CriticalSection.h">
+			</File>
+			<File
 				RelativePath=".\Win32Palette.h">
 			</File>
 			<File
 				RelativePath=".\Win32Settings.h">
+			</File>
+			<File
+				RelativePath=".\Win32Thread.h">
 			</File>
 		</Filter>
 		<Filter

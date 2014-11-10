@@ -42,14 +42,16 @@ void GameDataEntity::addFile(GameFile *gf)
 	_files.push_back(gf);
 }
 
-// returns total files size
+// returns total files size (there can be gaps)
 UINT32 GameDataEntity::getTotalSize() const
 {
 	GameFiles::size_type i;
 
 	UINT32 totalSize = 0;
 	for (i = 0; i < _files.size(); i++){
-		totalSize += _files[i]->fileSize;
+		if ((_files[i]->baseAddress + _files[i]->fileSize) > totalSize){
+			totalSize = _files[i]->baseAddress + _files[i]->fileSize;
+		}
 	}
 
 	return totalSize;

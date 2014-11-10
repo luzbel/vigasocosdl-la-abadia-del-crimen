@@ -1,6 +1,6 @@
-VIGASOCO (VIdeo GAmes SOurce COde) (v0.01)
+VIGASOCO (VIdeo GAmes SOurce COde) (v0.02)
 
-Copyright (c) 2003 by MAB
+Copyright (c) 2003-2005 "VIGASOCO Project Team"
 
 About:
 ======
@@ -30,10 +30,9 @@ archives (you can't add or remove files to the archive).
 
 VIGASOCO's core has been written in C++ and it's platform independent. No portion of the 
 source can be used in a commercial product without written authorization of the author.
-Use of the source code in noncommercial products is allowed, as long as you make the source
-code freely available and you point it out somewhere that you used part of VIGASOCO's source
-code.
-
+Use of the source code in noncommercial products is allowed, as long as you credit VIGASOCO
+somewhere in the documentation of your project. Any derivate work based on a game driver
+has to credit the driver author and VIGASOCO.
 
 Usage:
 ======
@@ -49,6 +48,5 @@ Contact information is available in the source code.
 Acknowledgments:
 ================
 MAME Project (http://www.mame.net)
-
-
-EOF - 4568M-5694
+MESS Project (http://www.mess.org)
+PTS (http://www.emulatronia.com)

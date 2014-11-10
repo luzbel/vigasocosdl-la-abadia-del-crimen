@@ -26,6 +26,8 @@ bool RDTSCTimer::init()
 	}
 
 	_ticksPerSecond = calcTicksPerSecond();
+	_ticksPerMilliSecond = _ticksPerSecond/1000;
+
 	return true;
 }
 
@@ -56,9 +58,22 @@ INT64 RDTSCTimer::getTicksPerSecond()
 	return _ticksPerSecond;
 }
 
+// windows Sleep function isn't precise enough, so here it's a better sleep method
 void RDTSCTimer::sleep(UINT32 milliseconds)
 {
-	Sleep(milliseconds);
+	INT64 time1, time2; 
+	bool finished = false;
+
+	time1 = getTime();
+	
+	while (!finished){
+		time2 = getTime();
+
+		finished = (time2 - time1) >= _ticksPerMilliSecond*milliseconds;
+		if (!finished){
+			Sleep(0);
+		}
+	} 
 }
 
 /////////////////////////////////////////////////////////////////////////////

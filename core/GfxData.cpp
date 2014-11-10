@@ -11,7 +11,7 @@ GfxElement * GfxDecoder::decode(const struct GfxEncoding *enc, const UINT8 *pRaw
 
 	int entrySize = enc->sizeX*enc->sizeY;
 
-	// allocate memory for the decoded graphics (1 pixel = 1 byte)
+	// allocate memory for the decoded graphics (1 pixel -> 1 byte)
 	UINT8 **decodedGfx = new UINT8*[4];
 	for (int i = 0; i < 4; i++){
 		decodedGfx[i] = new UINT8[enc->numEntries*entrySize];

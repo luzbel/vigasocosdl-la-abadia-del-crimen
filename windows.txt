@@ -1,6 +1,6 @@
-VIGASOCO (VIdeo GAmes SOurce COde) Windows port (v0.01)
+VIGASOCO (VIdeo GAmes SOurce COde) Windows port (v0.02)
 
-Copyright (c) 2003 by MAB
+Copyright (c) 2003-2005 "VIGASOCO Project Team"
 
 About:
 ======
@@ -77,9 +77,11 @@ DIKeyb.dll has the following default keys:
 Supported Games:
 ================
 
-           GAME NAME           ROM NAME         INNER GAME INFORMATION
+                        GAME NAME               ROM NAME         INNER GAME INFORMATION
 ------------------------------------------------------------------------------------------------------------------------------
-PACMAN:	   pacman              puckman          logical grid + ghosts' wanted destination positions
+PACMAN:                 pacman                  puckman          logical grid + ghosts' wanted destination positions
+------------------------------------------------------------------------------------------------------------------------------
+LA ABADIA DEL CRIMEN:   abadia                  abadia           grid + maps + players + objects + doors + logic
 ------------------------------------------------------------------------------------------------------------------------------
 
 Contact:
@@ -90,6 +92,5 @@ Contact information is available in the source code.
 Acknowledgments:
 ================
 MAME Project (http://www.mame.net)
-
-
-EOF - 4568M-5694
+MESS Project (http://www.mess.org)
+PTS (http://www.emulatronia.com)

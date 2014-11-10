@@ -16,7 +16,9 @@ Bitmap::Bitmap(int width, int height, int bpp)
 	_bpp = bpp;
 
 	_data = new UINT8[width*height*bpp/8];
+
 	clear();
+	setNoClip();
 }
 
 Bitmap::~Bitmap()
@@ -31,10 +33,39 @@ void Bitmap::clear()
 }
 
 /////////////////////////////////////////////////////////////////////////////
+// clip related methods
+/////////////////////////////////////////////////////////////////////////////
+
+// sets the clipping area to cover the entire bitmap
+void Bitmap::setNoClip()
+{
+	_clipArea.left = 0;
+	_clipArea.top = 0;
+	_clipArea.right = _width - 1;
+	_clipArea.bottom = _height - 1;
+}
+
+// sets the clipping area
+void Bitmap::setClipArea(int x, int y, int width, int height)
+{
+	assert((x >= 0) && (x < _width));
+	assert((y >= 0) && (y < _height));
+	assert(width >= 0);
+	assert(height >= 0);
+	assert((x + width) < _width);
+	assert((y + height) < _height);
+
+	_clipArea.left = x;
+	_clipArea.top = y;
+	_clipArea.right = x + width - 1;
+	_clipArea.bottom = y + height - 1;
+}
+
+/////////////////////////////////////////////////////////////////////////////
 // bitmap composition methods
 /////////////////////////////////////////////////////////////////////////////
 
-// compose 2 similar bitmaps
+// composes two similar bitmaps
 void Bitmap::copySimilar(Bitmap *source)
 {
 	assert((_width == source->_width) && (_height == source->_height));
