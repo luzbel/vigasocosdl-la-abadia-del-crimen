@@ -61,11 +61,12 @@ protected:
 	CPC6128 *cpc6128;				// clase de ayuda para realizar operaciones gráficas
 	ICriticalSection *cs;			// sección crítica para sincronizar la escritura de gráficos
 	UINT8 *romsPtr;					// puntero a los datos del juego una vez extraidos del disco
+	IDrawPlugin *_dp;
 
 // métodos
 public:
 	// iniciación y limpieza
-	AbadiaDriver();
+	AbadiaDriver(IDrawPlugin *dp);
 	virtual ~AbadiaDriver();
 
 	virtual void runSync();

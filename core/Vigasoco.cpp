@@ -15,6 +15,9 @@
 #include "AbadiaDriver.h"
 #include "PacmanDriver.h"
 
+//temporal 666 para depurar
+#include "iostream"
+
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
@@ -54,6 +57,15 @@ bool Vigasoco::init(std::string name)
 		return false;
 	}
 
+	// calls template method to get a DrawPlugin
+	// pero no lo inicializamos
+	createDrawPlugin();
+
+	if (!_drawPlugin){
+		_errorMsg = "createDrawPlugin() failed";
+		return false;
+	}
+	
 	// creates the game driver
 	_driver = createGameDriver(name);
 
@@ -106,13 +118,7 @@ bool Vigasoco::init(std::string name)
 	// deletes the FileLoader
 	delete fl;
 
-	// calls template method to get a DrawPlugin
-	createDrawPlugin();
-
-	if (!_drawPlugin){
-		_errorMsg = "createDrawPlugin() failed";
-		return false;
-	}
+	
 
 	// inits the DrawPlugin with the selected GameDriver
 	if (!_drawPlugin->init(_driver->getVideoInfo(), _palette)){
@@ -284,7 +290,7 @@ void Vigasoco::mainLoop()
 				_driver->showGameLogic(_drawPlugin);
 			}
 
-			//showFPS(skipVideo);
+			showFPS(skipVideo); //666
 
 			if (!skipVideo){
 				// render game screen to our screen
@@ -310,7 +316,7 @@ GameDriver * Vigasoco::createGameDriver(std::string game)
 	if (game == "pacman"){
 		return new PacmanDriver();
 	} else if (game == "abadia"){
-		return new AbadiaDriver();
+		return new AbadiaDriver(_drawPlugin);
 	} else {
 		return 0;
 	}
@@ -324,6 +330,7 @@ void Vigasoco::processCoreInputs()
 	if (_inputHandler->hasBeenPressed(FUNCTION_8)){
 		_actualVideoFrameSkip = _timingHandler->getVideoFrameSkip() - 1;
 		if (_actualVideoFrameSkip < 0) _actualVideoFrameSkip = TimingHandler::FRAMESKIP_LEVELS - 1;
+		std::cout << "frameskip decrement _actualVideoFrameSkip " << _actualVideoFrameSkip  << std::endl;
 		_timingHandler->setVideoFrameSkip(_actualVideoFrameSkip);
 	}
 
@@ -331,12 +338,14 @@ void Vigasoco::processCoreInputs()
 	if (_inputHandler->hasBeenPressed(FUNCTION_9)){
 		_actualVideoFrameSkip = _timingHandler->getVideoFrameSkip() + 1;
 		if (_actualVideoFrameSkip > (TimingHandler::FRAMESKIP_LEVELS - 1)) _actualVideoFrameSkip =  0;
+		std::cout << "frameskip increment _actualVideoFrameSkip " << _actualVideoFrameSkip  << std::endl;
 		_timingHandler->setVideoFrameSkip(_actualVideoFrameSkip);
 	}
 
 	// F10 -> toggle throttling
 	if (_inputHandler->hasBeenPressed(FUNCTION_10)){
 		_speedThrottle = !_speedThrottle;
+		std::cout << "_speedThrottle " << _speedThrottle << std::endl;
 		_timingHandler->setSpeedThrottle(_speedThrottle);
 	}
 }
@@ -354,10 +363,13 @@ void Vigasoco::showFPS(bool skipThisFrame)
 		int gameFPS = _driver->getVideoInfo()->refreshRate;
 
 		sprintf(buf, "%d/%d fps[fs %d]", currentFPS, gameFPS, frameSkip);
+//	std::cout << "FPS: " << buf << std::endl; //666
+fprintf(stderr,"FPS: %s\n",buf);
 	}
 
 	// show FPS
 	if (!skipThisFrame){
+//	std::cout << "FPS: " << buf << std::endl; //666
 		_fontManager->print(_drawPlugin, buf, 0, 0);
 	}
 }

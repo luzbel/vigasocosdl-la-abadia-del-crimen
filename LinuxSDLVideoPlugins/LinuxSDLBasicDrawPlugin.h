@@ -14,6 +14,7 @@ class LinuxSDLBasicDrawPlugin: public IDrawPlugin
 {
 protected:
         SDL_Surface *screen;
+	SDL_Surface *surface;
 	UINT32 *_palette;
 	bool _isInitialized;
 public:

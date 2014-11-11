@@ -22,14 +22,16 @@ using namespace Abadia;
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-AbadiaDriver::AbadiaDriver() : GameDriver("abadia", "La abadia del crimen", 300)
+AbadiaDriver::AbadiaDriver(IDrawPlugin *dp) : GameDriver("abadia", "La abadia del crimen", 300)
 {
 	_videoInfo.width = 640;
-	_videoInfo.height = 400;
+	//_videoInfo.height = 400;
+	_videoInfo.height = 480;
 	_videoInfo.visibleArea = Rect(_videoInfo.width, _videoInfo.height);
 	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar información interna del juego
 	_videoInfo.refreshRate = 50;
 
+	//_numInterruptsPerVideoUpdate = 6;
 	_numInterruptsPerVideoUpdate = 6;
 	_numInterruptsPerLogicUpdate = 1;
 
@@ -37,6 +39,7 @@ AbadiaDriver::AbadiaDriver() : GameDriver("abadia", "La abadia del crimen", 300)
 	cpc6128 = 0;
 	cs = 0;
 	romsPtr = 0;
+	_dp = dp;
 
 	createGameDataEntities();
 	createGameGfxDescriptions();
@@ -141,7 +144,7 @@ void AbadiaDriver::finishInit()
 	cs->init();
 
 	//crea el objeto para tratar con gráficos del amstrad
-	cpc6128 = new CPC6128(cs);
+	cpc6128 = new CPC6128(cs,_dp);
 
 	// crea el objeto del juego
 	_abadiaGame = new Abadia::Juego(romsPtr, cpc6128);
@@ -200,6 +203,7 @@ void AbadiaDriver::runAsync()
 
 void AbadiaDriver::render(IDrawPlugin *dp)
 {
+/*	
 	UINT8 *posPant = cpc6128->screenBuffer;
 
 	// dibuja los datos que el juego escribe en el otro hilo en el buffer de pantalla
@@ -222,6 +226,13 @@ void AbadiaDriver::render(IDrawPlugin *dp)
 		}
 	}
 	cs->leave();
+*/	
+
+	/* 
+	cs->enter();
+	dp->render(true);
+	cs->leave();
+	*/
 }
 
 /////////////////////////////////////////////////////////////////////////////

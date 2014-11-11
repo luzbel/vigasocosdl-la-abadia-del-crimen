@@ -10,12 +10,14 @@
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-CPC6128::CPC6128(ICriticalSection *criticalSection)
+CPC6128::CPC6128(ICriticalSection *criticalSection,IDrawPlugin *dp)
 {
 	cs = criticalSection;
+	_dp = dp;
 
 	// cleans the screen buffer
 	memset(screenBuffer, 0x80, 640*200);
+//	memset(screenBuffer, 0, 640*200);
 }
 
 CPC6128::~CPC6128()
@@ -232,6 +234,7 @@ void CPC6128::showMode0Screen(const UINT8 *data)
 // marks all pixels as dirty
 void CPC6128::markAllPixelsDirty()
 {
+	///*	
 	UINT8 *buf = screenBuffer;
 
 	for (int j = 0; j < 200; j++){
@@ -240,6 +243,7 @@ void CPC6128::markAllPixelsDirty()
 			buf++;
 		}
 	}
+	//*/
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -259,5 +263,5 @@ void CPC6128::fillRect(int x, int y, int width, int height, int color)
 		for (int xx = x; xx <= xLimit; xx++){
 			setPixel(xx, y, color);
 		}
-	}
+	} 
 }

@@ -27,6 +27,9 @@ std::string VigasocoLinuxSDL::g_videoPluginPath = "video/";
 std::string VigasocoLinuxSDL::g_inputPluginPath = "input/";
 std::string VigasocoLinuxSDL::g_loaderPluginPath = "loaders/";
 
+//temporal 666 para depurar
+#include "iostream"
+
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
@@ -34,7 +37,10 @@ std::string VigasocoLinuxSDL::g_loaderPluginPath = "loaders/";
 VigasocoLinuxSDL::VigasocoLinuxSDL(std::string game, std::string drawPluginsDLL,
 				std::string drawPlugin, Strings inputPluginsDLLs, Strings inputPlugins, Strings paths)
 {
-	_pluginHandler = 0;
+	_pluginHandler = 0; 
+std::cout << game << std::endl;
+std::cout << "xx" << std::endl;
+std::cout << _game << std::endl;
 	_game = game;
 
 	_sDrawPluginsDLL = drawPluginsDLL;
@@ -235,6 +241,12 @@ bool VigasocoLinuxSDL::processEvents()
 	if ( SDL_PollEvent(&event) )
 	{
 		if (event.type==SDL_QUIT) return false;
+		else
+		{
+			// temporal, si se pulsa ESC se sale
+			// en realidad deberia salir el menu para grabar,cargar,salir...
+			if (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE) return false;
+		}
 	}
 
 	return true;

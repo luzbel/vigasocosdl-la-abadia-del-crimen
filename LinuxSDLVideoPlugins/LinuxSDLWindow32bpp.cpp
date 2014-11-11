@@ -12,7 +12,7 @@
 #define DEBUG_FAIL_FUNC 
 #endif
 
-
+void PrintFlags(Uint32 flags);
 	bool LinuxSDLWindow32bpp::init(const VideoInfo *vi, IPalette *pal)  
 	{
 		if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
@@ -23,7 +23,7 @@
 			return false;
 		}
 
-		screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
+		screen = SDL_SetVideoMode(vi->width, vi->height, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
 		if ( screen == NULL ) {
 #ifdef DEBUG
 		        fprintf(stderr, "Couldn't set 640x480x32 video mode: %s\n",
@@ -31,6 +31,10 @@
 #endif
 		        return false;
 	    	}
+		PrintFlags(screen->flags);
+
+		surface = SDL_CreateRGBSurface(SDL_HWSURFACE,screen->w, screen->h,32, 0, 0, 0, 0);
+		//surface=screen;
 
 	        // gets a pointer to the game's palette
 	        _palette = (UINT32 *)pal->getRawPalette();
@@ -66,31 +70,32 @@
 	void LinuxSDLWindow32bpp::render(bool throttle)
 	{
 		// SDL_UpdateRect(screen, 0, 0, 0, 0);
+		SDL_BlitSurface(surface, NULL, screen, NULL);
 		SDL_Flip(screen);
 	};
 
 	void LinuxSDLWindow32bpp::setPixel(int x, int y, int color)
 	{
-		/* Lock the screen for direct access to the pixels */
-		if ( SDL_MUSTLOCK(screen) ) {
-			if ( SDL_LockSurface(screen) < 0 ) {
+		/* Lock the screen for direct access to the pixels */ /*
+		if ( SDL_MUSTLOCK(surface) ) {
+			if ( SDL_LockSurface(surface) < 0 ) {
 #ifdef DEBUG
-		            fprintf(stderr, "Can't lock screen: %s\n", SDL_GetError());
+		            fprintf(stderr, "Can't lock surface: %s\n", SDL_GetError());
 #endif
 		            return;
 		        }
-		}
+		} */
 
 
-		int bpp = screen->format->BytesPerPixel;
+		int bpp = surface->format->BytesPerPixel;
     		/* Here p is the address to the pixel we want to set */
-		Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
+		Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
 		*(Uint32 *)p = _palette[color];
-
-		if ( SDL_MUSTLOCK(screen) ) {
-			SDL_UnlockSurface(screen);
-		}
+/*
+		if ( SDL_MUSTLOCK(surface) ) {
+			SDL_UnlockSurface(surface);
+		} */
 	};
 
 	void LinuxSDLWindow32bpp::drawLine(int x0, int y0, int x1, int y1, int color) { DEBUG_FAIL_FUNC };  

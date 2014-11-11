@@ -1,4 +1,7 @@
-CXXFLAGS=-g -O3 -I../core `sdl-config --cflags`
+CXXFLAGS=-O3 -I../core `sdl-config --cflags` 
+#CXXFLAGS=-g -O3 -I../core `sdl-config --cflags` -pg
+#CXXFLAGS=-g -O3 -I../core `sdl-config --cflags` 
+#CXXFLAGS=-g -I../core `sdl-config --cflags`
 VPATH=.:../core:../core/abadia:../core/util:../core/systems:../core/pacman
 
 # en OBJECTS_CORE falta Operations.o ??
@@ -13,7 +16,8 @@ OBJECTS_SDL = PluginHandler.o RDTSCTimer.o LinuxSDLCriticalSection.o LinuxSDLPal
 OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_PACMAN) $(OBJECTS_SDL) 
 
 VigasocoLinuxSDL: $(OBJECTS)
-	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoLinuxSDL
+#	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoLinuxSDL -pg
+	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoLinuxSDL 
 
 clean:
 	rm -f $(OBJECTS) VigasocoLinuxSDL

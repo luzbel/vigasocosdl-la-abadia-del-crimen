@@ -1,4 +1,4 @@
-// VER SI SE PUEDE IMPLEMENTAR MEJOR CON SDK_GetTicks , SDL_Delay , ...
+// PRUEBO A VER SI SE PUEDE IMPLEMENTAR MEJOR CON SDK_GetTicks , SDL_Delay , ...
 
 
 
@@ -8,6 +8,8 @@
 
 #include "RDTSCTimer.h"
 #include "SDL.h"
+
+#include "SDL_cpuinfo.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
@@ -26,11 +28,11 @@ bool RDTSCTimer::init()
 	// if the CPU doesn't support the RDTSC instruction, init fails
 	if (!supportsRDTSC()){
 		return false;
-	}
+	} 
 
-	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
+//666	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
 
-	_ticksPerSecond = calcTicksPerSecond();
+	_ticksPerSecond = calcTicksPerSecond()/2;
 	_ticksPerMilliSecond = _ticksPerSecond/1000;
 
 	return true;
@@ -61,7 +63,7 @@ INT64 RDTSCTimer::getTicksPerSecond()
 // windows Sleep function isn't precise enough, so here it's a better sleep method
 void RDTSCTimer::sleep(UINT32 milliseconds)
 {
-
+/*666
 	INT64 time1, time2; 
 	bool finished = false;
 
@@ -75,6 +77,8 @@ void RDTSCTimer::sleep(UINT32 milliseconds)
 			SDL_Delay(0);
 		}
 	}
+	*/
+	SDL_Delay(milliseconds);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -101,12 +105,17 @@ INT64 RDTSCTimer::calcTicksPerSecond()
 
 bool RDTSCTimer::supportsRDTSC()
 {
+	// se puede cambiar por una llamada a SDL_HasRDTSC??
+/* ademas , esto con -O3 da core luego, debe corromper algun registro */
 	int cpuFeatures=0;
 
         __asm__ __volatile__(
                 "mov $1, %%eax\n"
                 "cpuid\n"
-                "mov %%edx,%0" : "=r"(cpuFeatures)::"eax","edx" );
+                "mov %%edx,%0" : "=r"(cpuFeatures)::"eax","ebx","ecx","edx" );
 
         return ((cpuFeatures & 0x10) == 0x10);
+	/*
+
+	return SDL_HasRDTSC(); */
 }

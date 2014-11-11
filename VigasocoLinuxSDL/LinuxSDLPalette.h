@@ -12,8 +12,8 @@
 #include "Types.h"
 
 
-#pragma pack(push, paletteAlignment)
-#pragma pack(1)
+//666#pragma pack(push, paletteAlignment)
+//666#pragma pack(1)
 
 struct PaletteEntry {
 	UINT8 B;
@@ -24,9 +24,9 @@ struct PaletteEntry {
 	PaletteEntry(){}
 	PaletteEntry(int r, int g, int b) { R = r; G = g; B = b; alpha = 0xff; }
 	PaletteEntry(int r, int g, int b, int a) { R = r; G = g; B = b; alpha = a; }
-}; // Falta alinear esta estructura en gcc
+} __attribute__((packed)); // Falta alinear esta estructura en gcc
 
-#pragma pack(pop, paletteAlignment)
+//666#pragma pack(pop, paletteAlignment)
 
 
 // the palette is a Singleton and a Notification Provider

@@ -11,6 +11,8 @@
 #include "../IPalette.h"
 #include "../Types.h"
 
+#include "../IDrawPlugin.h"
+
 class CPC6128
 {
 // tables
@@ -20,6 +22,7 @@ protected:
 
 	// ink to hardware color conversion
 	static int inkColors[27];
+	IDrawPlugin *_dp;
 
 // enumerations
 public:
@@ -64,7 +67,7 @@ protected:
 // methods
 public:
 	// initialization and cleanup
-	CPC6128(ICriticalSection *criticalSection);
+	CPC6128(ICriticalSection *criticalSection,IDrawPlugin *dp);
 	~CPC6128();
 
 	// palette related
@@ -170,15 +173,24 @@ public:
 	// pixel get/set
 	inline void setPixel(int x, int y, int color)
 	{
+		/*
 		// sets pixel and marks the pixel as dirty
 		cs->enter();
 		screenBuffer[y*640 + x] = color | 0x80;
 		cs->leave();
+		*/
+//		cs->enter();
+		_dp->setPixel(x,2*y,color);
+		_dp->setPixel(x,2*y+1,color);
+//		cs->leave();
+		screenBuffer[y*640 + x] = color | 0x80; // para no complicar el getPixel ...
+//		screenBuffer[y*640 + x] = color ; // para no complicar el getPixel ...
 	}
 
 	inline int getPixel(int x, int y)
 	{
 		return screenBuffer[y*640 + x] & 0x0f;
+//		return screenBuffer[y*640 + x] ;
 	}
 
 // helper methods
