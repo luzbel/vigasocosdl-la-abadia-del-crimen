@@ -17,6 +17,7 @@
 class LinuxSDLWindow32bpp : public LinuxSDLBasicDrawPlugin
 {
 public:
+	IPalette *palette;
 	LinuxSDLWindow32bpp(){ }
 	 ~LinuxSDLWindow32bpp(){}
 	 bool init(const VideoInfo *vi, IPalette *pal) ;

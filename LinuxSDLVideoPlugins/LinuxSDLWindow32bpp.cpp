@@ -1,3 +1,6 @@
+///   PRUEBA 8 BITS CON PALETA DE GRISES , ¡¡¡ OJO !!! 8 BITS, no 32
+
+
 // LinuxSDLWindow32bpp.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -23,7 +26,7 @@
 			return false;
 		}
 
-		screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
+		screen = SDL_SetVideoMode(640, 480, 8, SDL_HWSURFACE|SDL_DOUBLEBUF);
 		if ( screen == NULL ) {
 #ifdef DEBUG
 		        fprintf(stderr, "Couldn't set 640x480x32 video mode: %s\n",
@@ -31,9 +34,19 @@
 #endif
 		        return false;
 	    	}
+	SDL_Color colors[256];
+
+	for (int i = 0; i < 256; i++){
+		colors[i].r=i;
+		colors[i].g=i;
+		colors[i].b=i;
+	}
+
+	fprintf(stderr,"SDL_SetColors screen %d\n",SDL_SetColors(screen, colors, 0, 256)); 
 
 	        // gets a pointer to the game's palette
 	        _palette = (UINT32 *)pal->getRawPalette();
+		palette=pal;
 
 		_isInitialized = true;
 
@@ -86,7 +99,12 @@
     		/* Here p is the address to the pixel we want to set */
 		Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
 
-		*(Uint32 *)p = _palette[color];
+//		*(Uint32 *)p = _palette[color];
+		UINT8 r, g, b;
+
+		palette->getColor(color, r, g, b);
+		*(Uint32 *)p = SDL_MapRGB(screen->format,r,g,b);
+
 
 		if ( SDL_MUSTLOCK(screen) ) {
 			SDL_UnlockSurface(screen);
