@@ -14,7 +14,6 @@ class LinuxSDLBasicDrawPlugin: public LinuxSDLDrawPlugin
 protected:
         SDL_Surface *screen;
 	SDL_Surface *surface;
-	UINT32 *_palette;
 	bool _isInitialized;
 	UINT32 _flags;
 	int _bpp;
@@ -22,7 +21,7 @@ private:
 //        SDL_Surface *screen;
 	IPalette *_originalPalette;
 public:
-	LinuxSDLBasicDrawPlugin(){ screen = NULL; surface = NULL; _palette = NULL; _isInitialized=false; _flags=0; _bpp=8; _originalPalette=NULL; }
+	LinuxSDLBasicDrawPlugin(){ screen = NULL; surface = NULL; _isInitialized=false; _flags=0; _bpp=8; _originalPalette=NULL; }
 	 virtual ~LinuxSDLBasicDrawPlugin(){}
 	 virtual bool init(const VideoInfo *vi, IPalette *pal);
 	 virtual void end() ;
@@ -48,7 +47,7 @@ public:
 	// drawing methods
 	 virtual void render(bool throttle);
 
-	 virtual void setPixel(int x, int y, int color) {};
+	 virtual void setPixel(int x, int y, int color) = 0;
 
 	 virtual void drawLine(int x0, int y0, int x1, int y1, int color) {};
 	 virtual void drawRect(Rect *rect, int color) {};
@@ -75,8 +74,26 @@ public:
 	 virtual int getProperty(std::string prop, int index) const {};
 protected:
 	// palette changed notification
-	virtual void update(IPalette *palette, int data) {};
-	void updateFullPalette(IPalette *palette) {};
+	virtual void update(IPalette *palette, int data) = 0;
+	void updateFullPalette(IPalette *palette) = 0;
 };
+
+template<typename T,int bpp=8>
+class SDLBasicDrawPluginT : public LinuxSDLBasicDrawPlugin
+{
+protected:
+	T *_palette;
+public:
+	SDLBasicDrawPluginT(){ _palette = NULL; }
+	virtual ~SDLBasicDrawPluginT<T>(){}
+	virtual bool init(const VideoInfo *vi, IPalette *pal);
+	virtual void setPixel(int x, int y, int color);
+protected:
+	// palette changed notification
+	virtual void update(IPalette *palette, int data);
+	void updateFullPalette(IPalette *palette);
+};
+
+#include "SDLBasicDrawPluginTemplates.cpp"
 
 #endif // _LINUX_SDL_BASIC_DRAW_PLUGIN_H_

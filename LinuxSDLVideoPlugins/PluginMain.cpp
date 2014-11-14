@@ -10,13 +10,14 @@
 #include "LinuxSDLFullScreen16bpp.h"
 #include "LinuxSDLFullScreen24bpp.h"
 #include "LinuxSDLFullScreen32bpp.h"
+#include "LinuxSDLWindowGris8bpp.h"
 
 #include "SDL.h"
 
 static const char *description = "VIGASOCO Linux SDL Plugins v1.0";
 
 static const char *plugins[] = {
-	 "win8" , "win16" , "win24", "win32", "full8" , "full16", "full24" , "full32"
+	 "win8" , "win16" , "win24", "win32", "full8" , "full16", "full24" , "full32" , "wingris8"
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +42,9 @@ void createPlugin(const char *name,void**a)
 	} else if (strcmp(name, plugins[6]) == 0){
 		*a=new LinuxSDLFullScreen24bpp();
 	} else if (strcmp(name, plugins[7]) == 0){
-		*a=new LinuxSDLFullScreen24bpp();
+		*a=new LinuxSDLFullScreen32bpp();
+	} else if (strcmp(name, plugins[8]) == 0){
+		*a=new LinuxSDLWindowGris8bpp();
 	} else {
 		*a=NULL;
 	}

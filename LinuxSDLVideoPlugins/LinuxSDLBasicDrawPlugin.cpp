@@ -20,7 +20,7 @@ bool LinuxSDLBasicDrawPlugin::init(const VideoInfo *vi, IPalette *pal)
 		return false;
 	}
 
-	_flags |= SDL_HWSURFACE|SDL_DOUBLEBUF;
+	_flags |= SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE;
 
 	screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
 	if ( screen == NULL ) {
@@ -41,7 +41,6 @@ bool LinuxSDLBasicDrawPlugin::init(const VideoInfo *vi, IPalette *pal)
 	}
 
 	_originalPalette=pal;
-	pal->attach(this);
 
 	return true;
 };

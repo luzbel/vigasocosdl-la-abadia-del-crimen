@@ -6,14 +6,6 @@
 
 #include "LinuxSDLBasicDrawPlugin.h"
 
-class LinuxSDL24bpp : public LinuxSDLBasicDrawPlugin
-{
-public:
-	LinuxSDL24bpp(){ }
-	 ~LinuxSDL24bpp(){}
-	 virtual bool init(const VideoInfo *vi, IPalette *pal) ;
-
-	 virtual void setPixel(int x, int y, int color);
-};
+typedef SDLBasicDrawPluginT<UINT32,24> LinuxSDL24bpp;
 
 #endif // _LINUX_SDL_24BPP_H_

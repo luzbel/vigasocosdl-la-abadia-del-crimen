@@ -1,5 +1,5 @@
-//LinuxSDL32bpp.cpp
+// LinuxSDLWindowGris8bpp.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDL32bpp.h"
+#include "LinuxSDLWindowGris8bpp.h"

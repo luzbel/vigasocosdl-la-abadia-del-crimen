@@ -3,19 +3,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LinuxSDL24bpp.h"
-#include "IPalette.h"
-
-bool LinuxSDL24bpp::init(const VideoInfo *vi, IPalette *pal)  
-{
-	_bpp = 24;
-
-	_isInitialized = LinuxSDLBasicDrawPlugin::init(vi,pal);
-
-	// gets a pointer to the game's palette
-	_palette = (UINT32 *)pal->getRawPalette();
-
-	return _isInitialized;
-};
 
 void LinuxSDL24bpp::setPixel(int x, int y, int color)
 {
@@ -28,11 +15,20 @@ void LinuxSDL24bpp::setPixel(int x, int y, int color)
 	}
 
 
-	int bpp = surface->format->BytesPerPixel;
+	int __bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to set */
-	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * __bpp;
+	Uint32 pixel = _palette[color];
 
-	*(Uint32 *)p = _palette[color];
+	if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+		p[0] = (pixel >> 16) & 0xff;
+		p[1] = (pixel >> 8) & 0xff;
+		p[2] = pixel & 0xff;
+	} else {
+		p[0] = pixel & 0xff;
+		p[1] = (pixel >> 8) & 0xff;
+		p[2] = (pixel >> 16) & 0xff;
+	}
 
 	if ( SDL_MUSTLOCK(surface) ) {
 		SDL_UnlockSurface(surface);

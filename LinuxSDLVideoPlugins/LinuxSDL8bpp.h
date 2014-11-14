@@ -14,20 +14,6 @@
 #include "IDrawPlugin.h"
 #include "LinuxSDLBasicDrawPlugin.h"
 
-class LinuxSDL8bpp : public LinuxSDLBasicDrawPlugin
-{
-public:
-	LinuxSDL8bpp(){ }
-	 ~LinuxSDL8bpp(){}
-	 virtual bool init(const VideoInfo *vi, IPalette *pal);
-
-	// drawing methods
-	 virtual void setPixel(int x, int y, int color) ;
-
-protected:
-	         // palette changed notification
-         virtual void update(IPalette *palette, int data);
-                 void updateFullPalette(IPalette *palette);
-};
+typedef SDLBasicDrawPluginT<UINT8,8> LinuxSDL8bpp;
 
 #endif // _LINUX_SDL_8BPP_H_

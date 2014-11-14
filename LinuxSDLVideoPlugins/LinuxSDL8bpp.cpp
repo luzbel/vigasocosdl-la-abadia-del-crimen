@@ -5,30 +5,15 @@
 #include "LinuxSDL8bpp.h"
 #include "IPalette.h"
 
-#ifdef DEBUG
-#include <stdio.h>
-#define DEBUG_FAIL_FUNC printf("%s\n",__func__);
-#else
-#define DEBUG_FAIL_FUNC 
-#endif
-
-bool LinuxSDL8bpp::init(const VideoInfo *vi, IPalette *pal)  
-{
-	_bpp = 8;
-
-	_isInitialized = LinuxSDLBasicDrawPlugin::init(vi,pal);
-
-	return _isInitialized;
-};
-
 /////////////////////////////////////////////////////////////////////////////
 //// Palette changes
 ///////////////////////////////////////////////////////////////////////////////
 
 void LinuxSDL8bpp::updateFullPalette(IPalette *palette)
-{
+{ 
 	SDL_Color colors[256];
-			fprintf(stderr,"LinuxSDL8bpp::updateFullPalette\n");
+
+//	fprintf(stderr,"LinuxSDL8bpp::updateFullPalette\n");
 	for (int i = 0; i < palette->getTotalColors(); i++){
 		UINT8 r, g, b;
 
@@ -37,11 +22,13 @@ void LinuxSDL8bpp::updateFullPalette(IPalette *palette)
 		colors[i].g=g;
 		colors[i].b=b;
 	}
-	SDL_SetColors(surface, colors, 0, 256); 
+	//fprintf(stderr,"LinuxSDL8bpp::updateFullPalette %d\n",SDL_SetColors(surface, colors, 0, 256));   
+	SDL_SetColors(surface, colors, 0, 256);   
 }
 
 void LinuxSDL8bpp::update(IPalette *palette, int data)
 { 
+//	fprintf(stderr,"LinuxSDL8bpp::update\n");
 	if (data != -1){
 		// single color update
 		UINT8 r, g, b;
@@ -52,6 +39,7 @@ void LinuxSDL8bpp::update(IPalette *palette, int data)
 		color.g=g;
 		color.b=b;
 
+		//fprintf(stderr,"LinuxSDL8bpp::update %d\n",SDL_SetColors(surface, &color, data, 1));
 		SDL_SetColors(surface, &color, data, 1);
 	} else {
 		// full palette update
