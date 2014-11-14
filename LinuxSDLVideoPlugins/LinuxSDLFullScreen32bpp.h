@@ -71,6 +71,8 @@ public:
 	 void setProperty(std::string prop, int index, int data) ;
 	 int getProperty(std::string prop) const ;
 	 int getProperty(std::string prop, int index) const ;
+	virtual void update(IPalette *palette, int data) {};
+	void updateFullPalette(IPalette *palette) {};
 };
 
 #endif // _LINUX_SDL_WINDOW_16BPP_H_

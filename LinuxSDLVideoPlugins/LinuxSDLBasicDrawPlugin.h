@@ -9,16 +9,21 @@
 
 #include "IDrawPlugin.h"
 #include "SDL.h"
+#include "util/INotificationSuscriber.h"
 
-class LinuxSDLBasicDrawPlugin: public IDrawPlugin
+class LinuxSDLBasicDrawPlugin: public IDrawPlugin,public INotificationSuscriber<IPalette>
 {
 protected:
         SDL_Surface *screen;
 	SDL_Surface *surface;
 	UINT32 *_palette;
 	bool _isInitialized;
+	UINT32 _flags;
+	int _bpp;
+private:
+	IPalette *_originalPalette;
 public:
-	LinuxSDLBasicDrawPlugin(){ screen = NULL; _palette = NULL; _isInitialized=false; }
+	LinuxSDLBasicDrawPlugin(){ screen = NULL; _palette = NULL; _isInitialized=false; _flags=0; _bpp=8; _originalPalette=NULL; }
 	 virtual ~LinuxSDLBasicDrawPlugin(){}
 	 virtual bool init(const VideoInfo *vi, IPalette *pal) = 0 ;
 	 void end() ;
@@ -69,6 +74,10 @@ public:
 	 virtual void setProperty(std::string prop, int index, int data) = 0;
 	 virtual int getProperty(std::string prop) const = 0;
 	 virtual int getProperty(std::string prop, int index) const = 0;
+protected:
+	// palette changed notification
+//	virtual void update(IPalette *palette, int data);
+//	void updateFullPalette(IPalette *palette);
 };
 
 #endif // _LINUX_SDL_BASIC_DRAW_PLUGIN_H_

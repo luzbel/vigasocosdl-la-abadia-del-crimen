@@ -80,11 +80,35 @@ surface=NULL;
 		{
 			fprintf(stderr, "surface ok\n");
 		}
+		{
+			SDL_Color colors[256];
+			int i;
+				/* Fill colors with color information */
+		/*	
+				for(i=0;i<256;i++){
+					  colors[i].r=i;
+					    colors[i].g=i;
+					      colors[i].b=i;
+				} */
+				 
+				for(i=0;i<256;i++){
+					  colors[i].r=0;
+					    colors[i].g=0;
+					      colors[i].b=0;
+				}
+				for(i=0;i<pal->getTotalColors();i++){
+					Uint8 b,g,r;
+				                pal->getColor(i,r,g,b);
+						fprintf(stderr,"color %d: %d %d %d\n",i,r,g,b);
+					  colors[i].r=r;
+					    colors[i].g=g;
+					      colors[i].b=b;
+				}
 
-		pal->attach(this);
-//		updateFullPalette(pal);
+			SDL_SetColors(surface, colors, 0, 256);
+			SDL_SetColors(screen, colors, 0, 256); 
+		}
 
-	
 	        // gets a pointer to the game's palette
 	        _palette = (UINT32 *)pal->getRawPalette();
 //prueba
@@ -97,7 +121,7 @@ _pal = pal;
 
 
 
-	void LinuxSDLWindow8bpp::end()  { _pal->detach(this); LinuxSDLBasicDrawPlugin::end(); };
+	void LinuxSDLWindow8bpp::end()  { LinuxSDLBasicDrawPlugin::end(); };
 
 	// no se porque el linkador se queja sin esto, ?no deberia tomar la virtual de LinuxSDLBasicDrawPlugin ?
 	bool LinuxSDLWindow8bpp::isInitialized() const  { return LinuxSDLBasicDrawPlugin::isInitialized(); };
@@ -126,7 +150,6 @@ _pal = pal;
 void LinuxSDLWindow8bpp::updateFullPalette(IPalette *palette)
 {
 	SDL_Color colors[256];
-			fprintf(stderr,"LinuxSDLWindow8bpp::updateFullPalette\n");
 	for (int i = 0; i < palette->getTotalColors(); i++){
 		UINT8 r, g, b;
 
@@ -136,7 +159,7 @@ void LinuxSDLWindow8bpp::updateFullPalette(IPalette *palette)
 		colors[i].b=b;
 	}
 	SDL_SetColors(surface, colors, 0, 256);
-//	SDL_SetColors(screen, colors, 0, 256); 
+	SDL_SetColors(screen, colors, 0, 256); 
 }
 
 void LinuxSDLWindow8bpp::update(IPalette *palette, int data)
@@ -152,7 +175,7 @@ void LinuxSDLWindow8bpp::update(IPalette *palette, int data)
 		color.b=b;
 
 		SDL_SetColors(surface, &color, data, 1);
-//		SDL_SetColors(screen, &color, data, 1); // esto hace cosas raras ??? 
+		SDL_SetColors(screen, &color, data, 1); 
 	} else {
 		// full palette update
 		updateFullPalette(palette);
