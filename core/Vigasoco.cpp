@@ -283,7 +283,7 @@ void Vigasoco::mainLoop()
 				_driver->showGameLogic(_drawPlugin);
 			}
 
-			//showFPS(skipVideo);
+//			showFPS(skipVideo);
 
 			if (!skipVideo){
 				// render game screen to our screen
@@ -351,6 +351,7 @@ void Vigasoco::showFPS(bool skipThisFrame)
 		int gameFPS = _driver->getVideoInfo()->refreshRate;
 
 		sprintf(buf, "%d/%d fps[fs %d]", currentFPS, gameFPS, frameSkip);
+fprintf(stderr,"FPS: %s\n",buf);
 	}
 
 	// show FPS

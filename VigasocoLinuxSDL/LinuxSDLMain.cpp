@@ -11,12 +11,16 @@
 // Para los mensajes de error
 #include "iostream"
 
+//666 temporal para SDL_Quit
+#include "SDL.h"
+
+
 typedef std::vector<std::string> Strings;
 
 // default options
 std::string g_game("abadia");
 std::string g_drawPluginsDLL("libVigasocoLinuxSDLDrawPlugin.so");
-std::string g_drawPlugin("win32");
+std::string g_drawPlugin("win8");
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
@@ -64,6 +68,11 @@ int main(int argc,char **argv)
 
 	// cleanup
 	VIGASOCO.end();
+// 666 temporal
+// // quizas deberia ir en VigasocoLinuxSDL.end()
+// // o con atexit() ...
+// mejor con atexit, por si sale por un error,kill, etc...
+SDL_Quit();
 
 	return 0;
 }

@@ -35,6 +35,8 @@
 	        // gets a pointer to the game's palette
 	        _palette = (UINT32 *)pal->getRawPalette();
 
+		surface = SDL_CreateRGBSurface(SDL_HWSURFACE,screen->w, screen->h,32, 0, 0, 0, 0);
+
 		_isInitialized = true;
 
 		return true;
@@ -66,30 +68,31 @@
 	void LinuxSDLWindow32bpp::render(bool throttle)
 	{
 		// SDL_UpdateRect(screen, 0, 0, 0, 0);
+		SDL_BlitSurface(surface, NULL, screen, NULL);
 		SDL_Flip(screen);
 	};
 
 	void LinuxSDLWindow32bpp::setPixel(int x, int y, int color)
 	{
 		/* Lock the screen for direct access to the pixels */
-		if ( SDL_MUSTLOCK(screen) ) {
-			if ( SDL_LockSurface(screen) < 0 ) {
+		if ( SDL_MUSTLOCK(surface) ) {
+			if ( SDL_LockSurface(surface) < 0 ) {
 #ifdef DEBUG
-		            fprintf(stderr, "Can't lock screen: %s\n", SDL_GetError());
+		            fprintf(stderr, "Can't lock surface: %s\n", SDL_GetError());
 #endif
 		            return;
 		        }
 		}
 
 
-		int bpp = screen->format->BytesPerPixel;
+		int bpp = surface->format->BytesPerPixel;
     		/* Here p is the address to the pixel we want to set */
-		Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
+		Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
 		*(Uint32 *)p = _palette[color];
 
-		if ( SDL_MUSTLOCK(screen) ) {
-			SDL_UnlockSurface(screen);
+		if ( SDL_MUSTLOCK(surface) ) {
+			SDL_UnlockSurface(surface);
 		}
 	};
 

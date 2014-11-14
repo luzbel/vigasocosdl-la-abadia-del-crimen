@@ -20,13 +20,13 @@
 struct PaletteEntry {
 	UINT8 B;
 	UINT8 G;
-	UINT8 R;
+	UINT8 R; 
 	UINT8 alpha;
 
 	PaletteEntry(){}
 	PaletteEntry(int r, int g, int b) { R = r; G = g; B = b; alpha = 0xff; }
 	PaletteEntry(int r, int g, int b, int a) { R = r; G = g; B = b; alpha = a; }
-}; // Falta alinear esta estructura en gcc
+} __attribute__((packed)); // Falta alinear esta estructura en gcc
 
 // Esto solo vale para la version de Vigasoco para Windows
 #ifndef __GNUC__
