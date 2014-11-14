@@ -99,11 +99,15 @@
     		/* Here p is the address to the pixel we want to set */
 		Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
 
-//		*(Uint32 *)p = _palette[color];
+//		*(Uint32 *)p = _palette[color]; // este es el codigo para 32 bits, y no para 8
+
+		// *p=color; // asi se ve muy oscuro y no escoge el mejor gris para el color que viene
+
 		UINT8 r, g, b;
 
 		palette->getColor(color, r, g, b);
-		*(Uint32 *)p = SDL_MapRGB(screen->format,r,g,b);
+		//*(Uint32 *)p = SDL_MapRGB(screen->format,r,g,b);  // Con exto salen rayajos ...
+		*p = SDL_MapRGB(screen->format,r,g,b);  // Asi, si
 
 
 		if ( SDL_MUSTLOCK(screen) ) {
