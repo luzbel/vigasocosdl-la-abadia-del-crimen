@@ -1,4 +1,4 @@
-// LinuxSDLWindow32bpp.h
+// LinuxSDLWindow16bpp.h
 //
 //      Class that implements a Linux SDL Windowed 16bpp mode Plugin
 //
@@ -7,18 +7,18 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LINUX_SDL_WINDOW_32BPP_H_
-#define _LINUX_SDL_WINDOW_32BPP_H_
+#ifndef _LINUX_SDL_WINDOW_16BPP_H_
+#define _LINUX_SDL_WINDOW_16BPP_H_
 
 
-#include "LinuxSDL32bpp.h"
+#include "LinuxSDL16bpp.h"
 
-class LinuxSDLWindow32bpp : public LinuxSDL32bpp
+class LinuxSDLWindow16bpp : public LinuxSDL16bpp
 {
 public:
-	LinuxSDLWindow32bpp(){ }
-	 ~LinuxSDLWindow32bpp(){}
+	LinuxSDLWindow16bpp(){ }
+	 ~LinuxSDLWindow16bpp(){}
 	 virtual bool init(const VideoInfo *vi, IPalette *pal) ;
 };
 
-#endif // _LINUX_SDL_WINDOW_32BPP_H_
+#endif // _LINUX_SDL_WINDOW_16BPP_H_

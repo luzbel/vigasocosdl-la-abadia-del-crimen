@@ -21,9 +21,6 @@ public:
 	LinuxSDLFullScreen32bpp(){ }
 	 ~LinuxSDLFullScreen32bpp(){}
 	 virtual bool init(const VideoInfo *vi, IPalette *pal) ;
-
-	 virtual void render(bool throttle);
-	 virtual void setPixel(int x, int y, int color);
 };
 
 #endif // _LINUX_SDL_FULLSCREEN_32BPP_H_

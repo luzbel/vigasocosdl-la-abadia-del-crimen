@@ -22,8 +22,6 @@ public:
 	 virtual bool init(const VideoInfo *vi, IPalette *pal);
 
 	// drawing methods
-	 virtual void render(bool throttle) ;
-
 	 virtual void setPixel(int x, int y, int color) ;
 
 protected:

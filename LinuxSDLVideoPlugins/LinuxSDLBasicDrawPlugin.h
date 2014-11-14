@@ -19,6 +19,7 @@ protected:
 	UINT32 _flags;
 	int _bpp;
 private:
+//        SDL_Surface *screen;
 	IPalette *_originalPalette;
 public:
 	LinuxSDLBasicDrawPlugin(){ screen = NULL; surface = NULL; _palette = NULL; _isInitialized=false; _flags=0; _bpp=8; _originalPalette=NULL; }
@@ -27,7 +28,7 @@ public:
 	 virtual void end() ;
 
 	// getters
-	 virtual bool isInitialized() const ;
+	 virtual bool isInitialized() const { return _isInitialized; };
 	 virtual bool isFullScreen() const  {};
 
 	// bitmap creation/destruction
@@ -45,7 +46,7 @@ public:
 	 virtual void setNoClip() {};
 
 	// drawing methods
-	 virtual void render(bool throttle) {};
+	 virtual void render(bool throttle);
 
 	 virtual void setPixel(int x, int y, int color) {};
 

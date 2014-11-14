@@ -1,13 +1,13 @@
-//LinuxSDL32bpp.cpp
+//LinuxSDL24bpp.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDL32bpp.h"
+#include "LinuxSDL24bpp.h"
 #include "IPalette.h"
 
-bool LinuxSDL32bpp::init(const VideoInfo *vi, IPalette *pal)  
+bool LinuxSDL24bpp::init(const VideoInfo *vi, IPalette *pal)  
 {
-	_bpp = 32;
+	_bpp = 24;
 
 	_isInitialized = LinuxSDLBasicDrawPlugin::init(vi,pal);
 
@@ -17,7 +17,7 @@ bool LinuxSDL32bpp::init(const VideoInfo *vi, IPalette *pal)
 	return _isInitialized;
 };
 
-void LinuxSDL32bpp::setPixel(int x, int y, int color)
+void LinuxSDL24bpp::setPixel(int x, int y, int color)
 {
 	/* Lock the surface for direct access to the pixels */
 	if ( SDL_MUSTLOCK(surface) ) {

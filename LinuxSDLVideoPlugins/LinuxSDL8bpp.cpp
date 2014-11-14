@@ -18,17 +18,6 @@ bool LinuxSDL8bpp::init(const VideoInfo *vi, IPalette *pal)
 
 	_isInitialized = LinuxSDLBasicDrawPlugin::init(vi,pal);
 
-	if (_isInitialized)
-	{
-
-		surface = SDL_CreateRGBSurface(SDL_HWSURFACE,screen->w, screen->h,screen->format->BitsPerPixel, 0, 0, 0, 0);
-
-		if (surface== NULL ) {
-			fprintf(stderr, "Couldn't create surface: %s\n", SDL_GetError());
-			_isInitialized=false;
-		}
-	} 
-
 	return _isInitialized;
 };
 
@@ -69,14 +58,6 @@ void LinuxSDL8bpp::update(IPalette *palette, int data)
 		updateFullPalette(palette);
 	} 
 }
-
-// drawing methods
-void LinuxSDL8bpp::render(bool throttle)
-{
-	if ( SDL_BlitSurface(surface, NULL, screen, NULL) < 0 )
-		fprintf(stderr, "SDL error when BlitSurface %s\n", SDL_GetError());
-	SDL_Flip(screen);
-};
 
 void LinuxSDL8bpp::setPixel(int x, int y, int color)
 {
