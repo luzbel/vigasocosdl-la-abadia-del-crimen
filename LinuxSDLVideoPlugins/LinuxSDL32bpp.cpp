@@ -1,14 +1,13 @@
-// LinuxSDLFullScreen32bpp.cpp
+//LinuxSDL32bpp.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDLFullScreen32bpp.h"
+#include "LinuxSDL32bpp.h"
 #include "IPalette.h"
 
-bool LinuxSDLFullScreen32bpp::init(const VideoInfo *vi, IPalette *pal)  
+bool LinuxSDL32bpp::init(const VideoInfo *vi, IPalette *pal)  
 {
 	_bpp = 32;
-	_flags |= SDL_FULLSCREEN;
 
 	_isInitialized = LinuxSDLBasicDrawPlugin::init(vi,pal);
 
@@ -19,12 +18,12 @@ bool LinuxSDLFullScreen32bpp::init(const VideoInfo *vi, IPalette *pal)
 };
 
 //drawing methods
-void LinuxSDLFullScreen32bpp::render(bool throttle)
+void LinuxSDL32bpp::render(bool throttle)
 {
 	SDL_Flip(screen);
 };
 
-void LinuxSDLFullScreen32bpp::setPixel(int x, int y, int color)
+void LinuxSDL32bpp::setPixel(int x, int y, int color)
 {
 	/* Lock the screen for direct access to the pixels */
 	if ( SDL_MUSTLOCK(screen) ) {

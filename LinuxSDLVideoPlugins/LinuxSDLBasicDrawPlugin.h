@@ -7,11 +7,9 @@
 #ifndef _LINUX_SDL_BASIC_DRAW_PLUGIN_H_
 #define _LINUX_SDL_BASIC_DRAW_PLUGIN_H_
 
-#include "IDrawPlugin.h"
-#include "SDL.h"
-#include "util/INotificationSuscriber.h"
+#include "LinuxSDLDrawPlugin.h"
 
-class LinuxSDLBasicDrawPlugin: public IDrawPlugin,public INotificationSuscriber<IPalette>
+class LinuxSDLBasicDrawPlugin: public LinuxSDLDrawPlugin
 {
 protected:
         SDL_Surface *screen;
@@ -23,61 +21,61 @@ protected:
 private:
 	IPalette *_originalPalette;
 public:
-	LinuxSDLBasicDrawPlugin(){ screen = NULL; _palette = NULL; _isInitialized=false; _flags=0; _bpp=8; _originalPalette=NULL; }
+	LinuxSDLBasicDrawPlugin(){ screen = NULL; surface = NULL; _palette = NULL; _isInitialized=false; _flags=0; _bpp=8; _originalPalette=NULL; }
 	 virtual ~LinuxSDLBasicDrawPlugin(){}
-	 virtual bool init(const VideoInfo *vi, IPalette *pal) = 0 ;
-	 void end() ;
+	 virtual bool init(const VideoInfo *vi, IPalette *pal);
+	 virtual void end() ;
 
 	// getters
 	 virtual bool isInitialized() const ;
-	 virtual bool isFullScreen() const  = 0;
+	 virtual bool isFullScreen() const  {};
 
 	// bitmap creation/destruction
-	 virtual int createBitmap(int width, int height)  = 0;
-	 virtual void destroyBitmap(int bitmap)  = 0;
+	 virtual int createBitmap(int width, int height)  {};
+	 virtual void destroyBitmap(int bitmap)  {};
 
 	// bitmap methods
-	 virtual void setActiveBitmap(int bitmap) = 0;
-	 virtual void compose(int bitmap, int mode, int attr) = 0;
-	 virtual void getDimensions(int &width, int &height) const = 0;
+	 virtual void setActiveBitmap(int bitmap) {};
+	 virtual void compose(int bitmap, int mode, int attr) {};
+	 virtual void getDimensions(int &width, int &height) const {};
 
 	// clipping methods
-	 virtual const Rect *getClipArea() const = 0;
-	 virtual void setClipArea(int x, int y, int width, int height) = 0;
-	 virtual void setNoClip() = 0;
+	 virtual const Rect *getClipArea() const {};
+	 virtual void setClipArea(int x, int y, int width, int height) {};
+	 virtual void setNoClip() {};
 
 	// drawing methods
-	 virtual void render(bool throttle) = 0;
+	 virtual void render(bool throttle) {};
 
-	 virtual void setPixel(int x, int y, int color) = 0;
+	 virtual void setPixel(int x, int y, int color) {};
 
-	 virtual void drawLine(int x0, int y0, int x1, int y1, int color) = 0;
-	 virtual void drawRect(Rect *rect, int color) = 0;
-	 virtual void drawRect(int x0, int y0, int width, int height, int color) = 0;
-	 virtual void drawCircle(int x, int y, int radius, int color) = 0;
-	 virtual void drawEllipse(int x, int y, int a, int b, int color) = 0;
+	 virtual void drawLine(int x0, int y0, int x1, int y1, int color) {};
+	 virtual void drawRect(Rect *rect, int color) {};
+	 virtual void drawRect(int x0, int y0, int width, int height, int color) {};
+	 virtual void drawCircle(int x, int y, int radius, int color) {};
+	 virtual void drawEllipse(int x, int y, int a, int b, int color) {};
 
-	 virtual void fillRect(Rect *rect, int color) = 0;
-	 virtual void fillRect(int x0, int y0, int width, int height, int color) = 0;
-	 virtual void fillCircle(int x, int y, int radius, int color) = 0;
-	 virtual void fillEllipse(int x, int y, int a, int b, int color) = 0;
+	 virtual void fillRect(Rect *rect, int color) {};
+	 virtual void fillRect(int x0, int y0, int width, int height, int color) {};
+	 virtual void fillCircle(int x, int y, int radius, int color) {};
+	 virtual void fillEllipse(int x, int y, int a, int b, int color) {};
 
-	 virtual void drawGfx(GfxElement *gfx, int code, int color, int x, int y, int attr) = 0;
-	 virtual void drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr) = 0;
-	 virtual void drawGfxTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) = 0;
-	 virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) = 0;
+	 virtual void drawGfx(GfxElement *gfx, int code, int color, int x, int y, int attr) {};
+	 virtual void drawGfxClip(GfxElement *gfx, int code, int color, int x, int y, int attr) {};
+	 virtual void drawGfxTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) {};
+	 virtual void drawGfxClipTrans(GfxElement *gfx, int code, int color, int x, int y, int attr, int transData) {};
 
 	// access to custom plugin properties
-	 virtual const std::string *getProperties(int *num) const = 0;
-	 virtual const int *getPropertiesType() const = 0;
-	 virtual void setProperty(std::string prop, int data) = 0;
-	 virtual void setProperty(std::string prop, int index, int data) = 0;
-	 virtual int getProperty(std::string prop) const = 0;
-	 virtual int getProperty(std::string prop, int index) const = 0;
+	 virtual const std::string *getProperties(int *num) const {};
+	 virtual const int *getPropertiesType() const {};
+	 virtual void setProperty(std::string prop, int data) {};
+	 virtual void setProperty(std::string prop, int index, int data) {};
+	 virtual int getProperty(std::string prop) const {};
+	 virtual int getProperty(std::string prop, int index) const {};
 protected:
 	// palette changed notification
-//	virtual void update(IPalette *palette, int data);
-//	void updateFullPalette(IPalette *palette);
+	virtual void update(IPalette *palette, int data) {};
+	void updateFullPalette(IPalette *palette) {};
 };
 
 #endif // _LINUX_SDL_BASIC_DRAW_PLUGIN_H_

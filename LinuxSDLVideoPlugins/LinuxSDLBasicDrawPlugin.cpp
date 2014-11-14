@@ -5,7 +5,11 @@
 #include "LinuxSDLBasicDrawPlugin.h"
 #include "IPalette.h"
 
-void LinuxSDLBasicDrawPlugin::end()  { _originalPalette->detach(this); _isInitialized = false; };
+void LinuxSDLBasicDrawPlugin::end()  { 
+	if ( _originalPalette )
+		_originalPalette->detach(this);
+	_isInitialized = false;
+};
 
 // getters
 bool LinuxSDLBasicDrawPlugin::isInitialized() const  { return _isInitialized; };
@@ -22,22 +26,12 @@ bool LinuxSDLBasicDrawPlugin::init(const VideoInfo *vi, IPalette *pal)
 
 	screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
 	if ( screen == NULL ) {
-		fprintf(stderr, "Couldn't set 640x480x8 video mode: %s\n",
-				SDL_GetError());
+		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
+				vi->width,vi->height,_bpp,SDL_GetError());
 		return false;
 	}
 
-	surface=NULL;
-	surface = SDL_CreateRGBSurface(SDL_HWSURFACE,screen->w, screen->h,screen->format->BitsPerPixel, 0, 0, 0, 0);
-
-	if ( surface == NULL ) {
-		fprintf(stderr, "Couldn't create surface: %s\n", SDL_GetError());
-		return false;
-	}
-	else
-	{
-		fprintf(stderr, "surface ok\n");
-	}
+	surface=screen;
 
 	_originalPalette=pal;
 	pal->attach(this);
