@@ -50,69 +50,9 @@ void PrintFlags(Uint32 flags)
 
 	bool LinuxSDLWindow8bpp::init(const VideoInfo *vi, IPalette *pal)  
 	{
-		if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
-#ifdef DEBUG
-			fprintf(stderr,
-                	"Couldn't initialize SDL: %s\n", SDL_GetError());
-#endif
-			return false;
-		}
+		_bpp = 8;
 
-		//screen = SDL_SetVideoMode(640, 480, 8, SDL_HWSURFACE|SDL_DOUBLEBUF);
-		screen = SDL_SetVideoMode(vi->width, vi->height, 8, SDL_HWSURFACE|SDL_DOUBLEBUF);
-		if ( screen == NULL ) {
-#ifdef DEBUG
-		        fprintf(stderr, "Couldn't set 640x480x8 video mode: %s\n",
-                        SDL_GetError());
-#endif
-		        return false;
-	    	}
-PrintFlags(screen->flags);
-
-surface=NULL;
-		surface = SDL_CreateRGBSurface(SDL_HWSURFACE,screen->w, screen->h,screen->format->BitsPerPixel, 0, 0, 0, 0);
-
-		if ( surface == NULL ) {
-			                fprintf(stderr, "Couldn't create surface: %s\n", SDL_GetError());
-					                return false;
-							        }
-		else
-		{
-			fprintf(stderr, "surface ok\n");
-		}
-		{
-			SDL_Color colors[256];
-			int i;
-				/* Fill colors with color information */
-		/*	
-				for(i=0;i<256;i++){
-					  colors[i].r=i;
-					    colors[i].g=i;
-					      colors[i].b=i;
-				} */
-				 
-				for(i=0;i<256;i++){
-					  colors[i].r=0;
-					    colors[i].g=0;
-					      colors[i].b=0;
-				}
-				for(i=0;i<pal->getTotalColors();i++){
-					Uint8 b,g,r;
-				                pal->getColor(i,r,g,b);
-						fprintf(stderr,"color %d: %d %d %d\n",i,r,g,b);
-					  colors[i].r=r;
-					    colors[i].g=g;
-					      colors[i].b=b;
-				}
-
-			SDL_SetColors(surface, colors, 0, 256);
-			SDL_SetColors(screen, colors, 0, 256); 
-		}
-
-	        // gets a pointer to the game's palette
-	        _palette = (UINT32 *)pal->getRawPalette();
-//prueba
-_pal = pal;
+		LinuxSDLBasicDrawPlugin::init(vi,pal);
 
 		_isInitialized = true;
 
@@ -121,6 +61,7 @@ _pal = pal;
 
 
 
+	//void LinuxSDLWindow8bpp::end()  { _pal->detach(this); LinuxSDLBasicDrawPlugin::end(); };
 	void LinuxSDLWindow8bpp::end()  { LinuxSDLBasicDrawPlugin::end(); };
 
 	// no se porque el linkador se queja sin esto, ?no deberia tomar la virtual de LinuxSDLBasicDrawPlugin ?
@@ -150,6 +91,7 @@ _pal = pal;
 void LinuxSDLWindow8bpp::updateFullPalette(IPalette *palette)
 {
 	SDL_Color colors[256];
+			fprintf(stderr,"LinuxSDLWindow8bpp::updateFullPalette\n");
 	for (int i = 0; i < palette->getTotalColors(); i++){
 		UINT8 r, g, b;
 
@@ -159,7 +101,7 @@ void LinuxSDLWindow8bpp::updateFullPalette(IPalette *palette)
 		colors[i].b=b;
 	}
 	SDL_SetColors(surface, colors, 0, 256);
-	SDL_SetColors(screen, colors, 0, 256); 
+//	SDL_SetColors(screen, colors, 0, 256); 
 }
 
 void LinuxSDLWindow8bpp::update(IPalette *palette, int data)
@@ -175,7 +117,7 @@ void LinuxSDLWindow8bpp::update(IPalette *palette, int data)
 		color.b=b;
 
 		SDL_SetColors(surface, &color, data, 1);
-		SDL_SetColors(screen, &color, data, 1); 
+//		SDL_SetColors(screen, &color, data, 1); // esto hace cosas raras ??? 
 	} else {
 		// full palette update
 		updateFullPalette(palette);
