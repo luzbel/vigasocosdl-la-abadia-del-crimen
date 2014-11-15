@@ -20,4 +20,4 @@ test: test.o
 	$(CXX) -g test.o -o test -L ../VigasocoLinuxSDL/video/ -l VigasocoLinuxSDLDrawPlugin `sdl-config --libs`
 
 clean:
-	rm -f $(OBJECTS) ../VigasocoLinuxSDL/video/libVigasocoLinuxSDLDrawPlugin.so
+	rm -f $(OBJECTS) ../VigasocoLinuxSDL/video/libVigasocoLinuxSDLDrawPlugin.so test
