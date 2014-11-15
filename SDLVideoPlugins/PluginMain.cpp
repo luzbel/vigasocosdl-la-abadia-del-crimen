@@ -2,22 +2,15 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDLWindow8bpp.h"
-#include "LinuxSDLWindow16bpp.h"
-#include "LinuxSDLWindow24bpp.h"
-#include "LinuxSDLWindow32bpp.h"
-#include "LinuxSDLFullScreen8bpp.h"
-#include "LinuxSDLFullScreen16bpp.h"
-#include "LinuxSDLFullScreen24bpp.h"
-#include "LinuxSDLFullScreen32bpp.h"
-#include "LinuxSDLWindowGris8bpp.h"
+#include "SDLVideoPlugins.h"
 
 #include "SDL.h"
 
-static const char *description = "VIGASOCO Linux SDL Plugins v1.0";
+static const char *description = "VIGASOCO Linux SDL Plugins v1.1";
 
 static const char *plugins[] = {
-	 "win8" , "win16" , "win24", "win32", "full8" , "full16", "full24" , "full32" , "wingris8"
+	 "win8"  , "win16" , "win24"  , "win32"  , "wingris8" ,
+	 "full8" , "full16", "full24" , "full32" , "fullgris8"
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -28,23 +21,25 @@ extern "C" DECLSPEC
 void createPlugin(const char *name,void**a)
 {
 	if (strcmp(name, plugins[0]) == 0){
-		*a=new LinuxSDLWindow8bpp(); 
+		*a=new SDLDrawPluginWindow8bpp(); 
 	} else if (strcmp(name, plugins[1]) == 0){
-		*a=new LinuxSDLWindow16bpp();
+		*a=new SDLDrawPluginWindow16bpp();
 	} else if (strcmp(name, plugins[2]) == 0){
-		*a=new LinuxSDLWindow24bpp();
+		*a=new SDLDrawPluginWindow24bpp();
 	} else if (strcmp(name, plugins[3]) == 0){
-		*a=new LinuxSDLWindow32bpp();
+		*a=new SDLDrawPluginWindow32bpp();
 	} else if (strcmp(name, plugins[4]) == 0){
-		*a=new LinuxSDLFullScreen8bpp();
+		*a=new SDLDrawPluginWindowPaletaGrises8bpp();
 	} else if (strcmp(name, plugins[5]) == 0){
-		*a=new LinuxSDLFullScreen16bpp();
+		*a=new SDLDrawPluginFullScreen8bpp();
 	} else if (strcmp(name, plugins[6]) == 0){
-		*a=new LinuxSDLFullScreen24bpp();
+		*a=new SDLDrawPluginFullScreen16bpp();
 	} else if (strcmp(name, plugins[7]) == 0){
-		*a=new LinuxSDLFullScreen32bpp();
+		*a=new SDLDrawPluginFullScreen24bpp();
 	} else if (strcmp(name, plugins[8]) == 0){
-		*a=new LinuxSDLWindowGris8bpp();
+		*a=new SDLDrawPluginFullScreen32bpp();
+	} else if (strcmp(name, plugins[9]) == 0){
+		*a=new SDLDrawPluginFullScreenPaletaGrises8bpp();
 	} else {
 		*a=NULL;
 	}
