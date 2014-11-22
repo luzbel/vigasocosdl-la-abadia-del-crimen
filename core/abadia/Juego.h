@@ -94,6 +94,8 @@ protected:
 	void flipeaGraficos(UINT8 *tablaFlip, UINT8 *src, UINT8 *dest, int ancho, int bytes);
 
 	void compruebaPausa();
+	bool compruebaLoad();
+	void compruebaSave();
 };
 
 

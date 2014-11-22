@@ -11,6 +11,11 @@
 #include "../util/Singleton.h"
 #include "../Types.h"
 
+//666 temporal salvar/cargar
+#include <fstream>
+#include <iostream>
+using namespace std;
+
 namespace Abadia {
 
 
@@ -137,6 +142,12 @@ public:
 	// inicialización y limpieza
 	Logica(UINT8 *romData, UINT8 *buf, int lgtud);
 	~Logica();
+
+
+	// cargar/salvar 666 temporal
+	void load(ifstream &in);
+	void save(ofstream &out);
+
 
 // métodos de ayuda
 protected:

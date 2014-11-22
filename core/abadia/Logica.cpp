@@ -4,6 +4,11 @@
 
 #include "../TimingHandler.h"
 
+//666
+#include "iostream"
+#include "fstream"
+using namespace std;
+
 #include "Abad.h"
 #include "AccionesDia.h"
 #include "Adso.h"
@@ -29,6 +34,9 @@
 #include "Sprite.h"
 #include "SpriteLuz.h"
 #include "SpriteMonje.h"
+
+// 666 prueba para poder cambiar la paleta al cargar la partida
+//#include "Paleta.h"
 
 using namespace Abadia;
 
@@ -1040,3 +1048,553 @@ void Logica::iniciaObjetos()
 	objetos[7]->posY = 0x08;
 	objetos[7]->altura = 0x02;
 }
+
+//666
+void Logica::save(ofstream &out)
+{
+		out << dia;
+		out << endl;
+		out << momentoDia;
+		out << endl;
+		out << duracionMomentoDia;
+		out << endl;
+		out << oldMomentoDia;
+		out << endl;
+		out << avanzarMomentoDia;
+		out << endl;
+		out << obsequium;
+		out << endl;
+		out << haFracasado;
+		out << endl;
+		out << investigacionCompleta;
+		out << endl;
+		out << bonus;
+		out << endl;
+		out << mascaraPuertas;
+		out << endl;
+		out << espejoCerrado;
+		out << endl;
+		out << numeroRomano;
+		out << endl;
+		out << despDatosAlturaEspejo;
+		out << endl;
+		out << despBloqueEspejo;
+		out << endl;
+		out << seAcabaLaNoche;
+		out << endl;
+		out << haAmanecido;
+		out << endl;
+		out << usandoLampara;
+		out << endl;
+		out << lamparaDesaparecida;
+		out << endl;
+		out << tiempoUsoLampara;
+		out << endl;
+		out << cambioEstadoLampara;
+		out << endl;
+		out << cntTiempoAOscuras;
+		out << endl;
+		out << cntLeeLibroSinGuantes;
+		out << endl;
+		out << pergaminoGuardado;
+		out << endl;
+		out << numeroAleatorio;
+		out << endl;
+		out << hayMovimiento;
+		out << endl;
+		out << cntMovimiento;
+		out << endl;
+		out << numPersonajeCamara;
+		out << endl;
+		out << opcionPersonajeCamara;
+		out << endl;
+
+
+	for (int i = 0; i < Juego::numSprites; i++){
+		out << elJuego->sprites[i]->esVisible;
+		out << endl;
+	}
+	// obtiene los personajes del juego
+	guillermo = (Guillermo *)elJuego->personajes[0];
+	adso = (Adso *)elJuego->personajes[1];
+	malaquias = (Malaquias *)elJuego->personajes[2];
+	abad = (Abad *)elJuego->personajes[3];
+	berengario = (Berengario *)elJuego->personajes[4];
+	severino = (Severino *)elJuego->personajes[5];
+	jorge = (Jorge *)elJuego->personajes[6];
+	bernardo = (Bernardo *)elJuego->personajes[7];
+
+	// recorre los personajes e inicia sus características comunes
+	for (int i = 0; i < Juego::numPersonajes; i++){
+		Personaje *pers = elJuego->personajes[i];
+		out << pers->estado;
+		out << endl;
+		out << pers->contadorAnimacion;
+		out << endl;
+		out << pers->bajando;
+		out << endl;
+		out << pers->orientacion;
+		out << endl;
+		out << pers->enDesnivel;
+		out << endl;
+		out << pers->giradoEnDesnivel;
+		out << endl;
+		out << pers->flipX;
+		out << endl;
+		out << pers->despFlipX;
+		out << endl;
+		out << pers->despX;
+		out << endl;
+		out << pers->despY;
+		out << endl;
+		out << pers->valorPosicion;
+		out << endl;
+		out << pers->puedeQuitarObjetos;
+		out << endl;
+		out << pers->objetos;
+		out << endl;
+		out << pers->mascaraObjetos;
+		out << endl;
+		out << pers->contadorObjetos;
+		out << endl;
+		out << pers->permisosPuertas;
+		out << endl;
+		out << pers->numFotogramas; //?es necesario guardar esto??
+		out << endl;
+		out << pers->orientacion; 
+		out << endl;
+		out << pers->posX; 
+		out << endl;
+		out << pers->posY; 
+		out << endl;
+		out << pers->altura; 
+		out << endl;
+
+		if (pers == guillermo) continue;
+
+		PersonajeConIA *persIA = (PersonajeConIA *)elJuego->personajes[i];
+
+		/* parece que esto no se graba bien en ascii,
+		 * voy a quitarlo y luego a probar a grabar en binario
+		// ?? a lo mejor aqui no hace falta grabar nada, y al cargar
+		// es suficiente con poner pensarNuevoMovimiento a true
+		out << persIA->numBitAcciones;
+		out << endl;
+		out << persIA->pensarNuevoMovimiento;
+		out << endl;
+		out << persIA->posAcciones;
+		out << endl;
+		for (int j=0;j<sizeof(persIA->bufAcciones);j++)
+		{
+			out << persIA->bufAcciones[j];
+			out << endl;
+		}*/
+
+		//?lugares??
+
+		out << persIA->mascarasPuertasBusqueda; 
+		out << endl;
+		out << persIA->aDondeVa; 
+		out << endl;
+		out << persIA->aDondeHaLlegado; 
+		out << endl;
+	}
+
+	// guillermo
+	out << guillermo->incrPosY;
+		out << endl;
+
+	// adso
+	out << adso->oldEstado;
+		out << endl;
+	out << adso->movimientosFrustados;
+		out << endl;
+	out << adso->cntParaDormir;
+		out << endl;
+	
+	// malaquías
+	out << malaquias->estaMuerto;
+		out << endl;
+	out << malaquias->estado2;
+		out << endl;
+		// vaya, esto es protected... 666
+		// se solucionara cuando cada clase tenga
+		// su operador << 
+//	out << malaquias->contadorEnScriptorium;
+//		out << endl;
+
+	// el abad
+	out << abad->contador;
+		out << endl;
+	out << abad->numFrase;
+		out << endl;
+	out << abad->guillermoBienColocado;
+		out << endl;
+	out << abad->lleganLosMonjes;
+		out << endl;
+	out << abad->guillermoHaCogidoElPergamino;
+		out << endl;
+
+	// berengario
+//666	out << berengario->fijaCapucha;
+//aqui habra que guardar otra cosa y luego llamar al fijaCapucha
+	out << berengario->estado2;
+		out << endl;
+	out << berengario->estaVivo;
+		out << endl;
+	out << berengario->contadorPergamino;
+		out << endl;
+
+	// severino
+	out << severino->estaVivo;
+		out << endl;
+
+	// jorge
+	out << jorge->estaActivo;
+		out << endl;
+	out << jorge->contadorHuida;
+		out << endl;
+
+	// bernardo gui
+	out << bernardo->estaEnLaAbadia;
+		out << endl;
+
+	Puerta **puertas = elJuego->puertas;
+
+	for (int i = 0; i < Juego::numPuertas; i++){
+		out <<  puertas[i]->identificador;
+		out << endl;
+		out <<  puertas[i]->estaAbierta;
+		out << endl;
+		out <<  puertas[i]->haciaDentro;
+		out << endl;
+		out <<  puertas[i]->estaFija;
+		out << endl;
+		out <<  puertas[i]->hayQueRedibujar;
+		out << endl;
+		// Parte EntidadJuego
+		out <<  puertas[i]->orientacion;
+		out << endl;
+		out <<  puertas[i]->posX;
+		out << endl;
+		out <<  puertas[i]->posY;
+		out << endl;
+		out <<  puertas[i]->altura;
+		out << endl;
+	}
+
+	Objeto **objetos = elJuego->objetos;
+
+	for (int i = 0; i < Juego::numObjetos; i++){
+		int j;
+
+		out << objetos[i]->seEstaCogiendo;
+		out << endl;
+		out << objetos[i]->seHaCogido;
+		out << endl;
+
+//666		out << objetos[i]->personaje;
+		for (	j = Juego::numPersonajes-1;
+			( objetos[i]->personaje != elJuego->personajes[j] &&
+			  j>=0 );
+			j--) ;
+		out << j;
+		out << endl;
+
+		// Parte EntidadJuego
+		out << objetos[i]->orientacion;
+		out << endl;
+		out << objetos[i]->posX;
+		out << endl;
+		out << objetos[i]->posY;
+		out << endl;
+		out << objetos[i]->altura;
+		out << endl;
+//uhmm, como grabamos esto ...
+	} 
+		out << endl;
+}
+
+void Logica::load(ifstream &in)
+{
+		in >> dia;
+		
+		in >> momentoDia;
+//666 falta esto
+/* Hay que fijar la paleta segun el momento del dia
+ ya que en el juego solo se hace al entrar en prima
+ o en completas 
+	// fija la paleta de noche
+	elJuego->paleta->setGamePalette(3);
+	// fija la paleta de día
+	elJuego->paleta->setGamePalette(2);
+	*/
+		/* no va , porque en Marcador::muestraDiaYMomentoDia
+		 * se vuelve a cambiar
+		if (	momentoDia==COMPLETAS ||
+			momentoDia==NOCHE )
+		{
+			elJuego->paleta->setGamePalette(3);
+		}
+		else
+		{
+			elJuego->paleta->setGamePalette(2);
+		} */
+
+		
+		in >> duracionMomentoDia;
+		
+		in >> oldMomentoDia;
+		
+		in >> avanzarMomentoDia;
+		
+		in >> obsequium;
+		
+		in >> haFracasado;
+		
+		in >> investigacionCompleta;
+		
+		in >> bonus;
+		
+		in >> mascaraPuertas;
+		
+		in >> espejoCerrado;
+		
+		in >> numeroRomano;
+		
+		in >> despDatosAlturaEspejo;
+		
+		in >> despBloqueEspejo;
+		
+		in >> seAcabaLaNoche;
+		
+		in >> haAmanecido;
+		
+		in >> usandoLampara;
+		
+		in >> lamparaDesaparecida;
+		
+		in >> tiempoUsoLampara;
+		
+		in >> cambioEstadoLampara;
+		
+		in >> cntTiempoAOscuras;
+		
+		in >> cntLeeLibroSinGuantes;
+		
+		in >> pergaminoGuardado;
+		
+		in >> numeroAleatorio;
+		
+		in >> hayMovimiento;
+		
+		in >> cntMovimiento;
+		
+		in >> numPersonajeCamara;
+		
+		in >> opcionPersonajeCamara;
+			
+		
+	for (int i = 0; i < Juego::numSprites; i++){
+		in >> elJuego->sprites[i]->esVisible;
+		
+	}
+	// obtiene los personajes del juego
+	guillermo = (Guillermo *)elJuego->personajes[0];
+	adso = (Adso *)elJuego->personajes[1];
+	malaquias = (Malaquias *)elJuego->personajes[2];
+	abad = (Abad *)elJuego->personajes[3];
+	berengario = (Berengario *)elJuego->personajes[4];
+	severino = (Severino *)elJuego->personajes[5];
+	jorge = (Jorge *)elJuego->personajes[6];
+	bernardo = (Bernardo *)elJuego->personajes[7];
+
+	// recorre los personajes e inicia sus características comunes
+	for (int i = 0; i < Juego::numPersonajes; i++){
+		Personaje *pers = elJuego->personajes[i];
+		in >> pers->estado;
+		
+		in >> pers->contadorAnimacion;
+		
+		in >> pers->bajando;
+		
+		in >> pers->orientacion;
+		
+		in >> pers->enDesnivel;
+		
+		in >> pers->giradoEnDesnivel;
+		
+		in >> pers->flipX;
+		
+		in >> pers->despFlipX;
+		
+		in >> pers->despX;
+		
+		in >> pers->despY;
+		
+		in >> pers->valorPosicion;
+		
+		in >> pers->puedeQuitarObjetos;
+		
+		in >> pers->objetos;
+		
+		in >> pers->mascaraObjetos;
+		
+		in >> pers->contadorObjetos;
+		
+		in >> pers->permisosPuertas;
+		
+		in >> pers->numFotogramas; //?es necesario guardar esto??
+		
+		in >> pers->orientacion; 
+		
+		in >> pers->posX; 
+		
+		in >> pers->posY; 
+		
+		in >> pers->altura; 
+		
+
+		if (pers == guillermo) continue;
+
+		PersonajeConIA *persIA = (PersonajeConIA *)elJuego->personajes[i];
+		// ?? a lo mejor aqui no hace falta grabar nada, y al cargar
+		// es suficiente con poner pensarNuevoMovimiento a true
+		/*
+		in >> persIA->numBitAcciones;
+		
+		in >> persIA->pensarNuevoMovimiento;
+		
+		in >> persIA->posAcciones;
+		
+		for (int j=0;j<sizeof(persIA->bufAcciones);j++)
+		{
+			in >> persIA->bufAcciones[j];
+			
+		} */
+		persIA->pensarNuevoMovimiento=true;
+
+		//?lugares??
+
+		in >> persIA->mascarasPuertasBusqueda; 
+		
+		in >> persIA->aDondeVa; 
+		
+		in >> persIA->aDondeHaLlegado; 
+		
+	}
+
+	// guillermo
+	in >> guillermo->incrPosY;
+		
+
+	// adso
+	in >> adso->oldEstado;
+		
+	in >> adso->movimientosFrustados;
+		
+	in >> adso->cntParaDormir;
+		
+	
+	// malaquías
+	in >> malaquias->estaMuerto;
+		
+	in >> malaquias->estado2;
+		
+		// vaya, esto es protected... 666
+//	in >> malaquias->contadorEnScriptorium;
+		
+
+	// el abad
+	in >> abad->contador;
+		
+	in >> abad->numFrase;
+		
+	in >> abad->guillermoBienColocado;
+		
+	in >> abad->lleganLosMonjes;
+		
+	in >> abad->guillermoHaCogidoElPergamino;
+		
+
+	// berengario
+//666	in >> berengario->fijaCapucha;
+//aqui habra que guardar otra cosa y luego llamar al fijaCapucha
+	in >> berengario->estado2;
+		
+	in >> berengario->estaVivo;
+		
+	in >> berengario->contadorPergamino;
+		
+
+	// severino
+	in >> severino->estaVivo;
+		
+
+	// jorge
+	in >> jorge->estaActivo;
+		
+	in >> jorge->contadorHuida;
+		
+
+	// bernardo gui
+	in >> bernardo->estaEnLaAbadia;
+		
+
+	Puerta **puertas = elJuego->puertas;
+
+	for (int i = 0; i < Juego::numPuertas; i++){
+		in >>  puertas[i]->identificador;
+		
+		in >>  puertas[i]->estaAbierta;
+		
+		in >>  puertas[i]->haciaDentro;
+		
+		in >>  puertas[i]->estaFija;
+		
+		in >>  puertas[i]->hayQueRedibujar;
+		
+		// Parte EntidadJuego
+		in >>  puertas[i]->orientacion;
+		
+		in >>  puertas[i]->posX;
+		
+		in >>  puertas[i]->posY;
+		
+		in >>  puertas[i]->altura;
+		
+	}
+
+	Objeto **objetos = elJuego->objetos;
+
+	for (int i = 0; i < Juego::numObjetos; i++){
+		int tmp;
+
+		in >> objetos[i]->seEstaCogiendo;
+		
+		in >> objetos[i]->seHaCogido;
+		
+//666		in >> objetos[i]->personaje;
+		in >> tmp;
+		if ( tmp==-1 )
+		{
+			objetos[i]->personaje = NULL;
+		}
+		else
+		{
+			objetos[i]->personaje=elJuego->personajes[tmp];
+		}
+		
+		// Parte EntidadJuego
+		in >> objetos[i]->orientacion;
+		
+		in >> objetos[i]->posX;
+		
+		in >> objetos[i]->posY;
+		
+		in >> objetos[i]->altura;
+		
+//uhmm, como grabamos esto ...
+	} 
+		
+}	

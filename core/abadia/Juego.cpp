@@ -38,6 +38,12 @@
 #include "SpriteLuz.h"
 #include "SpriteMonje.h"
 
+//#include "SDL.h" // Para cargar/grabar partidas con SDL_rwops.h
+//666
+#include "iostream"
+#include "fstream"
+using namespace std;
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -128,10 +134,10 @@ void Juego::run()
 	controles->init(VigasocoMain->getInputHandler());
 
 	// muestra la imagen de presentación
-	muestraPresentacion();
+//666	muestraPresentacion();
 
 	// muestra el pergamino de presentación
-	muestraIntroduccion();
+//666	muestraIntroduccion();
 
 	// crea las entidades del juego (sprites, personajes, puertas y objetos)
 	creaEntidadesJuego();
@@ -156,7 +162,7 @@ void Juego::run()
 	while (true){
 		// inicia la lógica del juego
 		logica->inicia();
-
+despues_de_cargar_o_iniciar:
 		// limpia el área de juego y dibuja el marcador
 		limpiaAreaJuego(0);
 		marcador->dibujaMarcador();
@@ -187,6 +193,11 @@ void Juego::run()
 
 			// comprueba si se ha pulsado la pausa
 			compruebaPausa();
+
+			//comprueba si se intenta cargar/grabar la partida
+			compruebaSave();
+
+			if ( compruebaLoad() ) goto despues_de_cargar_o_iniciar;
 
 			// actualiza las variables relacionadas con el paso del tiempo
 			logica->actualizaVariablesDeTiempo();
@@ -376,6 +387,26 @@ void Juego::compruebaPausa()
 			}
 		}
 	}
+}
+
+// comprueba si se desea grabar la partida
+void Juego::compruebaSave()
+{
+	if (controles->seHaPulsado(KEYBOARD_S)){
+		ofstream out("abadia.save");
+		logica->save(out);
+	}
+}
+
+
+// comprueba si se desea cargar la partida
+bool Juego::compruebaLoad()
+{
+	if (controles->seHaPulsado(KEYBOARD_L)){
+		ifstream in("abadia.save");
+		logica->load(in);
+		return true;
+	} else return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////

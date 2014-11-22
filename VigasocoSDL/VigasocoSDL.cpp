@@ -166,6 +166,7 @@ void VigasocoSDL::initCompleted()
 {
 	std::string titulo_ventana = "VIGASOCO v0.04: " + _driver->getFullName();
 	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 /////////////////////////////////////////////////////////////////////////////

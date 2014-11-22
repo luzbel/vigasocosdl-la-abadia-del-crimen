@@ -49,11 +49,20 @@ Marcador::~Marcador()
 void Marcador::muestraDiaYMomentoDia()
 {
 	// coloca una paleta según el momento del día
+	/* 
 	if (laLogica->momentoDia < VISPERAS){
 		elJuego->paleta->setGamePalette(2);
 	} else {
 		elJuego->paleta->setGamePalette(3);
 	}
+	*/
+	if (laLogica->momentoDia == NOCHE ||
+		laLogica->momentoDia == COMPLETAS){
+		elJuego->paleta->setGamePalette(3);
+	} else {
+		elJuego->paleta->setGamePalette(2);
+	}
+
 
 	// dibuja el número de día en el marcador
 	dibujaDia(laLogica->dia);
