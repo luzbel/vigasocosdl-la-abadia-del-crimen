@@ -1,17 +1,17 @@
-// LinuxSDLCriticalSection.h
+// SDLCriticalSection.h
 //
-//	Class that encapsulates a Linux SDL thread
+//	Class that encapsulates a SDL thread
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LINUXSDL_CRITICAL_SECTION_H_
-#define _LINUXSDL_CRITICAL_SECTION_H_
+#ifndef _SDL_CRITICAL_SECTION_H_
+#define _SDL_CRITICAL_SECTION_H_
 
 
 #include "ICriticalSection.h"
 #include "SDL.h"
 
-class LinuxSDLCriticalSection : public ICriticalSection
+class SDLCriticalSection : public ICriticalSection
 {
 // fields
 protected:
@@ -20,8 +20,8 @@ protected:
 
 public:
 	// initialization and cleanup
-	LinuxSDLCriticalSection();
-	virtual ~LinuxSDLCriticalSection();
+	SDLCriticalSection();
+	virtual ~SDLCriticalSection();
 
 	// ICriticalSection interface
 	virtual void init();
@@ -30,4 +30,4 @@ public:
 	virtual void leave();
 };
 
-#endif	// _LINUXSDL_CRITICAL_SECTION_H_
+#endif	// _SDL_CRITICAL_SECTION_H_

@@ -1,27 +1,27 @@
-// LinuxSDLPalette.cpp
+// SDLPalette.cpp
 //
 //	Es una copia de Win32Palette de VigasocoWin32
 //	, quizas deberia usar las definiciones de paletas y colores de SDL
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDLPalette.h"
+#include "SDLPalette.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-LinuxSDLPalette::LinuxSDLPalette()
+SDLPalette::SDLPalette()
 {
 	_palette = 0;
 	_colors = 0;
 }
 
-LinuxSDLPalette::~LinuxSDLPalette()
+SDLPalette::~SDLPalette()
 {
 }
 
-void LinuxSDLPalette::init(int colors)
+void SDLPalette::init(int colors)
 {
 	assert(_palette == 0);
 
@@ -29,7 +29,7 @@ void LinuxSDLPalette::init(int colors)
 	_colors = colors;
 }
 
-void LinuxSDLPalette::end()
+void SDLPalette::end()
 {
 	delete[] _palette;
 }
@@ -38,7 +38,7 @@ void LinuxSDLPalette::end()
 // getters & setters
 /////////////////////////////////////////////////////////////////////////////
 
-void LinuxSDLPalette::setColor(int index, UINT8 r, UINT8 g, UINT8 b)
+void SDLPalette::setColor(int index, UINT8 r, UINT8 g, UINT8 b)
 {
 	assert((index >= 0) && (index < _colors));
 
@@ -50,7 +50,7 @@ void LinuxSDLPalette::setColor(int index, UINT8 r, UINT8 g, UINT8 b)
 	notify(index);
 }
 
-void LinuxSDLPalette::getColor(int index, UINT8 &r, UINT8 &g, UINT8 &b)
+void SDLPalette::getColor(int index, UINT8 &r, UINT8 &g, UINT8 &b)
 {
 	assert((index >= 0) && (index < _colors));
 
@@ -59,7 +59,7 @@ void LinuxSDLPalette::getColor(int index, UINT8 &r, UINT8 &g, UINT8 &b)
 	b = _palette[index].B;
 }
 
-void LinuxSDLPalette::setColor(int index, PaletteEntry pe)
+void SDLPalette::setColor(int index, PaletteEntry pe)
 {
 	assert((index >= 0) && (index < _colors));
 
@@ -71,7 +71,7 @@ void LinuxSDLPalette::setColor(int index, PaletteEntry pe)
 	notify(index);
 }
 
-PaletteEntry LinuxSDLPalette::getColor(int index) const
+PaletteEntry SDLPalette::getColor(int index) const
 {
 	assert((index >= 0) && (index < _colors));
 

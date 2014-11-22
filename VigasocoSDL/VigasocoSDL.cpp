@@ -1,37 +1,37 @@
-// VigasocoLinuxSDL.cpp
+// VigasocoSDL.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #include "IDrawPlugin.h"
-#include "LinuxSDLPalette.h"
+#include "SDLPalette.h"
 #include "FileLoader.h"
 #include "FontManager.h"
 #include "IInputPlugin.h"
 #include "InputHandler.h"
 #include "TimingHandler.h"
-#include "VigasocoLinuxSDL.h"
+#include "VigasocoSDL.h"
 #include "RDTSCTimer.h"
-#include "LinuxSDLCriticalSection.h"
-#include "LinuxSDLThread.h"
+#include "SDLCriticalSection.h"
+#include "SDLThread.h"
 
 // para los eventos y para poner el titulo de la ventana
 #include "SDL.h"
 
 // current plugin versions
-int VigasocoLinuxSDL::g_currentVideoPluginVersion = 1;
-int VigasocoLinuxSDL::g_currentInputPluginVersion = 1;
-int VigasocoLinuxSDL::g_currentLoaderPluginVersion = 1;
+int VigasocoSDL::g_currentVideoPluginVersion = 1;
+int VigasocoSDL::g_currentInputPluginVersion = 1;
+int VigasocoSDL::g_currentLoaderPluginVersion = 1;
 
 // paths for the plugins
-std::string VigasocoLinuxSDL::g_videoPluginPath = "video/";
-std::string VigasocoLinuxSDL::g_inputPluginPath = "input/";
-std::string VigasocoLinuxSDL::g_loaderPluginPath = "loaders/";
+std::string VigasocoSDL::g_videoPluginPath = "video/";
+std::string VigasocoSDL::g_inputPluginPath = "input/";
+std::string VigasocoSDL::g_loaderPluginPath = "loaders/";
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-VigasocoLinuxSDL::VigasocoLinuxSDL(std::string game, std::string drawPluginsDLL,
+VigasocoSDL::VigasocoSDL(std::string game, std::string drawPluginsDLL,
 				std::string drawPlugin, Strings inputPluginsDLLs, Strings inputPlugins, Strings paths)
 {
 	_pluginHandler = 0;
@@ -44,7 +44,7 @@ VigasocoLinuxSDL::VigasocoLinuxSDL(std::string game, std::string drawPluginsDLL,
 	_sPaths = paths;
 }
 
-VigasocoLinuxSDL::~VigasocoLinuxSDL()
+VigasocoSDL::~VigasocoSDL()
 {
 }
 
@@ -52,16 +52,16 @@ VigasocoLinuxSDL::~VigasocoLinuxSDL()
 // platform services
 /////////////////////////////////////////////////////////////////////////////
 
-ICriticalSection * VigasocoLinuxSDL::createCriticalSection()
+ICriticalSection * VigasocoSDL::createCriticalSection()
 {
-	return new LinuxSDLCriticalSection();
+	return new SDLCriticalSection();
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // construction template methods overrides
 /////////////////////////////////////////////////////////////////////////////
 
-bool VigasocoLinuxSDL::platformSpecificInit()
+bool VigasocoSDL::platformSpecificInit()
 {
 	// creates the plugin handler
 	// esto no compila en Linux
@@ -70,12 +70,12 @@ bool VigasocoLinuxSDL::platformSpecificInit()
 	return true;
 }
 
-void VigasocoLinuxSDL::createPalette()
+void VigasocoSDL::createPalette()
 {
-	_palette = new LinuxSDLPalette();
+	_palette = new SDLPalette();
 }
 
-void VigasocoLinuxSDL::addCustomLoaders(FileLoader *fl)
+void VigasocoSDL::addCustomLoaders(FileLoader *fl)
 {
 /* !!! FALTA POR IMPLEMENTAR EN LINUX 
 	HANDLE hSearch;
@@ -116,7 +116,7 @@ void VigasocoLinuxSDL::addCustomLoaders(FileLoader *fl)
 */
 }
 
-void VigasocoLinuxSDL::createDrawPlugin()
+void VigasocoSDL::createDrawPlugin()
 {
 	// load the plugin from a DLL
 	if (_pluginHandler->loadPlugin(g_videoPluginPath + _sDrawPluginsDLL, 
@@ -129,7 +129,7 @@ void VigasocoLinuxSDL::createDrawPlugin()
 	}
 }
 
-void VigasocoLinuxSDL::addCustomInputPlugins()
+void VigasocoSDL::addCustomInputPlugins()
 {
 	for (Strings::size_type i = 0; i < _sInputPluginsDLLs.size(); i++){
 		DLLEntry entry;
@@ -152,19 +152,19 @@ void VigasocoLinuxSDL::addCustomInputPlugins()
 	}
 }
 
-void VigasocoLinuxSDL::createTimer()
+void VigasocoSDL::createTimer()
 {
 	_timer = new RDTSCTimer();
 }
 
-void VigasocoLinuxSDL::createAsyncThread()
+void VigasocoSDL::createAsyncThread()
 {
-	_asyncThread = new LinuxSDLThread();
+	_asyncThread = new SDLThread();
 }
 
-void VigasocoLinuxSDL::initCompleted()
+void VigasocoSDL::initCompleted()
 {
-	std::string titulo_ventana = "VIGASOCO v0.02: " + _driver->getFullName();
+	std::string titulo_ventana = "VIGASOCO v0.04: " + _driver->getFullName();
 	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
 }
 
@@ -172,19 +172,19 @@ void VigasocoLinuxSDL::initCompleted()
 // destruction template methods overrides
 /////////////////////////////////////////////////////////////////////////////
 
-void VigasocoLinuxSDL::destroyAsyncThread()
+void VigasocoSDL::destroyAsyncThread()
 {
 	delete _asyncThread;
 	_asyncThread = 0;
 }
 
-void VigasocoLinuxSDL::destroyTimer()
+void VigasocoSDL::destroyTimer()
 {
 	delete _timer;
 	_timer = 0;
 }
 
-void VigasocoLinuxSDL::removeCustomInputPlugins()
+void VigasocoSDL::removeCustomInputPlugins()
 {
 	// delete the plugins and free DLLs
 	for (DLLEntries::size_type i = 0; i < _inputPluginsInfo.size(); i++){
@@ -194,12 +194,12 @@ void VigasocoLinuxSDL::removeCustomInputPlugins()
 	_inputPluginsInfo.clear();
 }
 
-void VigasocoLinuxSDL::destroyDrawPlugin()
+void VigasocoSDL::destroyDrawPlugin()
 {
 	_pluginHandler->unloadPlugin(&_drawPluginInfo);
 }
 
-void VigasocoLinuxSDL::removeCustomLoaders(FileLoader *fl)
+void VigasocoSDL::removeCustomLoaders(FileLoader *fl)
 {
 	// delete the plugins and free DLLs
 	for (DLLEntries::size_type i = 0; i < _loaderPluginsInfo.size(); i++){
@@ -209,13 +209,13 @@ void VigasocoLinuxSDL::removeCustomLoaders(FileLoader *fl)
 	_loaderPluginsInfo.clear();
 }
 
-void VigasocoLinuxSDL::destroyPalette()
+void VigasocoSDL::destroyPalette()
 {
 	delete _palette;
 	_palette = 0;
 }
 
-void VigasocoLinuxSDL::platformSpecificEnd()
+void VigasocoSDL::platformSpecificEnd()
 {
 	assert(!_drawPluginInfo.libHandle);
 	assert(_inputPluginsInfo.size() == 0);
@@ -229,7 +229,7 @@ void VigasocoLinuxSDL::platformSpecificEnd()
 // main loop template methods overrides
 /////////////////////////////////////////////////////////////////////////////
 
-bool VigasocoLinuxSDL::processEvents()
+bool VigasocoSDL::processEvents()
 {
 	SDL_Event event;
 	if ( SDL_PollEvent(&event) )

@@ -3,42 +3,42 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
-#include "LinuxSDLInputKeyboardPlugin.h"
+#include "SDLInputKeyboardPlugin.h"
 
-SDLKey LinuxSDLInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
+SDLKey SDLInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-LinuxSDLInputKeyboardPlugin::LinuxSDLInputKeyboardPlugin()
+SDLInputKeyboardPlugin::SDLInputKeyboardPlugin()
 {
 	_errorMsg = "";
 
 	initRemapTable();
 }
 
-LinuxSDLInputKeyboardPlugin::~LinuxSDLInputKeyboardPlugin()
+SDLInputKeyboardPlugin::~SDLInputKeyboardPlugin()
 {
 }
 
-bool LinuxSDLInputKeyboardPlugin::init()
+bool SDLInputKeyboardPlugin::init()
 {
 	return true;
 }
 
-void LinuxSDLInputKeyboardPlugin::end()
+void SDLInputKeyboardPlugin::end()
 {
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
 
 
-void LinuxSDLInputKeyboardPlugin::acquire()
+void SDLInputKeyboardPlugin::acquire()
 {
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 }
 
-void LinuxSDLInputKeyboardPlugin::unAcquire()
+void SDLInputKeyboardPlugin::unAcquire()
 {
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
@@ -47,7 +47,7 @@ void LinuxSDLInputKeyboardPlugin::unAcquire()
 // input processing
 /////////////////////////////////////////////////////////////////////////////
 
-void LinuxSDLInputKeyboardPlugin::process(int *inputs)
+void SDLInputKeyboardPlugin::process(int *inputs)
 {
 	Uint8 *keystate = SDL_GetKeyState(NULL);
 	
@@ -69,7 +69,7 @@ void LinuxSDLInputKeyboardPlugin::process(int *inputs)
 // helper methods
 /////////////////////////////////////////////////////////////////////////////
 
-void LinuxSDLInputKeyboardPlugin::initRemapTable()
+void SDLInputKeyboardPlugin::initRemapTable()
 {
 	memset(g_keyMapping, 0, sizeof(g_keyMapping));
 
@@ -165,30 +165,30 @@ void LinuxSDLInputKeyboardPlugin::initRemapTable()
 // Custom plugin properties
 /////////////////////////////////////////////////////////////////////////////
 
-const std::string LinuxSDLInputKeyboardPlugin::g_properties[] = {
+const std::string SDLInputKeyboardPlugin::g_properties[] = {
 	"keyConfig"
 };
 
-const int LinuxSDLInputKeyboardPlugin::g_paramTypes[] = {
+const int SDLInputKeyboardPlugin::g_paramTypes[] = {
 	PARAM_ARRAY | PARAM_INPUT
 };
 
-const int * LinuxSDLInputKeyboardPlugin::getPropertiesType() const
+const int * SDLInputKeyboardPlugin::getPropertiesType() const
 {
-	return LinuxSDLInputKeyboardPlugin::g_paramTypes;
+	return SDLInputKeyboardPlugin::g_paramTypes;
 }
 
-const std::string * LinuxSDLInputKeyboardPlugin::getProperties(int *num) const 
+const std::string * SDLInputKeyboardPlugin::getProperties(int *num) const 
 {
 	*num = sizeof(g_paramTypes)/sizeof(g_paramTypes[0]);
-	return LinuxSDLInputKeyboardPlugin::g_properties;
+	return SDLInputKeyboardPlugin::g_properties;
 }
 
-void LinuxSDLInputKeyboardPlugin::setProperty(std::string prop, int data)
+void SDLInputKeyboardPlugin::setProperty(std::string prop, int data)
 {
 }
 
-void LinuxSDLInputKeyboardPlugin::setProperty(std::string prop, int index, int data)
+void SDLInputKeyboardPlugin::setProperty(std::string prop, int index, int data)
 {
 	if (prop == "keyConfig"){
 		if ((index >= 0) && (index < END_OF_INPUTS)){
@@ -197,12 +197,12 @@ void LinuxSDLInputKeyboardPlugin::setProperty(std::string prop, int index, int d
 	}
 }
 
-int LinuxSDLInputKeyboardPlugin::getProperty(std::string prop) const
+int SDLInputKeyboardPlugin::getProperty(std::string prop) const
 {
 	return -1;
 };
 
-int LinuxSDLInputKeyboardPlugin::getProperty(std::string prop, int index) const
+int SDLInputKeyboardPlugin::getProperty(std::string prop, int index) const
 {
 	if (prop == "keyConfig"){
 		if ((index >= 0) && (index < END_OF_INPUTS)){

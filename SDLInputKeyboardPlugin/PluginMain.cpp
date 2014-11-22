@@ -5,12 +5,12 @@
 // Para DECLSPEC en SDL_loadso.h
 #include "SDL.h"
 
-#include "LinuxSDLInputKeyboardPlugin.h"
+#include "SDLInputKeyboardPlugin.h"
 
-static const char *description = "VIGASOCO Linux SDL Keyboard Plugin v1.0";
+static const char *description = "VIGASOCO SDL Keyboard Plugin v1.0";
 
 static const char *plugins[] = {
-	"LinuxSDLInputPlugin" 
+	"SDLInputPlugin" 
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ extern "C" DECLSPEC
 void createPlugin(const char *name,void**plugin)
 {
 	if (strcmp(name, plugins[0]) == 0){
-		*plugin = new LinuxSDLInputKeyboardPlugin();
+		*plugin = new SDLInputKeyboardPlugin();
 	} else {
 		*plugin = NULL;
 	}

@@ -1,13 +1,13 @@
-// LinuxSDLMain.cpp
+// SDLMain.cpp
 //
 // Based on VIGASOCO Project Win32 port (c) 2003 by MAB
-//	LinuxSDL port @2005 by Luzbel
+//	SDL port @2005 by Luzbel
 //
 //	See readme.txt for license and usage information.
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "VigasocoLinuxSDL.h"
+#include "VigasocoSDL.h"
 // Para los mensajes de error
 #include "iostream"
 
@@ -19,7 +19,7 @@ typedef std::vector<std::string> Strings;
 
 // default options
 std::string g_game("abadia");
-std::string g_drawPluginsDLL("libVigasocoLinuxSDLDrawPlugin.so");
+std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
 std::string g_drawPlugin("win8");
 
 Strings g_inputPluginsDLLs;
@@ -33,7 +33,7 @@ void showError(std::string error);
 void showUsage(std::string error);
 
 /////////////////////////////////////////////////////////////////////////////
-//	LinuxSDL application entry point
+//	SDL application entry point
 /////////////////////////////////////////////////////////////////////////////
 
 int main(int argc,char **argv)
@@ -50,7 +50,7 @@ int main(int argc,char **argv)
 		return -1;
 	}
 
-	VigasocoLinuxSDL VIGASOCO( g_game, g_drawPluginsDLL, g_drawPlugin,
+	VigasocoSDL VIGASOCO( g_game, g_drawPluginsDLL, g_drawPlugin,
 				g_inputPluginsDLLs, g_inputPlugins, g_paths);
 
 	// init the game
@@ -69,7 +69,7 @@ int main(int argc,char **argv)
 	// cleanup
 	VIGASOCO.end();
 // 666 temporal
-// // quizas deberia ir en VigasocoLinuxSDL.end()
+// // quizas deberia ir en VigasocoSDL.end()
 // // o con atexit() ...
 // mejor con atexit, por si sale por un error,kill, etc...
 SDL_Quit();
@@ -204,8 +204,8 @@ bool parseCommandLine(std::string cmdLine)
 
 	// if the user hasn't set any input plugin, set the default one
 	if (g_inputPluginsDLLs.size() == 0){
-		g_inputPluginsDLLs.push_back("libVigasocoLinuxSDLInputPlugin.so");
-		g_inputPlugins.push_back("LinuxSDLInputPlugin");
+		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
+		g_inputPlugins.push_back("SDLInputPlugin");
 	}
 
 	return true;

@@ -1,18 +1,18 @@
-// LinuxSDLCriticalSection.cpp
+// SDLCriticalSection.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDLCriticalSection.h"
+#include "SDLCriticalSection.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-LinuxSDLCriticalSection::LinuxSDLCriticalSection()
+SDLCriticalSection::SDLCriticalSection()
 {
 }
 
-LinuxSDLCriticalSection::~LinuxSDLCriticalSection()
+SDLCriticalSection::~SDLCriticalSection()
 {
 }
 
@@ -20,22 +20,22 @@ LinuxSDLCriticalSection::~LinuxSDLCriticalSection()
 // ICriticalSection interface
 /////////////////////////////////////////////////////////////////////////////
 
-void LinuxSDLCriticalSection::init()
+void SDLCriticalSection::init()
 {
 	cs=SDL_CreateMutex();
 }
 
-void LinuxSDLCriticalSection::destroy()
+void SDLCriticalSection::destroy()
 {
 	SDL_DestroyMutex(cs);
 }
 
-void LinuxSDLCriticalSection::enter()
+void SDLCriticalSection::enter()
 {
 	SDL_mutexP(cs);
 }
 
-void LinuxSDLCriticalSection::leave()
+void SDLCriticalSection::leave()
 {
 	SDL_mutexV(cs);
 }

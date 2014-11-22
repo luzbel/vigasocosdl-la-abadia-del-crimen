@@ -1,18 +1,18 @@
-// LinuxSDLThread.h
+// SDLThread.h
 //
-//	Class that encapsulates a Linux SDL thread
+//	Class that encapsulates a SDL thread
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LINUXSDL_THREAD_H_
-#define _LINUXSDL_THREAD_H_
+#ifndef _SDL_THREAD_H_
+#define _SDL_THREAD_H_
 
 
 #include "IThread.h"
 #include "SDL.h"
 #include "SDL_thread.h"
 
-class LinuxSDLThread : public IThread
+class SDLThread : public IThread
 {
 // fields
 protected:
@@ -20,8 +20,8 @@ protected:
 
 public:
 	// initialization and cleanup
-	LinuxSDLThread();
-	virtual ~LinuxSDLThread();
+	SDLThread();
+	virtual ~SDLThread();
 
 	// IThread interface
 	virtual bool start();
@@ -30,7 +30,7 @@ public:
 	virtual void resume();
 
 	// helper method
-	static int ThreadProc(LinuxSDLThread *thread);
+	static int ThreadProc(SDLThread *thread);
 };
 
-#endif	// _LINUXSDL_THREAD_H_
+#endif	// _SDL_THREAD_H_

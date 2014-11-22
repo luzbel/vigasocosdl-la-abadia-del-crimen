@@ -51,7 +51,17 @@ INT64 RDTSCTimer::getTime()
 {
 	INT64 result;
 
+#ifdef __GNUC__
 	__asm__ __volatile__("rdtsc" : "=A" (result));
+#else
+	__asm {
+		rdtsc
+		lea ebx,[result]
+		mov [ebx],eax
+		mov [ebx+4],edx
+	}
+#endif
+
 
 	return result;
 }
@@ -64,7 +74,6 @@ INT64 RDTSCTimer::getTicksPerSecond()
 // windows Sleep function isn't precise enough, so here it's a better sleep method
 void RDTSCTimer::sleep(UINT32 milliseconds)
 {
-	/*
 	INT64 time1, time2; 
 	bool finished = false;
 
@@ -77,9 +86,9 @@ void RDTSCTimer::sleep(UINT32 milliseconds)
 		if (!finished){
 			SDL_Delay(0);
 		}
-	} */
-
-	SDL_Delay(milliseconds);
+	} 
+// No es suficiente con un simple SDL_Delay???
+//	SDL_Delay(milliseconds);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -108,11 +117,18 @@ bool RDTSCTimer::supportsRDTSC()
 {
 	/*
 	int cpuFeatures=0;
-
+#ifdef __GNUC__
         __asm__ __volatile__(
                 "mov $1, %%eax\n"
                 "cpuid\n"
                 "mov %%edx,%0" : "=r"(cpuFeatures)::"eax","ebx","ecx","edx" );
+#else
+	__asm {
+		mov eax, 1
+		cpuid
+		mov cpuFeatures, edx
+	}
+#endif
 
         return ((cpuFeatures & 0x10) == 0x10);
 	*/

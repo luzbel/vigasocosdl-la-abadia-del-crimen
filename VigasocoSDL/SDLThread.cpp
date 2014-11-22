@@ -1,19 +1,19 @@
-// LinuxSDLThread.cpp
+// SDLThread.cpp
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "LinuxSDLThread.h"
+#include "SDLThread.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-LinuxSDLThread::LinuxSDLThread()
+SDLThread::SDLThread()
 {
 	_handle = NULL;
 }
 
-LinuxSDLThread::~LinuxSDLThread()
+SDLThread::~SDLThread()
 {
 	end();
 }
@@ -22,7 +22,7 @@ LinuxSDLThread::~LinuxSDLThread()
 // thread function
 /////////////////////////////////////////////////////////////////////////////
 
-int LinuxSDLThread::ThreadProc(LinuxSDLThread *thread)
+int SDLThread::ThreadProc(SDLThread *thread)
 {
 	return thread->run();
 }
@@ -31,7 +31,7 @@ int LinuxSDLThread::ThreadProc(LinuxSDLThread *thread)
 // thread life cycle
 /////////////////////////////////////////////////////////////////////////////
 
-bool LinuxSDLThread::start()
+bool SDLThread::start()
 {
 	if (_isRunning){
 		return false;
@@ -50,7 +50,7 @@ bool LinuxSDLThread::start()
 	return true;
 }
 
-void LinuxSDLThread::end()
+void SDLThread::end()
 {
 	if (_handle != NULL){
 		_isRunning = false;
@@ -62,13 +62,13 @@ void LinuxSDLThread::end()
 	}
 }
 
-void LinuxSDLThread::pause()
+void SDLThread::pause()
 {
 //SuspendThread(_handle);
 // ¡¡¡ FALTA POR IMPLEMENTAR !!!
 }
 
-void LinuxSDLThread::resume()
+void SDLThread::resume()
 {
 //ResumeThread(_handle);
 // ¡¡¡ FALTA POR IMPLEMENTAR !!!

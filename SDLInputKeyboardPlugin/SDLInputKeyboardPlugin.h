@@ -10,7 +10,7 @@
 #include "IInputPlugin.h"
 #include "SDL.h"
 
-class LinuxSDLInputKeyboardPlugin: public IInputPlugin
+class SDLInputKeyboardPlugin: public IInputPlugin
 {
 // fields
 protected:
@@ -26,8 +26,8 @@ protected:
 // methods
 public:
 	// initialization and cleanup
-	LinuxSDLInputKeyboardPlugin();
-	virtual ~LinuxSDLInputKeyboardPlugin();
+	SDLInputKeyboardPlugin();
+	virtual ~SDLInputKeyboardPlugin();
 	virtual bool init();
 	virtual void end();
 

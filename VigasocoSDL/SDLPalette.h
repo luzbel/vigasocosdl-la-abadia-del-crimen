@@ -1,11 +1,11 @@
-// LinuxSDLPalette.h
+// SDLPalette.h
 //
 //	The one and the only palette (R, G, B, A. 8 bits per gun)
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LINUXSDL_PALETTE_H_
-#define _LINUXSDL_PALETTE_H_
+#ifndef _SDL_PALETTE_H_
+#define _SDL_PALETTE_H_
 
 
 #include "IPalette.h"
@@ -26,7 +26,11 @@ struct PaletteEntry {
 	PaletteEntry(){}
 	PaletteEntry(int r, int g, int b) { R = r; G = g; B = b; alpha = 0xff; }
 	PaletteEntry(int r, int g, int b, int a) { R = r; G = g; B = b; alpha = a; }
-} __attribute__((packed)); // Falta alinear esta estructura en gcc
+}
+#ifdef __GNUC__
+__attribute__((packed))
+#endif
+; 
 
 // Esto solo vale para la version de Vigasoco para Windows
 #ifndef __GNUC__
@@ -35,7 +39,7 @@ struct PaletteEntry {
 
 
 // the palette is a Singleton and a Notification Provider
-class LinuxSDLPalette: public IPalette
+class SDLPalette: public IPalette
 {
 // fields
 protected:
@@ -45,8 +49,8 @@ protected:
 // methods:
 public:
 	// initialization and cleanup
-	LinuxSDLPalette();
-	virtual ~LinuxSDLPalette();
+	SDLPalette();
+	virtual ~SDLPalette();
 	virtual void init(int colors);
 	virtual void end();
 
@@ -63,4 +67,4 @@ public:
 };
 
 
-#endif	// _LINUXSDL_PALETTE_H_
+#endif	// _SDL_PALETTE_H_

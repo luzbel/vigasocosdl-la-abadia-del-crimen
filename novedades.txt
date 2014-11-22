@@ -1,3 +1,19 @@
+v0.04
+=====
+
+Nuevos plugins graficos para SDL:
+"win8" En ventana 8bpp
+"win16" En ventana 16bpp
+"win24" En ventana 24bpp
+"win32" En ventana 32bpp
+"wingris8" En ventana con una paleta de grises
+"full8" Pantalla completa 8bpp
+"full16" Pantalla completa 16bpp
+"full24" Pantalla completa 24bpp
+"full32" Pantalla completa 32bpp
+"fullgris8" Pantalla completa con una paleta de grises
+
+
 v0.03
 =====
 Port para Linux usando SDL.

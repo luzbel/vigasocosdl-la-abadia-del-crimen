@@ -1,9 +1,9 @@
-// VigasocoLinuxSDL.h
+// VigasocoSDL.h
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _VIGASOCO_LINUXSDL_H_
-#define _VIGASOCO_LINUXSDL_H_
+#ifndef _VIGASOCO_SDL_H_
+#define _VIGASOCO_SDL_H_
 
 
 #include "Vigasoco.h"
@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-class VigasocoLinuxSDL : public Vigasoco
+class VigasocoSDL : public Vigasoco
 {
 // types
 public:
@@ -50,10 +50,10 @@ protected:
 // methods
 public:
 	// initialization and cleanup
-	VigasocoLinuxSDL(std::string game, std::string drawPluginsDLL,
+	VigasocoSDL(std::string game, std::string drawPluginsDLL,
 			std::string drawPlugin, Strings inputPluginsDLLs, 
 			Strings inputPlugins, Strings paths);
-	virtual ~VigasocoLinuxSDL();
+	virtual ~VigasocoSDL();
 
 	// platform services
 	virtual ICriticalSection *createCriticalSection();
@@ -85,4 +85,4 @@ protected:
 private:
 };
 
-#endif	// _VIGASOCO_LINUXSDL_H_
+#endif	// _VIGASOCO_SDL_H_
