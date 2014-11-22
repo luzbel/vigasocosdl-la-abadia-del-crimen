@@ -13,8 +13,12 @@ void SDLDrawPlugin24bpp::setPixel(int x, int y, int color)
 			return;
 		}
 	}
-
-
+/*
+if ( x < minX ) minX=x;
+if ( x>maxX ) maxX = x; 
+if ( y < minY ) minY=y;
+if ( y>maxY ) maxY = y;
+*/
 	int __bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to set */
 	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * __bpp;

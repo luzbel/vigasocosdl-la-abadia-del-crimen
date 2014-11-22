@@ -13,7 +13,9 @@ using namespace Abadia;
 // tabla de frases
 /////////////////////////////////////////////////////////////////////////////
 
-char * GestorFrases::frases[0x38] = {
+//char * GestorFrases::frases[0x38] = {
+//666, prueba, prueba
+char * GestorFrases::frases[0x38+1] = {
 	"SECRETUM FINISH AFRICAE, MANUS SUPRA XXX AGE PRIMUM ET SEPTIMUM DE QUATOR",
 	"BIENVENIDO A ESTA ABADIA, HERMANO. OS RUEGO QUE ME SIGAIS. HA SUCEDIDO ALGO TERRIBLE",
 	"TEMO QUE UNO DE LOS MONJES HA COMETIDO UN CRIMEN. OS RUEGO QUE LO ENCONTREIS ANTES DE QUE LLEGUE BERNARDO GUI, PUES NO DESEO QUE SE MANCHE EL NOMBRE DE ESTA ABADIA",
@@ -70,6 +72,8 @@ char * GestorFrases::frases[0x38] = {
 	"AQUI TRABAJAN LOS MEJORES COPISTAS DE OCCIDENTE",
 	"AQUI TRABAJABA VENACIO",
 	"VENERABLE HERMANO, SOY SEVERINO, EL ENCARGADO DEL HOSPITAL. QUIERO ADVERTIROS QUE EN ESTA ABADIA SUCEDEN COSAS MUY EXTRAÑAS. ALGUIEN NO QUIERE QUE LOS MONJES DECIDAN POR SI SOLOS LO QUE DEBEN SABER"
+		// 666 PRUEBA, PRUEBA ...
+	,	"CARGANDO PARTIDA..."
 };
 
 /////////////////////////////////////////////////////////////////////////////

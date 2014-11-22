@@ -283,7 +283,7 @@ void Vigasoco::mainLoop()
 				_driver->showGameLogic(_drawPlugin);
 			}
 
-//			showFPS(skipVideo);
+			showFPS(skipVideo);
 
 			if (!skipVideo){
 				// render game screen to our screen
@@ -317,6 +317,13 @@ void Vigasoco::processCoreInputs()
 {
 	int _actualVideoFrameSkip;
 
+	// F7 -> toggle fullscreen
+	// Solo soportado en VigasocoSDL
+	// y, obviamente, si la version de SDL de la plataforma lo soporta
+//	if (_inputHandler->hasBeenPressed(FUNCTION_7)){
+//		_drawPlugin->toggleFullScreen();
+//	}
+
 	// F8 -> circular frameskip decrement
 	if (_inputHandler->hasBeenPressed(FUNCTION_8)){
 		_actualVideoFrameSkip = _timingHandler->getVideoFrameSkip() - 1;
@@ -324,7 +331,7 @@ void Vigasoco::processCoreInputs()
 		_timingHandler->setVideoFrameSkip(_actualVideoFrameSkip);
 	}
 
-	// F8 -> circular frameskip increment
+	// F9 -> circular frameskip increment
 	if (_inputHandler->hasBeenPressed(FUNCTION_9)){
 		_actualVideoFrameSkip = _timingHandler->getVideoFrameSkip() + 1;
 		if (_actualVideoFrameSkip > (TimingHandler::FRAMESKIP_LEVELS - 1)) _actualVideoFrameSkip =  0;
@@ -351,7 +358,8 @@ void Vigasoco::showFPS(bool skipThisFrame)
 		int gameFPS = _driver->getVideoInfo()->refreshRate;
 
 		sprintf(buf, "%d/%d fps[fs %d]", currentFPS, gameFPS, frameSkip);
-fprintf(stderr,"FPS: %s\n",buf);
+//fprintf(stderr,"FPS: %s\n",buf);
+fprintf(stderr,"%d\n",currentFPS);
 	}
 
 	// show FPS

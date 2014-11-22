@@ -34,7 +34,8 @@ protected:
 	bool reproduciendoFrase;	// indica que se está mostrando una frase en el marcador
 	char *frase;				// apunta a la frase que se está poniendo en el marcador
 
-	static char *frases[0x38];	// tabla de frases
+	//static char *frases[0x38];	// tabla de frases
+	static char *frases[0x38+1];	// tabla de frases
 
 // métodos
 public:

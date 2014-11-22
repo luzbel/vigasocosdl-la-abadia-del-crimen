@@ -13,6 +13,8 @@ Nuevos plugins graficos para SDL:
 "full32" Pantalla completa 32bpp
 "fullgris8" Pantalla completa con una paleta de grises
 
+Soporte para cargar/grabar partidas.
+
 
 v0.03
 =====

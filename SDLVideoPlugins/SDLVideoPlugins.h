@@ -10,6 +10,7 @@ class SDLDrawPlugin8bpp : public SDLBasicDrawPlugin<UINT8>
 {
 	public:
 		SDLDrawPlugin8bpp::SDLDrawPlugin8bpp() { _bpp = 8; }
+		virtual void render(bool throttle);
 		virtual void setPixel(int x, int y, int color);
 	protected:
 		// palette changed notification

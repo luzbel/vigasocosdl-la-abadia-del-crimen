@@ -39,6 +39,7 @@
 #include "SpriteMonje.h"
 
 //#include "SDL.h" // Para cargar/grabar partidas con SDL_rwops.h
+#include "SDL.h" // 
 //666
 #include "iostream"
 #include "fstream"
@@ -134,10 +135,10 @@ void Juego::run()
 	controles->init(VigasocoMain->getInputHandler());
 
 	// muestra la imagen de presentación
-//666	muestraPresentacion();
+	muestraPresentacion();
 
 	// muestra el pergamino de presentación
-//666	muestraIntroduccion();
+	muestraIntroduccion();
 
 	// crea las entidades del juego (sprites, personajes, puertas y objetos)
 	creaEntidadesJuego();
@@ -403,8 +404,53 @@ void Juego::compruebaSave()
 bool Juego::compruebaLoad()
 {
 	if (controles->seHaPulsado(KEYBOARD_L)){
+
+
+/* Opcion  2: pantalla en negro, frase con pregunta
+ * (o cursor , como en la version original en MSX , y a cargar ...
+
+// con esto borramos la parte de arriba		limpiaAreaJuego(0); // fillMode1Rect
+// se podria usar cambiando las coordenadas de imprimeFrase
+elMarcador->limpiaAreaMarcador();
+// probar tambien con un super fillMode1Rect que borre todo ...
+
+//elMarcador->imprimeFrase("Partida cargada, continuar? S:N", 50, 164, 2, 3);
+//?? por que se ve algo mal la frase ???
+//SDL_Delay(1000);
+//
+// ooooohhhhh, imprime la frase en el marcador, pero el gestor
+// de frases sigue escribiendo si tenia alguna frase pendiente
+// va a ser mejor la opcion 1
+//elMarcador->imprimeFrase("Cargar? S:N", 50, 164, 2, 3);
+marcador->imprimeFrase("Cargar? S:N", 50, 164, 2, 3);
+while (losControles->estaSiendoPulsado(KEYBOARD_S) == false)
+{ 
+	losControles->actualizaEstado();
+}
+*/
+
 		ifstream in("abadia.save");
 		logica->load(in);
+
+		// esto lo borra el gestor de frases si ya estaba
+		// escribiendo  alguna
+		// marcador->imprimeFrase("Partida cargada", 148, 164, 2, 3);
+		//
+		//
+
+/* Opcion 1: No queda mal, aunque es algo lento y me obliga a cambiar las
+ * frases, y no se parece al funcionamiento original */
+		elGestorFrases->muestraFraseYa(0x38);
+	// si está mostrando una frase por el marcador, espera a que se termine de mostrar
+	//porque sino la llamada a 	marcador->limpiaAreaFrases();
+	//que hay despues de cargar , puede borrar algunos caracteres ...
+	
+	while (elGestorFrases->mostrandoFrase) elGestorFrases->actualizaEstado();
+	// este while se podra quitar, si hacemos algo parecido a cuando adso
+	// pregunta si dormimos, un bucle para leer teclado y salir cuando lea S o N
+	
+	// tambien hay que meter esto a la hora de salvar la partida ....
+
 		return true;
 	} else return false;
 }

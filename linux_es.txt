@@ -1,9 +1,11 @@
-VIGASOCO (VIdeo GAmes SOurce COde) Linux port (v0.04)
+VIGASOCO (VIdeo GAmes SOurce COde) Linux SDL port (v0.04)
 
 Acerca de:
 ==========
 
-VIGASOCOLinuxSDL es la versión para Linux del proyecto VIGASOCO.
+VIGASOCOSDL es la versión para SDL del proyecto VIGASOCO.
+Se ha probado en Linux, aunque no debe ser dificil adaptarlo a cualquier otra plataforma con SDL y un compilador moderno de C++.
+
 
 Licencia y distribución:
 ========================

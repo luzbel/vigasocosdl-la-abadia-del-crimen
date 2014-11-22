@@ -10,7 +10,13 @@
 #include "InputHandler.h"
 #include "TimingHandler.h"
 #include "VigasocoSDL.h"
+
+#ifdef RDTSC
 #include "RDTSCTimer.h"
+#else
+#include "SDLTimer.h"
+#endif
+
 #include "SDLCriticalSection.h"
 #include "SDLThread.h"
 
@@ -154,7 +160,11 @@ void VigasocoSDL::addCustomInputPlugins()
 
 void VigasocoSDL::createTimer()
 {
+#ifdef RDTSC
 	_timer = new RDTSCTimer();
+#else
+	_timer = new SDLTimer();
+#endif
 }
 
 void VigasocoSDL::createAsyncThread()

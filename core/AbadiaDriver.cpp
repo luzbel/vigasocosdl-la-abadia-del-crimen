@@ -29,8 +29,10 @@ AbadiaDriver::AbadiaDriver() : GameDriver("abadia", "La abadia del crimen", 300)
 	_videoInfo.visibleArea = Rect(_videoInfo.width, _videoInfo.height);
 	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar información interna del juego
 	_videoInfo.refreshRate = 50;
+	//_videoInfo.refreshRate = 10; a esto parece que no le hace caso 666
 
 	_numInterruptsPerVideoUpdate = 6;
+	//_numInterruptsPerVideoUpdate = 1;
 	_numInterruptsPerLogicUpdate = 1;
 
 	_abadiaGame = 0;

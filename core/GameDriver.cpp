@@ -69,7 +69,8 @@ bool GameDriver::init(IPalette *pal)
 	_palette = pal;
 
 	// recalculate the refresh rate
-	_videoInfo.refreshRate = _numInterruptsPerSecond/_numInterruptsPerVideoUpdate;
+	//_videoInfo.refreshRate = 10000; // _numInterruptsPerSecond/_numInterruptsPerVideoUpdate;
+	_videoInfo.refreshRate =  _numInterruptsPerSecond/_numInterruptsPerVideoUpdate;
 
 	// try to load all the files
 	if (!loadFiles()){
