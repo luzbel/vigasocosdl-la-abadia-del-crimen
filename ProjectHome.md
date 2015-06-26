@@ -1,0 +1,1 @@
+Adaptación de Vigasoco (Reconstrucción en C++ del videojuego clásico "La abadía del crimen") para SDL: Juega en Windows, Linux, PS2, Dreamcast y Google Chrome
